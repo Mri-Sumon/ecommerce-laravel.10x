@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,12 +33,18 @@ class CategoryController extends Controller
             $createBy = Auth::user()->id;
 
             $category = new Category();
-            $category->image = $request->image;
+            // $category->image = $request->image;
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
             $category->created_by = $createBy;
             $category->save();
+
+            // save image here 
+            if(!empty($request->image_id)){
+                $tempImage = TempImage::find($request->image_id);
+                
+            }
 
             $request->session()->flash('success', 'Category added successfully!');
 

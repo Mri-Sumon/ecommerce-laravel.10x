@@ -22,6 +22,7 @@
                 <div class="card">
                     <div class="card-body">								
                         <div class="row">
+                            
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
@@ -29,6 +30,7 @@
                                     <p></p>	
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
@@ -36,6 +38,19 @@
                                     <p></p>	
                                 </div>
                             </div>									
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <input type="hidden" id="image_id" name="image_id" value="">
+                                    <label for="image">Image</label>
+                                    <div id="image" class="dropzone dz-clickable">
+                                        <div class="dz-message needsclick">    
+                                            <br>Drop files here or click to upload.<br><br>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="status">Status</label>
@@ -44,7 +59,8 @@
                                         <option value="0">Block</option>
                                     </select>
                                 </div>
-                            </div>									
+                            </div>
+
                         </div>
                     </div>							
                 </div>
@@ -171,6 +187,42 @@
                     }
                 }
             });
+        });
+
+
+        //Dropzone library অটোমেটিক ইলিমেন্ট(ছবি) খুজে এনে class="dropzone" এ initialize করবে না।
+        Dropzone.autoDiscover = false;
+        //const dropzone --> একটি কন্সট্যান্ট ভ্যারিয়েবল ক্রিয়েট করা হয়েছে।
+        //$("#image") --> ইমেজ ডিভকে সিলেক্ট করা হয়েছে।
+        //$("#image").dropzone() --> dropzone কে সিলেক্ট করা ডিভ এ এ্যাপ্লাই করবো।
+        const dropzone = $("#image").dropzone({
+            //নিচের কোডটি নির্ধারন করে, একবারে শুধুমাত্র একটি ফাইল সিলেক্ট হবে।
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            //এই url এ আমাদের ফাইল আপলোড হবে।
+            url:  "{{route('temp-images.create')}}",
+            //একবারে একটি মাত্র ফাইল আপলোড হবে।
+            maxFiles: 1,
+            //ইমেজ আপলোড হওয়ার পর ইমেজের নাম হবে image
+            paramName: 'image',
+            //ইমেজ সিলেক্ট করার পর, ইমেজের নিচে remove file নামে যে লিংকটি আসে, সেটিকে নিয়ে আসার জন্য।
+            addRemoveLinks: true,
+            //কী কী ধরনের ইমেজ এক্সেপ্ট করবে।
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            
+            headers: {
+                //লারাভেলে এ্যাজাক্স এর মাধ্যমে ডাটাবেসে টোকেন পাঠানোর জন্য এটি ব্যবহার করা হয়।
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(file, response){
+                //ইমেজের হিডেন ইনপুট ফিল্ডে temp_images টেবিল হতে, ইমেজ আইডিকে নিয়ে আসবে।
+                $("#image_id").val(response.image_id);
+                //console.log(response)
+            }
         });
 
     </script>
