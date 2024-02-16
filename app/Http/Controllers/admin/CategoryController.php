@@ -1,13 +1,20 @@
 <?php
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    public function index(){
-
+    public function index(Request $request){
+        $categories = Category::latest();
+        if(!empty($request->get('keyword'))){
+            $categories = $categories->where('name','like','%'.$request->get('keyword').'%');
+        }
+        $categories = $categories->paginate(10);
+        return view('admin.category.list', compact('categories'));
     }
 
     public function create(){
@@ -22,6 +29,22 @@ class CategoryController extends Controller
 
         if($validator->passes()){
             
+            $createBy = Auth::user()->id;
+
+            $category = new Category();
+            $category->image = $request->image;
+            $category->name = $request->name;
+            $category->slug = $request->slug;
+            $category->status = $request->status;
+            $category->created_by = $createBy;
+            $category->save();
+
+            $request->session()->flash('success', 'Category added successfully!');
+
+            return response()->json([
+                'status' => true, 
+                'message' => 'Category added successfully'
+            ]);
 
         }else{
             return response()->json([
