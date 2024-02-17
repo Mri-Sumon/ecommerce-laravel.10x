@@ -76,44 +76,21 @@
 @endsection
 
 
-<!-- আমরা ajax এর মাধ্যেমে ফর্মের সকল ডাটা ডাটাবেসে পাঠিয়ে দিবো। -->
-<!-- @section('customJs') এর জন্য app.blade.php ফাইলে @yield('customJs') এ্যাড করা আছে। -->
-<!-- নিচের ফরম্যাটটি হলো ajax এর একটি কমন ফরম্যাট, যেটা ডেভেলপাররা ব্যবহার করে ফর্মের ডাটা ডাটাবেসে পাঠানোর জন্য। -->
 @section('customJs')
     <script>
-        //$(): হলো jQuery এর একটি সিলেক্টর ফাংশন, যার কাজ হলো এক বা একাধিক HTML ইলিমেন্টকে সিলেক্ট করা।
-        //#categoryForm: ফর্মের আইডিকে এখানে ক্যাচ করার হয়েছে, ফর্মকে সিলেক্ট করার জন্য।
-        //submit(): এখানে হলো jQuery এর একটি মেথড, এর কাজ হলো ইভেন্ট হ্যান্ডেলার ফাংশনটিকে, ফর্মের সাবমিট বাটনের সাথে attach করে দেয়া, অর্থাৎ যখন ফর্মের সাবমিট বাটনে ক্লিক করা হবে, তখন এই ইভেন্ট হ্যান্ডেলার ফাংশনটি এক্সিকিউট হবে।
         $("#categoryForm").submit(function(event){
-            //নরমালি আমরা যখন কোনো ডাটা সাবমিট করি বা কোনো একটি ইভেন্ট ঘটে, তখন সাবমিশন ফর্মের পেজটি রি-লোড হয়, এই ফাংশন পেজকে রি-লোড হতে বাধা দেয়।
             event.preventDefault();
-            //$(this) এর কাজ হলো $("#categoryForm") এর মাধ্যমে যে Form ইলিমেন্ট আসছে, তাকে ধারন করা।
             var element = $(this);
-
-            //$("button[type=submit]") -->সেই বাটনকে সিলেক্ট করবে, যার এট্রিবিউট হিসাবে submit আছে।
-            //prop() --> এইচটিএমএল প্রপার্টির এট্রিবিউট সেট করার জন্য ব্যবহার করা হয়।
-            //prop('disabled', true) --> বাটনকে disabled করার কারন হলো, যখন ফর্মের সাবমিট বাটন ক্লিক করা হবে অর্থাৎ ডাটা সাবমিট হবে তখন কিছু সময়ের জন্য সাবমিট বাটন disabled হয়ে যাবে, যেন ফর্ম সাবমিট হওয়ার পর অটোমেটিক্যালি একি ডাটা বার বার সাবমিট না হয়।
             $("button[type=submit]").prop('disabled', true);
 
             $.ajax({
-                //url: আমরা ajax এর মাধ্যেমে যে রাউটে ডাটা পাঠাতে চাই, সেই রাউটের url এখানে বলে দিতে হবে।
                 url: '{{route("categories.store")}}',
-                //type: আমরা যে ডাটা পাঠাচ্ছি তা কী টাইপের, যেমন: get, post ইত্যাদি তা বলে দিতে হবে।
                 type:'post',
-                //ফর্মের ডাটা ডাটাবেসে পাঠানোর পূর্বে, ফর্মের ডাটাগুলোকে একটি এ্যারেতে serialize করে, তারপর ডাটাবেসে পাঠায়।
                 data: element.serializeArray(),
-                //সার্ভার থেকে যখন কোনো ডাটা আসবে বা যখন কোনো রেসপন্স আসবে তা কোন ফরম্যাটে আসবে তা তা নির্ধারন করে, আমরা সার্ভারের রেসপন্স ডাটা json ফরম্যাটে দেখতে চাই।
                 dataType: 'json',
-                //success: function(response): যদি ডাটাবেসে ডাটা সাকসেসফুলি যায়, তাহলে এই ফাংশনটি কল হবে।
                 success: function(response){
-
                     $("button[type=submit]").prop('disabled', false);
-
-                    //response['status']==true, সার্ভারে ডাটা যাওয়ার পর সার্ভার রেসপন্স যদি true আসে, তাহলে কন্ডিশন এক্সে হবে।
-                    //কন্ট্রোলারে if($validator->passes()), অর্থাৎ ভ্যালিডেশন যদি পাস হয়, সার্ভার true রিটার্ন করবে।
                     if(response["status"]==true){
-
-                        //window.location.href --> ডাটা সাবমিট হওয়ার পর, windows এর লোকেশন কোথায় হবে অর্থাৎ ডাটা সাবমিট হওয়ার পর কোন পেজে যাবে, তা এখানে বলে দেয়া হয়েছে।
                         window.location.href="{{route('categories.index')}}"
 
                         $("#name").removeClass('is-invalid')
@@ -126,17 +103,11 @@
                         .removeClass('invalid-feedback')
                         .html("");
                     }else{
-                        //response['errors']; সার্ভারে ডাটা যাওয়ার পর সার্ভার রেসপন্স যদি এ্যারর আসে, তাহলে তা errors ভ্যারিয়েবলে এ্যাসাইন হবে।
                         var errors = response['errors'];
-                        //যদি এ্যারর অবজেক্ট এর প্রপার্টি name হয়, তাহলে কন্ডিশনে প্রবেশ করবে।
                         if(errors['name']){
-                            //name input tag এ সিএসএস এর একটি ক্লাস is-invalid এ্যাড করে দিবে।
                             $("#name").addClass('is-invalid')
-                            //p tag কে name input tag এর siblings বানাবে, এবং এখানে এ্যারর ম্যাসেজটি দেখাবে।
                             .siblings('p')
-                            //p tag এ সিএসএস এর একটি ক্লাস invalid-feedback এ্যাড করে দিবে।
                             .addClass('invalid-feedback')
-                            //html পেজে name ট্যাগের যে এ্যারর গুলো আসবে, তাদের একটি এ্যারে ক্রিয়েট করবে।
                             .html(errors['name']);
                         }else{
                             $("#name").removeClass('is-invalid')
@@ -164,10 +135,7 @@
             })
         });
 
-        //name এ যে ভ্যালু দিবো, তাকে slug এর রাউটে পাঠিয়ে দিবে।
-        //change() : যখন নেম ফিল্ড থেকে ফোকাস সরানো হবে, বা নেম ফিল্ডের কোনো ভ্যালু পরিবর্তন করা হবে, তখন function() টি এক্সিকিউট হবে।
         $('#name').change(function(){
-            //$(this) এর কাজ হলো $("#name") এর মাধ্যমে যে name ইলিমেন্ট আসবে, তাকে ধারন করা।
             var element = $(this);
 
             $("button[type=submit]").prop('disabled', true);
@@ -175,7 +143,6 @@
             $.ajax({
                 url: '{{route("getSlug")}}',
                 type: 'get',
-                //element.val() : নেম ট্যাগের ইনপুট ভ্যালুকে নিয়ে আসবে।
                 data: {title: element.val()},
                 dataType: 'json',
                 success: function(response){
@@ -190,13 +157,8 @@
         });
 
 
-        //Dropzone library অটোমেটিক ইলিমেন্ট(ছবি) খুজে এনে class="dropzone" এ initialize করবে না।
         Dropzone.autoDiscover = false;
-        //const dropzone --> একটি কন্সট্যান্ট ভ্যারিয়েবল ক্রিয়েট করা হয়েছে।
-        //$("#image") --> ইমেজ ডিভকে সিলেক্ট করা হয়েছে।
-        //$("#image").dropzone() --> dropzone কে সিলেক্ট করা ডিভ এ এ্যাপ্লাই করবো।
         const dropzone = $("#image").dropzone({
-            //নিচের কোডটি নির্ধারন করে, একবারে শুধুমাত্র একটি ফাইল সিলেক্ট হবে।
             init: function() {
                 this.on('addedfile', function(file) {
                     if (this.files.length > 1) {
@@ -204,24 +166,16 @@
                     }
                 });
             },
-            //এই url এ আমাদের ফাইল আপলোড হবে।
             url:  "{{route('temp-images.create')}}",
-            //একবারে একটি মাত্র ফাইল আপলোড হবে।
             maxFiles: 1,
-            //ইমেজ আপলোড হওয়ার পর ইমেজের নাম হবে image
             paramName: 'image',
-            //ইমেজ সিলেক্ট করার পর, ইমেজের নিচে remove file নামে যে লিংকটি আসে, সেটিকে নিয়ে আসার জন্য।
             addRemoveLinks: true,
-            //কী কী ধরনের ইমেজ এক্সেপ্ট করবে।
             acceptedFiles: "image/jpeg,image/png,image/gif",
             
             headers: {
-                //লারাভেলে এ্যাজাক্স এর মাধ্যমে ডাটাবেসে টোকেন পাঠানোর জন্য এটি ব্যবহার করা হয়।
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, success: function(file, response){
-                //ইমেজের হিডেন ইনপুট ফিল্ডে temp_images টেবিল হতে, ইমেজ আইডিকে নিয়ে আসবে।
                 $("#image_id").val(response.image_id);
-                //console.log(response)
             }
         });
 

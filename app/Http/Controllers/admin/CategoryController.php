@@ -46,33 +46,20 @@ class CategoryController extends Controller
             // save image here 
             if(!empty($request->image_id)){
                 $tempImage = TempImage::find($request->image_id);
-                //explode() --> স্ট্রিংকে এ্যারেতে পরিনত করে। 1708119231.PNG এটি যদি ইমেজ নেম হয়, তাহলে এ্যারে হবে [0]=1708119231, [1]=PNG
                 $extArray = explode('.',$tempImage->name);
-                //last() --> একটি এ্যারের লাষ্ট ভ্যালু নিয়ে আসবে অর্থাৎ [1]=PNG
                 $ext = last($extArray);
-                //last inserted ইমেজ নেম এবং last category আইডি কনক্যাট হবে অর্থাৎ নতুন নেম হবে 2.PNG
                 $newImageName = $category->id.'.'.$ext;
-                //public/temp/ থেকে ইমেজের নামটাকে তুলে আনবে।
                 $sPath = public_path().'/temp/'.$tempImage->name;
-                //image এর destination হবে public/temp/uploads/category/ এর ভীতরে নতুন নাম নিয়ে।
                 $dPath = public_path().'/uploads/category/'.$newImageName;
-                //ফাইলকে বা ইমেজকে source path থেকে কপি করে নিয়ে destination path এ রেখে দিবে।
                 File::copy($sPath, $dPath);
-                //ইমেজ নেম কে ডাটাবেসে স্টোর করবে।
                 $category->image = $newImageName;
                 $category->save();
 
-                //Generate Image Thumbnail using image intervention package.
-                //Thumbnail ইমেজের জন্য নতুন একটি ডেষ্টিনেশন সেট করবো।
                 $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
                 if($sPath){
-                    //intervention package এর ভার্শন-3 তে Image নিয়ে কাজ করার জন্য ImageManager এবং Image Driver এর অবজেক্ট ক্রিয়েট করতে হয়।
                     $manager = new ImageManager(new Driver());
-                    //read() এর কাজ হলো, যেখানে ইমেজ আছে সেখান থেকে ইমেজকে রিড করবে।
                     $img = $manager->read($sPath);
-                    //রিড করা ইমেজকে রি-সাইজ করবে।
                     $img = $img->resize(450, 600);
-                    //নতুন ডেষ্টিনেশনে Thumbnail ইমেজটাকে সেভ করে দিবো।
                     $img->save($dPath);
                 }
             }
@@ -92,12 +79,75 @@ class CategoryController extends Controller
 
     }
 
-    public function edit(){
-
+    public function edit($categoryId, Request $request){
+        $category = Category::find($categoryId);
+        if(empty($category)){
+            return redirect()->route('categories.index');
+        }
+        return view('admin.category.edit',compact('category'));
     }
 
-    public function update(){
+    public function update($categoryId, Request $request){
 
+        $category = Category::find($categoryId);
+
+        if(empty($category)){
+            return response()->json([
+                'status' => false,
+                'notFound' => true,
+                'message' => 'Category not found'
+            ]);
+        }
+        
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            //$category->id এই আইডির রো-তে যদি, অলরেডি slug থাকে, তাহলে unique কীনা তা চেক করবে না।
+            'slug' => 'required|unique:categories,slug,'.$category->id.',id',
+        ]);
+
+        if($validator->passes()){
+
+            $updatedBy = Auth::user()->id;
+
+            $category->name = $request->name;
+            $category->slug = $request->slug;
+            $category->status = $request->status;
+            $category->updated_by = $updatedBy;
+            $category->save();
+
+            // save image here 
+            if(!empty($request->image_id)){
+                $tempImage = TempImage::find($request->image_id);
+                $extArray = explode('.',$tempImage->name);
+                $ext = last($extArray);
+                $newImageName = $category->id.'.'.$ext;
+                $sPath = public_path().'/temp/'.$tempImage->name;
+                $dPath = public_path().'/uploads/category/'.$newImageName;
+                File::copy($sPath, $dPath);
+                $category->image = $newImageName;
+                $category->save();
+
+                $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
+                if($sPath){
+                    $manager = new ImageManager(new Driver());
+                    $img = $manager->read($sPath);
+                    $img = $img->resize(450, 600);
+                    $img->save($dPath);
+                }
+            }
+
+            $request->session()->flash('success', 'Category updated successfully!');
+            return response()->json([
+                'status' => true, 
+                'message' => 'Category updated successfully'
+            ]);
+
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 
     public function destroy(){

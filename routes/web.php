@@ -34,9 +34,9 @@ Route::group(['prefix'=>'admin'], function(){
             ]);
         })->name('getSlug');
         Route::post('/upload-temp-image',[TempImagesController::class, 'create'])->name('temp-images.create');
+        Route::get('/categories/{categoryId}/edit',[CategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{categoryId}',[CategoryController::class, 'update'])->name('categories.update');
 
-        Route::get('/categories/edit',[CategoryController::class, 'edit'])->name('categories.edit');
-        Route::get('/categories/update',[CategoryController::class, 'update'])->name('categories.update');
         Route::get('/categories/destroy',[CategoryController::class, 'destroy'])->name('categories.destroy');
     });
 });
