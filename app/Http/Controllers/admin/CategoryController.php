@@ -13,7 +13,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 class CategoryController extends Controller
 {
     public function index(Request $request){
-        $categories = Category::latest();
+        $categories = Category::latest()->orderBy('id', 'desc');
         if(!empty($request->get('keyword'))){
             $categories = $categories->where('name','like','%'.$request->get('keyword').'%');
         }
@@ -59,7 +59,11 @@ class CategoryController extends Controller
                 if($sPath){
                     $manager = new ImageManager(new Driver());
                     $img = $manager->read($sPath);
-                    $img = $img->resize(450, 600);
+                    // $img = $img->resize(450, 600);
+                    // image resize ratio wise
+                    $img->resize(450, 600, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
                     $img->save($dPath);
                 }
             }
@@ -115,12 +119,17 @@ class CategoryController extends Controller
             $category->updated_by = $updatedBy;
             $category->save();
 
+            //remove old image when update category from laravel project public folder
+            $oldImage = $category->image;
+
+
             // save image here 
             if(!empty($request->image_id)){
                 $tempImage = TempImage::find($request->image_id);
                 $extArray = explode('.',$tempImage->name);
                 $ext = last($extArray);
-                $newImageName = $category->id.'.'.$ext;
+
+                $newImageName = $category->id.'-'.time().'.'.$ext;
                 $sPath = public_path().'/temp/'.$tempImage->name;
                 $dPath = public_path().'/uploads/category/'.$newImageName;
                 File::copy($sPath, $dPath);
@@ -131,12 +140,21 @@ class CategoryController extends Controller
                 if($sPath){
                     $manager = new ImageManager(new Driver());
                     $img = $manager->read($sPath);
-                    $img = $img->resize(450, 600);
+                    // $img = $img->resize(450, 600);
+                    // image resize ratio wise
+                    $img->resize(450, 600, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
                     $img->save($dPath);
                 }
+
+                //delete old image from laravel project public folder when update category 
+                File::delete(public_path().'/uploads/category/thumb/'.$oldImage);
+                File::delete(public_path().'/uploads/category/'.$oldImage);
             }
 
             $request->session()->flash('success', 'Category updated successfully!');
+
             return response()->json([
                 'status' => true, 
                 'message' => 'Category updated successfully'
@@ -150,7 +168,26 @@ class CategoryController extends Controller
         }
     }
 
-    public function destroy(){
+    public function destroy($categoryId, Request $request){
 
+        $category = Category::find($categoryId);
+
+        if(empty($category)){
+            return redirect()->route('categories.index');
+        }
+
+        //delete image from laravel project public folder when delete category 
+        File::delete(public_path().'/uploads/category/thumb/'.$category->image);
+        File::delete(public_path().'/uploads/category/'.$category->image);
+
+        $category->delete();
+
+        $request->session()->flash('success', 'Category deleted successfully!');
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Category deleted successfully'
+        ]);
+        
     }
 }
