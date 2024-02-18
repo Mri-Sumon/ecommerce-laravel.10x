@@ -96,6 +96,9 @@ class CategoryController extends Controller
         $category = Category::find($categoryId);
 
         if(empty($category)){
+
+            $request->session()->flash('error', 'Category not found');
+
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -173,7 +176,13 @@ class CategoryController extends Controller
         $category = Category::find($categoryId);
 
         if(empty($category)){
-            return redirect()->route('categories.index');
+
+            $request->session()->flash('error', 'Category not found');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Category not found'
+            ]);
         }
 
         //delete image from laravel project public folder when delete category 
