@@ -130,10 +130,7 @@
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					},
 					success: function(response) {
-						if (response.status) {
-							// Redirect to index page
-							window.location.href = "{{ route('categories.index') }}";
-						}
+						window.location.href = "{{ route('categories.index') }}";
 					}
 				});
 			}

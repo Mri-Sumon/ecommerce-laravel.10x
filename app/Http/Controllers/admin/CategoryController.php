@@ -73,7 +73,7 @@ class CategoryController extends Controller
                 }
             }
 
-            $request->session()->flash('success', 'Category added successfully!');
+            $request->session()->flash('success', 'Category added successfully');
             return response()->json([
                 'status' => true, 
                 'message' => 'Category added successfully'
@@ -101,19 +101,17 @@ class CategoryController extends Controller
         $category = Category::find($categoryId);
 
         if(empty($category)){
-
-            $request->session()->flash('error', 'Category not found');
-
+            $request->session()->flash('error', 'Record not found');
             return response()->json([
-                'status' => false,
-                'notFound' => true,
-                'message' => 'Category not found'
+                "status" => false,
+                "notFound" => true,
+                "message" => "Record not found"
             ]);
         }
         
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            //$category->id এই আইডির রো-তে যদি, অলরেডি slug থাকে, তাহলে unique কীনা তা চেক করবে না।
+            //যদি কোনো slug আগে থেকেই categories টেবিলের slug কলামে থাকে, তাহলে একই নামে 2য় কোনো slug ইনসার্ট নিবে না।
             'slug' => 'required|unique:categories,slug,'.$category->id.',id',
         ]);
 
@@ -161,7 +159,7 @@ class CategoryController extends Controller
                 File::delete(public_path().'/uploads/category/'.$oldImage);
             }
 
-            $request->session()->flash('success', 'Category updated successfully!');
+            $request->session()->flash('success', 'Category updated successfully');
 
             return response()->json([
                 'status' => true, 
@@ -182,11 +180,11 @@ class CategoryController extends Controller
 
         if(empty($category)){
 
-            $request->session()->flash('error', 'Category not found');
+            $request->session()->flash('error', 'Record not found');
 
             return response()->json([
                 'status' => true,
-                'message' => 'Category not found'
+                'message' => 'Record not found'
             ]);
         }
 
@@ -196,7 +194,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        $request->session()->flash('success', 'Category deleted successfully!');
+        $request->session()->flash('success', 'Category deleted successfully');
         
         return response()->json([
             'status' => true,

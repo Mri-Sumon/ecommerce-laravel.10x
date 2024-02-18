@@ -113,9 +113,11 @@
                         //যদি কন্ট্রোলারের আপডেট ফাংশন, ডাটাবেসে ক্যাটাগরি খুজে না পায়, তাহলে index পেজে রিডাইরেক্ট হয়ে যাবে।
                         if(response['notFound'] == true){
                             window.location.href="{{route('categories.index')}}"
+                            return false;
                         }
 
                         var errors = response['errors'];
+                        
                         if(errors['name']){
                             $("#name").addClass('is-invalid')
                             .siblings('p')

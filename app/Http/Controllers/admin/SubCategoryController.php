@@ -55,7 +55,7 @@ class SubCategoryController extends Controller
             $subCategory->created_by = $createBy;
             $subCategory->save();
 
-            $request->session()->flash('success', 'Sub Category creaded successfully!');
+            $request->session()->flash('success', 'Sub Category creaded successfully');
             return response()->json([
                 'status' => true, 
                 'message' => 'Sub Category created successfully'
@@ -70,82 +70,58 @@ class SubCategoryController extends Controller
 
     }
 
-    public function edit($categoryId, Request $request){
-        $category = Category::find($categoryId);
-        if(empty($category)){
-            return redirect()->route('categories.index');
+    public function edit($subCategoryId, Request $request){
+
+        $categories = Category::orderBy('id', 'asc')->get();
+        $data['categories']=$categories;
+   
+        $subCategory = SubCategory::find($subCategoryId);
+        if(empty($subCategory)){
+            $request->session()->flash('error','Record not found');
+            return redirect()->route('sub-categories.index');
         }
-        return view('admin.sub_category.edit',compact('category'));
+        $data['subCategory'] = $subCategory;
+
+        return view('admin.sub_category.edit', $data);
+
     }
 
-    public function update($categoryId, Request $request){
+    public function update($subCategoryId, Request $request){
 
-        $category = Category::find($categoryId);
+        $subCategory = SubCategory::find($subCategoryId);
 
-        if(empty($category)){
-
-            $request->session()->flash('error', 'Category not found');
-
+        if(empty($subCategory)){
+            $request->session()->flash('error', 'Record not found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
-                'message' => 'Category not found'
+                'message' => 'Record not found'
             ]);
         }
         
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            'slug' => 'required|unique:categories,slug,'.$category->id.',id',
+            //যদি কোনো slug আগে থেকেই sub_categories টেবিলের slug কলামে থাকে, তাহলে একই নামে 2য় কোনো slug ইনসার্ট নিবে না।
+            'slug' => 'required|unique:sub_categories,slug,'.$subCategory->id.',id',
+            'category_id' => 'required',
+            'status' => 'required',
         ]);
 
         if($validator->passes()){
-
+            
             $updatedBy = Auth::user()->id;
 
-            $category->name = $request->name;
-            $category->slug = $request->slug;
-            $category->status = $request->status;
-            $category->updated_by = $updatedBy;
-            $category->save();
+            $subCategory->category_id = $request->category_id;
+            $subCategory->name = $request->name;
+            $subCategory->slug = $request->slug;
+            $subCategory->status = $request->status;
+            $subCategory->updated_by = $updatedBy;
+            $subCategory->save();
 
-            //remove old image when update category from laravel project public folder
-            $oldImage = $category->image;
-
-
-            // save image here 
-            if(!empty($request->image_id)){
-                $tempImage = TempImage::find($request->image_id);
-                $extArray = explode('.',$tempImage->name);
-                $ext = last($extArray);
-
-                $newImageName = $category->id.'-'.time().'.'.$ext;
-                $sPath = public_path().'/temp/'.$tempImage->name;
-                $dPath = public_path().'/uploads/category/'.$newImageName;
-                File::copy($sPath, $dPath);
-                $category->image = $newImageName;
-                $category->save();
-
-                $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
-                if($sPath){
-                    $manager = new ImageManager(new Driver());
-                    $img = $manager->read($sPath);
-                    // image resize ratio wise
-                    $img->resize(450, 600, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    $img->save($dPath);
-                }
-
-                //delete old image from laravel project public folder when update category 
-                File::delete(public_path().'/uploads/category/thumb/'.$oldImage);
-                File::delete(public_path().'/uploads/category/'.$oldImage);
-            }
-
-            $request->session()->flash('success', 'Category updated successfully!');
-
+            $request->session()->flash('success', 'Sub Category updated successfully');
             return response()->json([
                 'status' => true, 
-                'message' => 'Category updated successfully'
+                'message' => 'Sub Category updated successfully'
             ]);
 
         }else{
@@ -156,31 +132,24 @@ class SubCategoryController extends Controller
         }
     }
 
-    public function destroy($categoryId, Request $request){
+    public function destroy($subCategoryId, Request $request){
 
-        $category = Category::find($categoryId);
-
-        if(empty($category)){
-
-            $request->session()->flash('error', 'Category not found');
-
+        $subCategory = SubCategory::find($subCategoryId);
+        if(empty($subCategory)){
+            $request->session()->flash('error', 'Record not found');
             return response()->json([
                 'status' => true,
-                'message' => 'Category not found'
+                'message' => 'Record not found'
             ]);
         }
 
-        //delete image from laravel project public folder when delete category 
-        File::delete(public_path().'/uploads/category/thumb/'.$category->image);
-        File::delete(public_path().'/uploads/category/'.$category->image);
+        $subCategory->delete();
 
-        $category->delete();
-
-        $request->session()->flash('success', 'Category deleted successfully!');
+        $request->session()->flash('success', 'Sub Category deleted successfully');
         
         return response()->json([
             'status' => true,
-            'message' => 'Category deleted successfully'
+            'message' => 'Sub Category deleted successfully'
         ]);
         
     }
