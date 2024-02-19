@@ -5,10 +5,10 @@
 		<div class="container-fluid my-2">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1>Create Sub Category</h1>
+					<h1>Edit Category</h1>
 				</div>
 				<div class="col-sm-6 text-right">
-					<a href="{{route('sub-categories.index')}}" class="btn btn-primary">Back</a>
+					<a href="{{route('categories.index')}}" class="btn btn-primary">Back</a>
 				</div>
 			</div>
 		</div>
@@ -18,57 +18,58 @@
 	<section class="content">
 		<!-- Default box -->
 		<div class="container-fluid">
-            <form action="" name="subCategoryForm" id="subCategoryForm">
+            <form action="" method="post" id="categoryForm" name="categoryForm">
                 <div class="card">
                     <div class="card-body">								
                         <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label for="category_id">Category</label>
-                                    <select name="category_id" id="category_id" class="form-control">
-                                        <option value="">Select a category</option>
-                                        @if ($categories->isNotEmpty())
-                                            @foreach ($categories as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
-                                            @endforeach                                        
-                                        @endif
-                                    </select>
-                                    <p></p>
-                                </div>
-                            </div>
-
+                            
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">	
-                                    <p></p>
+                                    <input type="text" name="name" id="name" value="{{$category->name}}" class="form-control" placeholder="Name">
+                                    <p></p>	
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="slug">Slug</label>
-                                    <input type="text" name="slug" readonly id="slug" class="form-control" placeholder="Slug">	
-                                    <p></p>
+                                    <input type="text" readonly name="slug" id="slug" value="{{$category->slug}}" class="form-control" placeholder="Slug">
+                                    <p></p>	
                                 </div>
+                            </div>									
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <input type="hidden" id="image_id" name="image_id" value="">
+                                    <label for="image">Image</label>
+                                    <div id="image" class="dropzone dz-clickable">
+                                        <div class="dz-message needsclick">    
+                                            <br>Drop files here or click to upload.<br><br>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (!empty($category->image))
+                                    <div>
+                                        <img width="250" src="{{ asset('uploads/category/thumb/' . $category->image) }}" alt="">
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="1">Active</option>
-                                        <option value="0">Block</option>
+                                        <option {{ ($category->status == 1) ? 'selected' : ''}} value="1">Active</option>
+                                        <option {{ ($category->status == 0) ? 'selected' : ''}} value="0">Block</option>
                                     </select>
-                                    <p></p>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="sort">Sort</label>
-                                    <input type="number" name="sort" id="sort" class="form-control" placeholder="sort">
+                                    <input type="number" name="sort" id="sort" value="{{$category->sort}}" class="form-control" placeholder="sort">
                                     <p></p>	
                                 </div>
                             </div> 
@@ -77,8 +78,8 @@
                     </div>							
                 </div>
                 <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="{{route('sub-categories.index')}}" class="btn btn-outline-dark ml-3">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{{route('categories.index')}}" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </form>
 		</div>
@@ -88,48 +89,43 @@
 @endsection
 
 
+
 @section('customJs')
     <script>
-        
-        //send form data to route, Get validation message
-        $("#subCategoryForm").submit(function(event){
+
+        $("#categoryForm").submit(function(event){
             event.preventDefault();
             var element = $(this);
-
             $("button[type=submit]").prop('disabled', true);
             $.ajax({
-                url: '{{route("sub-categories.store")}}',
-                type:'post',
+                url: '{{ route("categories.update",$category->id) }}',
+                type:'put',
                 data: element.serializeArray(),
                 dataType: 'json',
                 success: function(response){
                     $("button[type=submit]").prop('disabled', false);
-
                     if(response["status"]==true){
-                        window.location.href="{{route('sub-categories.index')}}"
+                        window.location.href="{{route('categories.index')}}"
 
                         $("#name").removeClass('is-invalid')
                         .siblings('p')
                         .removeClass('invalid-feedback')
                         .html("");
-                    
+
                         $("#slug").removeClass('is-invalid')
                         .siblings('p')
                         .removeClass('invalid-feedback')
                         .html("");
-                    
-                        $("#status").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html("");
-
-                        $("#category_id").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback')
-                        .html("");
-                    
                     }else{
+
+                        //যদি কন্ট্রোলারের আপডেট ফাংশন, ডাটাবেসে ক্যাটাগরি খুজে না পায়, তাহলে index পেজে রিডাইরেক্ট হয়ে যাবে।
+                        if(response['notFound'] == true){
+                            window.location.href="{{route('categories.index')}}"
+                            return false;
+                        }
+
                         var errors = response['errors'];
+                        
                         if(errors['name']){
                             $("#name").addClass('is-invalid')
                             .siblings('p')
@@ -153,31 +149,6 @@
                             .removeClass('invalid-feedback')
                             .html("");
                         }
-
-                        if(errors['status']){
-                            $("#status").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback')
-                            .html(errors['status']);
-                        }else{
-                            $("#status").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback')
-                            .html("");
-                        }
-
-                        if(errors['category_id']){
-                            $("#category_id").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback')
-                            .html(errors['category_id']);
-                        }else{
-                            $("#category_id").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback')
-                            .html("");
-                        }
-
                     }
 
                 }, error:function(jqXHR,exception){
@@ -186,7 +157,7 @@
             })
         });
 
-        // Create slug 
+
         $('#name').change(function(){
             var element = $(this);
 
@@ -207,13 +178,32 @@
                 }
             });
         });
+
+
+        Dropzone.autoDiscover = false;
+        const dropzone = $("#image").dropzone({
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url:  "{{route('temp-images.create')}}",
+            maxFiles: 1,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(file, response){
+                $("#image_id").val(response.image_id);
+            }
+        });
+
     </script>
 @endsection
-
-
-
-
-
 
 
 

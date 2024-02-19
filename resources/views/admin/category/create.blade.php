@@ -86,6 +86,8 @@
 
 @section('customJs')
     <script>
+
+        //send form data to route, Get validation message
         $("#categoryForm").submit(function(event){
             event.preventDefault();
             var element = $(this);
@@ -143,6 +145,7 @@
             })
         });
 
+        //Create slug
         $('#name').change(function(){
             var element = $(this);
 
@@ -164,7 +167,7 @@
             });
         });
 
-
+        //image upload using javascript dropzone package
         Dropzone.autoDiscover = false;
         const dropzone = $("#image").dropzone({
             init: function() {

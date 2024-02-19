@@ -6,6 +6,8 @@ use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 
@@ -46,7 +48,18 @@ Route::group(['prefix'=>'admin'], function(){
         Route::put('/brands/{brandId}',[BrandController::class, 'update'])->name('brands.update');
         Route::delete('/brands/{brandId}',[BrandController::class, 'destroy'])->name('brands.delete');
 
-        //TEMP IMAGE CREATE
+        // PRODUCT ROUTES
+        Route::get('/products',[ProductController::class, 'index'])->name('products.index');
+        Route::get('/products/create',[ProductController::class, 'create'])->name('products.create');
+        Route::post('/products/store',[ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{productId}/edit',[ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{productId}',[ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{productId}',[ProductController::class, 'destroy'])->name('products.delete');
+
+        // PRODUCT SUBCATEGORY ROUTES 
+        Route::get('/products-subCategories',[ProductSubCategoryController::class, 'index'])->name('products-subCategories.index'); 
+
+        //TEMP IMAGE CREATE ROUTE
         Route::post('/upload-temp-image',[TempImagesController::class, 'create'])->name('temp-images.create');
 
         //CREATE SLUG

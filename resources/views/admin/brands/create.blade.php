@@ -75,6 +75,8 @@
 
 @section('customJs')
     <script>
+
+        //send form data to route, Get validation message
         $("#brandForm").submit(function(event){
             event.preventDefault();
             var element = $(this);
@@ -153,6 +155,7 @@
             })
         });
 
+        // Create slug 
         $('#name').change(function(){
             var element = $(this);
 
