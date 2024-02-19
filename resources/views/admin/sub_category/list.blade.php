@@ -49,6 +49,7 @@
 								<th>Slug</th>
 								<th>Category</th>
 								<th width="100">Status</th>
+								<th>Sort</th>
 								<th>Created By</th>
 								<th>Updated By</th>
 								<th width="100">Action</th>
@@ -73,6 +74,7 @@
                                                 </svg>
                                             @endif
                                         </td>
+										<td>{{$subCategory->sort}}</td>
 										<td>{{$subCategory->created_by}}</td>
 										<td>{{$subCategory->updated_by}}</td>
                                         <td>

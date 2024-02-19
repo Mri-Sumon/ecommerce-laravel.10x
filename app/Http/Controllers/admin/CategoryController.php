@@ -44,6 +44,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->sort = $request->sort;
             $category->created_by = $createBy;
             $category->save();
 
@@ -121,6 +122,7 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
+            $category->sort = $request->sort;
             $category->updated_by = $updatedBy;
             $category->save();
 

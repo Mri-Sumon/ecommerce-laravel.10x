@@ -45,6 +45,7 @@ class BrandController extends Controller
             $brand->name = $request->name;
             $brand->slug = $request->slug;
             $brand->status = $request->status;
+            $brand->sort = $request->sort;
             $brand->created_by = $createBy;
             $brand->save();
 
@@ -102,6 +103,7 @@ class BrandController extends Controller
             $brand->name = $request->name;
             $brand->slug = $request->slug;
             $brand->status = $request->status;
+            $brand->sort = $request->sort;
             $brand->updated_by = $updatedBy;
             $brand->save();
 

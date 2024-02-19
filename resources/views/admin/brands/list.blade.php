@@ -48,6 +48,7 @@
 								<th>Name</th>
 								<th>Slug</th>
 								<th width="100">Status</th>
+								<th>Sort</th>
 								<th>Created By</th>
 								<th>Updated By</th>
 								<th width="100">Action</th>
@@ -71,6 +72,7 @@
                                                 </svg>
                                             @endif
                                         </td>
+										<td>{{$brand->sort}}</td>
 										<td>{{$brand->created_by}}</td>
 										<td>{{$brand->updated_by}}</td>
                                         <td>

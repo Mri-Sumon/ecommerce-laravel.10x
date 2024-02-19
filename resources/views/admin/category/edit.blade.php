@@ -66,6 +66,14 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="sort">Sort</label>
+                                    <input type="number" name="sort" id="sort" value="{{$category->sort}}" class="form-control" placeholder="sort">
+                                    <p></p>	
+                                </div>
+                            </div> 
+
                         </div>
                     </div>							
                 </div>
