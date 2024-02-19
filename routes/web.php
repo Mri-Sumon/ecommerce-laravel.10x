@@ -3,13 +3,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\SubCategoryController;
+use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\TempImagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
 
 Route::get('/', function () {return view('welcome');});
+
 Route::group(['prefix'=>'admin'], function(){
+
     Route::group(['middleware' => 'admin.guest'], function(){
         Route::get('/login',[AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate',[AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
@@ -34,6 +37,14 @@ Route::group(['prefix'=>'admin'], function(){
         Route::get('/sub-categories/{subCategoryId}/edit',[SubCategoryController::class, 'edit'])->name('sub-categories.edit');
         Route::put('/sub-categories/{subCategoryId}',[SubCategoryController::class, 'update'])->name('sub-categories.update');
         Route::delete('/sub-categories/{subCategoryId}',[SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
+
+        // BRANDS ROUTES
+        Route::get('/brands',[BrandController::class, 'index'])->name('brands.index'); 
+        Route::get('/brands/create',[BrandController::class, 'create'])->name('brands.create');
+        Route::post('/brands/store',[BrandController::class, 'store'])->name('brands.store');
+        Route::get('/brands/{brandId}/edit',[BrandController::class, 'edit'])->name('brands.edit');
+        Route::put('/brands/{brandId}',[BrandController::class, 'update'])->name('brands.update');
+        Route::delete('/brands/{brandId}',[BrandController::class, 'destroy'])->name('brands.delete');
 
         //TEMP IMAGE CREATE
         Route::post('/upload-temp-image',[TempImagesController::class, 'create'])->name('temp-images.create');
