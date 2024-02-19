@@ -41,7 +41,6 @@ class CategoryController extends Controller
             $createBy = Auth::user()->id;
 
             $category = new Category();
-            // $category->image = $request->image;
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
