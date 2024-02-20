@@ -39,7 +39,7 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="products.html" class="nav-link">
+					<a href="{{route('products.index')}}" class="nav-link">
 						<i class="nav-icon fas fa-tag"></i>
 						<p>Products</p>
 					</a>
@@ -53,25 +53,25 @@
 					</a>
 				</li>							
 				<li class="nav-item">
-					<a href="orders.html" class="nav-link">
+					<a href="#" class="nav-link">
 						<i class="nav-icon fas fa-shopping-bag"></i>
 						<p>Orders</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="discount.html" class="nav-link">
+					<a href="#" class="nav-link">
 						<i class="nav-icon  fa fa-percent" aria-hidden="true"></i>
 						<p>Discount</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="users.html" class="nav-link">
+					<a href="#" class="nav-link">
 						<i class="nav-icon  fas fa-users"></i>
 						<p>Users</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="pages.html" class="nav-link">
+					<a href="#" class="nav-link">
 						<i class="nav-icon  far fa-file-alt"></i>
 						<p>Pages</p>
 					</a>

@@ -40,7 +40,7 @@ Route::group(['prefix'=>'admin'], function(){
         Route::put('/sub-categories/{subCategoryId}',[SubCategoryController::class, 'update'])->name('sub-categories.update');
         Route::delete('/sub-categories/{subCategoryId}',[SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
 
-        // BRANDS ROUTES
+        //BRANDS ROUTES
         Route::get('/brands',[BrandController::class, 'index'])->name('brands.index'); 
         Route::get('/brands/create',[BrandController::class, 'create'])->name('brands.create');
         Route::post('/brands/store',[BrandController::class, 'store'])->name('brands.store');
@@ -52,7 +52,6 @@ Route::group(['prefix'=>'admin'], function(){
         Route::get('/products',[ProductController::class, 'index'])->name('products.index');
         Route::get('/products/create',[ProductController::class, 'create'])->name('products.create');
         Route::post('/products/store',[ProductController::class, 'store'])->name('products.store');
-        
         Route::get('/products/{productId}/edit',[ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{productId}',[ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{productId}',[ProductController::class, 'destroy'])->name('products.delete');

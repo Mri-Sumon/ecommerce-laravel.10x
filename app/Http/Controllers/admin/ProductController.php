@@ -17,15 +17,15 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::latest('id');
-    
+        //with('product_images'): In product model we create product_images() method for create relationship.
+        $products = Product::latest('id')->with('product_images');
+
         if (!empty($request->get('keyword'))) {
-            $categories->where('name', 'like', '%' . $request->get('keyword') . '%');
+            $products->where('title', 'like', '%' . $request->get('keyword') . '%');
         }
-    
-        $categories = $categories->paginate(10);
-    
-        return view('admin.products.list', compact('categories'));
+        $products = $products->paginate(10);
+        $data['products'] = $products;
+        return view('admin.products.list', $data);
     }
     
 
