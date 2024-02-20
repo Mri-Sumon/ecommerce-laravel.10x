@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,18 +15,18 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $categories = Category::latest('id');
+    public function index(Request $request)
+    {
+        $categories = Category::latest('id');
     
-    //     if (!empty($request->get('keyword'))) {
-    //         $categories->where('name', 'like', '%' . $request->get('keyword') . '%');
-    //     }
+        if (!empty($request->get('keyword'))) {
+            $categories->where('name', 'like', '%' . $request->get('keyword') . '%');
+        }
     
-    //     $categories = $categories->paginate(10);
+        $categories = $categories->paginate(10);
     
-    //     return view('admin.category.list', compact('categories'));
-    // }
+        return view('admin.products.list', compact('categories'));
+    }
     
 
     public function create(){
@@ -88,36 +89,58 @@ class ProductController extends Controller
             $product->created_by = $createBy;
             $product->save();
 
-            // // save image here 
-            // if(!empty($request->image_id)){
-            //     $tempImage = TempImage::find($request->image_id);
-            //     $extArray = explode('.',$tempImage->name);
-            //     $ext = last($extArray);
-            //     $newImageName = $category->id.'.'.$ext;
-            //     $sPath = public_path().'/temp/'.$tempImage->name;
-            //     $dPath = public_path().'/uploads/category/'.$newImageName;
-            //     File::copy($sPath, $dPath);
-            //     $category->image = $newImageName;
-            //     $category->save();
+            //save product images 
+            if(!empty($request->image_array)){
 
-            //     $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
-            //     if($sPath){
-            //         $manager = new ImageManager(new Driver());
-            //         $img = $manager->read($sPath);
-            //         // $img = $img->resize(450, 600);
-            //         // image resize ratio wise
-            //         $img->resize(450, 600, function ($constraint) {
-            //             $constraint->aspectRatio();
-            //         });
-            //         $img->save($dPath);
-            //     }
-            // }
+                foreach($request->image_array as $temp_image_id){
 
-            // $request->session()->flash('success', 'Category added successfully');
-            // return response()->json([
-            //     'status' => true, 
-            //     'message' => 'Category added successfully'
-            // ]);
+                    $tempImageInfo = TempImage::find($temp_image_id);
+                    $extArray = explode('.',$tempImageInfo->name);
+                    $ext = last($extArray);
+
+                    $productImage = new ProductImage();
+                    $productImage->product_id =  $product->id;
+                    $productImage->image = 'NULL';
+                    $productImage->save();
+
+                    $imageName = $product->id.'-'.$productImage->id.time().'.'.$ext;
+                    $productImage->image = $imageName;
+                    $productImage->save();
+
+                    
+                    // Generate and save large thumbnail
+                    $sPath = public_path().'/temp/'.$tempImageInfo->name;
+                    $dPath = public_path().'/uploads/product/large/'.$imageName;
+                    if($sPath){
+                        $manager = new ImageManager(new Driver());
+                        $img = $manager->read($sPath);
+                        //image maximum width set 1400 because our webside maximum width 1400.
+                        $img->resize(1400, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                        $img->save($dPath);
+                    }
+
+                    // Generate and save small thumbnail
+                    $dPath = public_path().'/uploads/product/small/'.$imageName;
+                    if($sPath){
+                        $manager = new ImageManager(new Driver());
+                        $img = $manager->read($sPath);
+                        //image maximum width set 1400 because our webside maximum width 1400.
+                        $img->resize(300, 300, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                        $img->save($dPath);
+                    }
+
+                }
+            }
+
+            $request->session()->flash('success', 'Category added successfully');
+            return response()->json([
+                'status' => true, 
+                'message' => 'Category added successfully'
+            ]);
 
         }else{
             return response()->json([

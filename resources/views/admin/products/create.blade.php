@@ -51,6 +51,7 @@
                                 </div>
                             </div>	                                                                      
                         </div>
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Media</h2>								
@@ -60,6 +61,10 @@
                                     </div>
                                 </div>
                             </div>	                                                                      
+                        </div>
+
+                        <div class="row" id="product-gallery">
+                            
                         </div>
 
                         <div class="card mb-3">
@@ -258,7 +263,11 @@
 
                     if(response["status"]==true){
 
-                        // window.location.href="{{route('categories.index')}}"
+                        $(".error").removeClass('invalid-feedback').html('');
+                        $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
+
+                        //after successfully submitted all the product, page redirect to products.index pare
+                        window.location.href="{{route('products.index')}}"
 
                         // $("#name").removeClass('is-invalid')
                         // .siblings('p')
@@ -326,27 +335,41 @@
 
 
         //image upload using javascript dropzone package
-        // Dropzone.autoDiscover = false;
-        // const dropzone = $("#image").dropzone({
-        //     init: function() {
-        //         this.on('addedfile', function(file) {
-        //             if (this.files.length > 1) {
-        //                 this.removeFile(this.files[0]);
-        //             }
-        //         });
-        //     },
-        //     url:  "{{route('temp-images.create')}}",
-        //     maxFiles: 1,
-        //     paramName: 'image',
-        //     addRemoveLinks: true,
-        //     acceptedFiles: "image/jpeg,image/png,image/gif",
+        Dropzone.autoDiscover = false;
+        const dropzone = $("#image").dropzone({
+            url:  "{{route('temp-images.create')}}",
+            maxFiles: 10,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
             
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }, success: function(file, response){
-        //         $("#image_id").val(response.image_id);
-        //     }
-        // });
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(file, response){
+                
+                //show image in bootstrap card
+                var html = `<div class="col-md-3" id="image-row-${response.image_id}">
+                    <div class="card">
+                        <input type="hidden" name="image_array[]" value="${response.image_id}">
+                        <img src="${response.image_path}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <a href="javascript:void(0);" onclick="deleteImage(${response.image_id})" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>`;
+
+                //image show in below div
+                $("#product-gallery").append(html);
+            },
+            //After adding image in input field, input field will is automatically cleared.
+            complete: function(file){
+                this.removeFile(file);
+            }
+        });
+
+        function deleteImage(id) {
+            $("#image-row-"+id).remove();
+        }
 
 
         //category submit to ProductSubCategoryController, because when we select category, 

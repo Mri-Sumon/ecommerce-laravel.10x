@@ -61,6 +61,7 @@ class CategoryController extends Controller
                 $category->save();
 
                 $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
+                
                 if($sPath){
                     $manager = new ImageManager(new Driver());
                     $img = $manager->read($sPath);
