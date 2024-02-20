@@ -28,7 +28,8 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="title">Title</label>
-                                            <input type="text" name="title" id="title" class="form-control" placeholder="Title">	
+                                            <input type="text" name="title" id="title" class="form-control" placeholder="Title">
+                                            <p class="error"></p>	
                                         </div>
                                     </div>
 
@@ -36,6 +37,7 @@
                                         <div class="mb-3">
                                             <label for="slug">Slug</label>
                                             <input readonly type="text" name="slug" id="slug" class="form-control" placeholder="Slug">	
+                                            <p class="error"></p>
                                         </div>
                                     </div>
 
@@ -59,16 +61,20 @@
                                 </div>
                             </div>	                                                                      
                         </div>
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Pricing</h2>								
                                 <div class="row">
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="price">Price</label>
                                             <input type="text" name="price" id="price" class="form-control" placeholder="Price">	
+                                            <p class="error"></p>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="compare_price">Compare at Price</label>
@@ -85,29 +91,40 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Inventory</h2>								
                                 <div class="row">
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="sku">SKU (Stock Keeping Unit)</label>
                                             <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">	
+                                            <p class="error"></p>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="barcode">Barcode</label>
                                             <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Barcode">	
                                         </div>
                                     </div>   
+
                                     <div class="col-md-12">
+
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" type="checkbox" id="track_qty" name="track_qty" checked>
+                                                <!-- when track_qty is unchecked that time this input field worked. -->
+                                                <input type="hidden" name="track_qty" value="No">
+                                                <input  type="checkbox" id="track_qty" name="track_qty" value="Yes" checked class="custom-control-input" >
                                                 <label for="track_qty" class="custom-control-label">Track Quantity</label>
+                                                <p class="error"></p>
                                             </div>
                                         </div>
+
                                         <div class="mb-3">
                                             <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">	
                                         </div>
-                                    </div>                                         
+
+                                    </div>  
+
                                 </div>
                             </div>	                                                                      
                         </div>
@@ -138,6 +155,7 @@
                                             @endforeach
                                         @endif
                                     </select>
+                                    <p class="error"></p>
                                 </div>
 
                                 <div class="mb-3">
@@ -154,11 +172,11 @@
                             <div class="card-body">	
                                 <h2 class="h4 mb-3">Product brand</h2>
                                 <div class="mb-3">
-                                    <select name="status" id="status" class="form-control">
-                                    <option value="">Select a brand</option>
+                                    <select name="brand" id="brand" class="form-control">
+                                        <option value="">Select a brand</option>
                                         @if ($brands->isNotEmpty())
-                                            @foreach ($brands as $brandd)
-                                                <option value="{{$brandd->id}}">{{$brandd->name}}</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -170,10 +188,11 @@
                             <div class="card-body">	
                                 <h2 class="h4 mb-3">Featured product</h2>
                                 <div class="mb-3">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>                                                
+                                    <select name="is_featured" id="is_featured" class="form-control">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>                                                
                                     </select>
+                                    <p class="error"></p>
                                 </div>
                             </div>
                         </div>
@@ -182,10 +201,11 @@
                             <div class="card-body">	
                                 <h2 class="h4 mb-3">Top selling product</h2>
                                 <div class="mb-3">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>                                                
+                                    <select name="is_top_selling" id="is_top_selling" class="form-control">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>                                                
                                     </select>
+                                    <p class="error"></p>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +223,7 @@
                 </div>
                 
                 <div class="pb-5 pt-3">
-                    <button class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                     <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
                 </div>
             </div>
@@ -218,66 +238,69 @@
     <script>
 
         //send form data to route, Get validation message
-        // $("#productForm").submit(function(event){
+        $("#productForm").submit(function(event){
 
-        //     event.preventDefault();
+            event.preventDefault();
+            var element = $(this);
 
-        //     var element = $(this);
+            $("button[type=submit]").prop('disabled', true);
+            
+            $.ajax({
 
-        //     $("button[type=submit]").prop('disabled', true);
+                url: '{{route("products.store")}}',
+                type:'post',
+                data: element.serializeArray(),
+                dataType: 'json',
 
-        //     $.ajax({
-        //         url: '{{route("products.store")}}',
-        //         type:'post',
-        //         data: element.serializeArray(),
-        //         dataType: 'json',
-        //         success: function(response){
+                success: function(response){
 
-        //             $("button[type=submit]").prop('disabled', false);
-        //             if(response["status"]==true){
-        //                 window.location.href="{{route('categories.index')}}"
+                    $("button[type=submit]").prop('disabled', false);
 
-        //                 $("#name").removeClass('is-invalid')
-        //                 .siblings('p')
-        //                 .removeClass('invalid-feedback')
-        //                 .html("");
+                    if(response["status"]==true){
+
+                        // window.location.href="{{route('categories.index')}}"
+
+                        // $("#name").removeClass('is-invalid')
+                        // .siblings('p')
+                        // .removeClass('invalid-feedback')
+                        // .html("");
                     
-        //                 $("#slug").removeClass('is-invalid')
-        //                 .siblings('p')
-        //                 .removeClass('invalid-feedback')
-        //                 .html("");
-        //             }else{
-        //                 var errors = response['errors'];
-        //                 if(errors['name']){
-        //                     $("#name").addClass('is-invalid')
-        //                     .siblings('p')
-        //                     .addClass('invalid-feedback')
-        //                     .html(errors['name']);
-        //                 }else{
-        //                     $("#name").removeClass('is-invalid')
-        //                     .siblings('p')
-        //                     .removeClass('invalid-feedback')
-        //                     .html("");
-        //                 }
+                        // $("#slug").removeClass('is-invalid')
+                        // .siblings('p')
+                        // .removeClass('invalid-feedback')
+                        // .html("");
 
-        //                 if(errors['slug']){
-        //                     $("#slug").addClass('is-invalid')
-        //                     .siblings('p')
-        //                     .addClass('invalid-feedback')
-        //                     .html(errors['slug']);
-        //                 }else{
-        //                     $("#slug").removeClass('is-invalid')
-        //                     .siblings('p')
-        //                     .removeClass('invalid-feedback')
-        //                     .html("");
-        //                 }
-        //             }
+                    }else{
 
-        //         }, error:function(jqXHR,exception){
-        //             console.log("Something went wrong");
-        //         }
-        //     })
-        // });
+                        var errors = response['errors'];
+
+                        //remove all invalid-feedback class from p tag, 
+                        //and blank the comming error message from html p tag.
+                        $(".error").removeClass('invalid-feedback').html('');
+
+                        //select all input field whos type text & number, 
+                        //and remove all css is-invalid class from selected input field.
+                        $("input[type='text'], select, input[type='number']").removeClass('is-invalid');
+
+                        //take all the error from response['errors'] and put in value, 
+                        //key takes the error fields name from response['errors'], 
+                        //in response['errors'] all the field name come as index.
+                        $.each(errors, function(key, value){
+                            $(`#${key}`)
+                            .addClass('is-invalid')
+                            .siblings('p')
+                            .addClass('invalid-feedback')
+                            .html(value);
+                        });
+
+                    }
+
+                }, error:function(jqXHR,exception){
+                    console.log("Something went wrong");
+                }
+            })
+        });
+
 
         // Create slug 
         $('#title').change(function(){
@@ -300,6 +323,7 @@
                 }
             });
         });
+
 
         //image upload using javascript dropzone package
         // Dropzone.autoDiscover = false;
@@ -325,7 +349,8 @@
         // });
 
 
-        //category submit to ProductSubCategoryController, because when we select category, subcategory will automatically be selected.
+        //category submit to ProductSubCategoryController, because when we select category, 
+        //subcategory will automatically be selected.
         $("#category").change(function(){
             var category_id = $(this).val();
             $.ajax({

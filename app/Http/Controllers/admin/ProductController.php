@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -39,63 +40,92 @@ class ProductController extends Controller
         return view('admin.products.create', $data);
     }
 
-    // public function store(Request $request){
-    //     $validator = Validator::make($request->all(),[
-    //         'name' => 'required', 
-    //         'slug' => 'required|unique:categories', 
-    //     ]);
+    public function store(Request $request){
 
-    //     if($validator->passes()){
+        $rule = [
+            'title' => 'required', 
+            'slug' => 'required|unique:products',
+            //Integer+Floating = numeric
+            'price' => 'required|numeric', 
+            'sku' => 'required|unique:products',
+            //track_qty is required and its value must be within Yes or No.
+            'track_qty' => 'required|in:Yes,No',
+            //category is numeric because we will get category as category id.
+            'category' => 'required|numeric', 
+            'is_featured' => 'required|in:Yes,No',
+            'is_top_selling' => 'required|in:Yes,No',
+        ];
+
+        //if we tikmark on track_qty, we must be insert qty, 
+        //otherwise qty value will be null, thats why qty is optional.
+        if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
+            $rules['qty'] = 'required|numeric';
+        }
+        
+        $validator = Validator::make($request->all(),$rule);
+
+        if($validator->passes()){
             
-    //         $createBy = Auth::user()->id;
+            $createBy = Auth::user()->id;
 
-    //         $category = new Category();
-    //         $category->name = $request->name;
-    //         $category->slug = $request->slug;
-    //         $category->status = $request->status;
-    //         $category->sort = $request->sort;
-    //         $category->created_by = $createBy;
-    //         $category->save();
+            $product = new Product();
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->sub_category;
+            $product->brand_id = $request->brand;
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->compare_price;
+            $product->is_featured = $request->is_featured;
+            $product->is_top_selling = $request->is_top_selling;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_qty = $request->track_qty;
+            $product->qty = $request->qty;
+            $product->status = $request->status;
+            $product->sort = $request->sort;
+            $product->created_by = $createBy;
+            $product->save();
 
-    //         // save image here 
-    //         if(!empty($request->image_id)){
-    //             $tempImage = TempImage::find($request->image_id);
-    //             $extArray = explode('.',$tempImage->name);
-    //             $ext = last($extArray);
-    //             $newImageName = $category->id.'.'.$ext;
-    //             $sPath = public_path().'/temp/'.$tempImage->name;
-    //             $dPath = public_path().'/uploads/category/'.$newImageName;
-    //             File::copy($sPath, $dPath);
-    //             $category->image = $newImageName;
-    //             $category->save();
+            // // save image here 
+            // if(!empty($request->image_id)){
+            //     $tempImage = TempImage::find($request->image_id);
+            //     $extArray = explode('.',$tempImage->name);
+            //     $ext = last($extArray);
+            //     $newImageName = $category->id.'.'.$ext;
+            //     $sPath = public_path().'/temp/'.$tempImage->name;
+            //     $dPath = public_path().'/uploads/category/'.$newImageName;
+            //     File::copy($sPath, $dPath);
+            //     $category->image = $newImageName;
+            //     $category->save();
 
-    //             $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
-    //             if($sPath){
-    //                 $manager = new ImageManager(new Driver());
-    //                 $img = $manager->read($sPath);
-    //                 // $img = $img->resize(450, 600);
-    //                 // image resize ratio wise
-    //                 $img->resize(450, 600, function ($constraint) {
-    //                     $constraint->aspectRatio();
-    //                 });
-    //                 $img->save($dPath);
-    //             }
-    //         }
+            //     $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
+            //     if($sPath){
+            //         $manager = new ImageManager(new Driver());
+            //         $img = $manager->read($sPath);
+            //         // $img = $img->resize(450, 600);
+            //         // image resize ratio wise
+            //         $img->resize(450, 600, function ($constraint) {
+            //             $constraint->aspectRatio();
+            //         });
+            //         $img->save($dPath);
+            //     }
+            // }
 
-    //         $request->session()->flash('success', 'Category added successfully');
-    //         return response()->json([
-    //             'status' => true, 
-    //             'message' => 'Category added successfully'
-    //         ]);
+            // $request->session()->flash('success', 'Category added successfully');
+            // return response()->json([
+            //     'status' => true, 
+            //     'message' => 'Category added successfully'
+            // ]);
 
-    //     }else{
-    //         return response()->json([
-    //             'status' => false, 
-    //             'errors' => $validator->errors(),
-    //         ]);
-    //     }
-
-    // }
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
+    }
 
     // public function edit($categoryId, Request $request){
     //     $category = Category::find($categoryId);
