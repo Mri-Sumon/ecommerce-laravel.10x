@@ -249,9 +249,11 @@
     </section>
     <section class="section-3">
         <div class="container">
+
             <div class="section-title">
                 <h2>Categories</h2>
-            </div>           
+            </div>
+                       
             <div class="row pb-3">
                 <div class="col-lg-3">
                     <div class="cat-card">
