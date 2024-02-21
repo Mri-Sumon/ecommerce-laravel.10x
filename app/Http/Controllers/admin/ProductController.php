@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +41,7 @@ class ProductController extends Controller
 
         return view('admin.products.create', $data);
     }
+
 
     public function store(Request $request){
 
@@ -150,92 +152,150 @@ class ProductController extends Controller
         }
     }
 
-    // public function edit($categoryId, Request $request){
-    //     $category = Category::find($categoryId);
-    //     if(empty($category)){
-    //         return redirect()->route('categories.index');
-    //     }
-    //     return view('admin.category.edit',compact('category'));
-    // }
 
-    // public function update($categoryId, Request $request){
+    
+    public function edit($productId, Request $request){
 
-    //     $category = Category::find($categoryId);
+        $data = [];
+        $product = Product::find($productId);
+        if(empty($product)){
+            return redirect()->route('products.index')->with('error','Product not found');
+        }
+        $productImages = ProductImage::where('product_id', $product->id)->get();
+        $categories = Category::orderBy('name','ASC')->get();
+        $subCategories = SubCategory::where('category_id', $product->category_id)->get();
+        $brands = Brand::orderBy('name','ASC')->get();
+        $data['product']=$product;
+        $data['productImages']=$productImages;
+        $data['categories']=$categories;
+        $data['subCategories']=$subCategories;
+        $data['brands']=$brands;
 
-    //     if(empty($category)){
-    //         $request->session()->flash('error', 'Record not found');
-    //         return response()->json([
-    //             "status" => false,
-    //             "notFound" => true,
-    //             "message" => "Record not found"
-    //         ]);
-    //     }
+        if(empty($product)){
+            return redirect()->route('products.index');
+        }
+
+        return view('admin.products.edit',$data);
+    }
+
+
+
+    public function update($productId, Request $request){
+
+        $product = Product::find($productId);
+
+        if(empty($product)){
+
+            $request->session()->flash('error', 'Record not found');
+            
+            return response()->json([
+                "status" => false,
+                "notFound" => true,
+                "message" => "Record not found"
+            ]);
+        }
+
+        $rule = [
+            'title' => 'required', 
+            'slug' => 'required|unique:products,slug,'.$product->id.',id',
+            'price' => 'required|numeric', 
+            'sku' => 'required|unique:products,sku,'.$product->id.',id',
+            'track_qty' => 'required|in:Yes,No',
+            'category' => 'required|numeric', 
+            'is_featured' => 'required|in:Yes,No',
+            'is_top_selling' => 'required|in:Yes,No',
+        ];        
+
+        if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
+            $rules['qty'] = 'required|numeric';
+        }
         
-    //     $validator = Validator::make($request->all(),[
-    //         'name' => 'required',
-    //         //যদি কোনো slug আগে থেকেই categories টেবিলের slug কলামে থাকে, তাহলে একই নামে 2য় কোনো slug ইনসার্ট নিবে না।
-    //         'slug' => 'required|unique:categories,slug,'.$category->id.',id',
-    //     ]);
+        $validator = Validator::make($request->all(),$rule);
 
-    //     if($validator->passes()){
+        if($validator->passes()){
+            
+            $updatedBy = Auth::user()->id;
 
-    //         $updatedBy = Auth::user()->id;
+            $product->category_id = $request->category;
+            $product->sub_category_id = $request->sub_category;
+            $product->brand_id = $request->brand;
+            $product->title = $request->title;
+            $product->slug = $request->slug;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->compare_price = $request->compare_price;
+            $product->is_featured = $request->is_featured;
+            $product->is_top_selling = $request->is_top_selling;
+            $product->sku = $request->sku;
+            $product->barcode = $request->barcode;
+            $product->track_qty = $request->track_qty;
+            $product->qty = $request->qty;
+            $product->status = $request->status;
+            $product->sort = $request->sort;
+            $product->updated_by = $updatedBy;
+            $product->save();
 
-    //         $category->name = $request->name;
-    //         $category->slug = $request->slug;
-    //         $category->status = $request->status;
-    //         $category->sort = $request->sort;
-    //         $category->updated_by = $updatedBy;
-    //         $category->save();
+            //save product images 
+            // if(!empty($request->image_array)){
 
-    //         //remove old image when update category from laravel project public folder
-    //         $oldImage = $category->image;
+            //     foreach($request->image_array as $temp_image_id){
 
+            //         $tempImageInfo = TempImage::find($temp_image_id);
+            //         $extArray = explode('.',$tempImageInfo->name);
+            //         $ext = last($extArray);
 
-    //         // save image here 
-    //         if(!empty($request->image_id)){
-    //             $tempImage = TempImage::find($request->image_id);
-    //             $extArray = explode('.',$tempImage->name);
-    //             $ext = last($extArray);
+            //         $productImage = new ProductImage();
+            //         $productImage->product_id =  $product->id;
+            //         $productImage->image = 'NULL';
+            //         $productImage->save();
 
-    //             $newImageName = $category->id.'-'.time().'.'.$ext;
-    //             $sPath = public_path().'/temp/'.$tempImage->name;
-    //             $dPath = public_path().'/uploads/category/'.$newImageName;
-    //             File::copy($sPath, $dPath);
-    //             $category->image = $newImageName;
-    //             $category->save();
+            //         $imageName = $product->id.'-'.$productImage->id.time().'.'.$ext;
+            //         $productImage->image = $imageName;
+            //         $productImage->save();
 
-    //             $dPath=public_path().'/uploads/category/thumb/'.$newImageName;
-    //             if($sPath){
-    //                 $manager = new ImageManager(new Driver());
-    //                 $img = $manager->read($sPath);
-    //                 // $img = $img->resize(450, 600);
-    //                 // image resize ratio wise
-    //                 $img->resize(450, 600, function ($constraint) {
-    //                     $constraint->aspectRatio();
-    //                 });
-    //                 $img->save($dPath);
-    //             }
+                    
+            //         // Generate and save large thumbnail
+            //         $sPath = public_path().'/temp/'.$tempImageInfo->name;
+            //         $dPath = public_path().'/uploads/product/large/'.$imageName;
+            //         if($sPath){
+            //             $manager = new ImageManager(new Driver());
+            //             $img = $manager->read($sPath);
+            //             //image maximum width set 1400 because our webside maximum width 1400.
+            //             $img->resize(1400, null, function ($constraint) {
+            //                 $constraint->aspectRatio();
+            //             });
+            //             $img->save($dPath);
+            //         }
 
-    //             //delete old image from laravel project public folder when update category 
-    //             File::delete(public_path().'/uploads/category/thumb/'.$oldImage);
-    //             File::delete(public_path().'/uploads/category/'.$oldImage);
-    //         }
+            //         // Generate and save small thumbnail
+            //         $dPath = public_path().'/uploads/product/small/'.$imageName;
+            //         if($sPath){
+            //             $manager = new ImageManager(new Driver());
+            //             $img = $manager->read($sPath);
+            //             //image maximum width set 1400 because our webside maximum width 1400.
+            //             $img->resize(300, 300, function ($constraint) {
+            //                 $constraint->aspectRatio();
+            //             });
+            //             $img->save($dPath);
+            //         }
 
-    //         $request->session()->flash('success', 'Category updated successfully');
+            //     }
+            // }
 
-    //         return response()->json([
-    //             'status' => true, 
-    //             'message' => 'Category updated successfully'
-    //         ]);
+            $request->session()->flash('success', 'Product updated successfully');
+            return response()->json([
+                'status' => true, 
+                'message' => 'Product updated successfully'
+            ]);
 
-    //     }else{
-    //         return response()->json([
-    //             'status' => false, 
-    //             'errors' => $validator->errors(),
-    //         ]);
-    //     }
-    // }
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+    }
 
     // public function destroy($categoryId, Request $request){
 
@@ -265,4 +325,7 @@ class ProductController extends Controller
     //     ]);
         
     // }
+
+
+    
 } 

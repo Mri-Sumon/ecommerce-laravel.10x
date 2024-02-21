@@ -269,16 +269,6 @@
                         //after successfully submitted all the product, page redirect to products.index pare
                         window.location.href="{{route('products.index')}}"
 
-                        // $("#name").removeClass('is-invalid')
-                        // .siblings('p')
-                        // .removeClass('invalid-feedback')
-                        // .html("");
-                    
-                        // $("#slug").removeClass('is-invalid')
-                        // .siblings('p')
-                        // .removeClass('invalid-feedback')
-                        // .html("");
-
                     }else{
 
                         var errors = response['errors'];

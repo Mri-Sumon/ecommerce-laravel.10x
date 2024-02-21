@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; 
@@ -62,6 +63,10 @@ Route::group(['prefix'=>'admin'], function(){
         //TEMP IMAGE CREATE ROUTE
         Route::post('/upload-temp-image',[TempImagesController::class, 'create'])->name('temp-images.create');
 
+        //PRODUCT IMAGE UPDATED ROUTE
+        Route::post('/product-images/update',[ProductImageController::class, 'update'])->name('product-images.update');
+        Route::delete('/product-images/{imageId}',[ProductImageController::class, 'destroy'])->name('product-images.destroy');
+        
         //CREATE SLUG
         Route::get('/getSlug', function(Request $request){
             $slug = '';
