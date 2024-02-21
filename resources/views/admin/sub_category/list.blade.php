@@ -49,6 +49,7 @@
 								<th>Slug</th>
 								<th>Category</th>
 								<th width="100">Status</th>
+								<th width="100">Show on Home</th>
 								<th>Sort</th>
 								<th>Created By</th>
 								<th>Updated By</th>
@@ -74,6 +75,7 @@
                                                 </svg>
                                             @endif
                                         </td>
+										<td>{{$subCategory->show_on_home}}</td>
 										<td>{{$subCategory->sort}}</td>
 										<td>{{$subCategory->created_by}}</td>
 										<td>{{$subCategory->updated_by}}</td>

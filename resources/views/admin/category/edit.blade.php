@@ -71,7 +71,7 @@
                                     <label for="show_on_home">Show on Home</label>
                                     <select name="show_on_home" id="show_on_home" class="form-control">
                                         <option {{ ($category->show_on_home == 'Yes') ? 'selected' : ''}} value="Yes">Yes</option>
-                                        <option {{ ($category->show_on_home == 'No') ? 'selected' : ''}}value="No">No</option>
+                                        <option {{ ($category->show_on_home == 'No') ? 'selected' : ''}} value="No">No</option>
                                     </select>
                                 </div>
                             </div>

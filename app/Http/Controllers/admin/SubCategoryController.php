@@ -48,6 +48,7 @@ class SubCategoryController extends Controller
             $subCategory->name = $request->name;
             $subCategory->slug = $request->slug;
             $subCategory->status = $request->status;
+            $subCategory->show_on_home = $request->show_on_home;
             $subCategory->sort = $request->sort;
             $subCategory->created_by = $createBy;
             $subCategory->save();
@@ -112,6 +113,7 @@ class SubCategoryController extends Controller
             $subCategory->name = $request->name;
             $subCategory->slug = $request->slug;
             $subCategory->status = $request->status;
+            $subCategory->show_on_home = $request->show_on_home;
             $subCategory->sort = $request->sort;
             $subCategory->updated_by = $updatedBy;
             $subCategory->save();

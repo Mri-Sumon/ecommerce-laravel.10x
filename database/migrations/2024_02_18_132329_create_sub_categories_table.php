@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('status')->default(1);
+            $table->enum('show_on_home',['Yes','No'])->default('No');
             $table->integer('sort')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
