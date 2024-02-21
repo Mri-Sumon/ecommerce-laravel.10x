@@ -48,6 +48,7 @@
 								<th>Name</th>
 								<th>Slug</th>
 								<th width="100">Status</th>
+								<th width="100">Show on Home</th>
 								<th>Sort</th>
 								<th>Created By</th>
 								<th>Updated By</th>
@@ -72,6 +73,7 @@
                                                 </svg>
                                             @endif
                                         </td>
+										<td>{{$category->show_on_home}}</td>
 										<td>{{$category->sort}}</td>
 										<td>{{$category->created_by}}</td>
 										<td>{{$category->updated_by}}</td>

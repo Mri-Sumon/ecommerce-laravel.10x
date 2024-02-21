@@ -63,6 +63,22 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="show_on_home">Show on Home</label>
+                                    <select name="show_on_home" id="show_on_home" class="form-control">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <!-- Empty div  -->
+                                </div>
+                            </div> 
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="sort">Sort</label>
                                     <input type="number" name="sort" id="sort" class="form-control" placeholder="sort">
                                     <p></p>	

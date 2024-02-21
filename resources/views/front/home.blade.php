@@ -720,7 +720,7 @@
     <section class="section-4 pt-5">
         <div class="container">
             <div class="section-title">
-                <h2>Top Selling Products</h2>
+                <h2>Top Selling Product</h2>
             </div>    
             <div class="row pb-3">
                 <div class="col-md-3">

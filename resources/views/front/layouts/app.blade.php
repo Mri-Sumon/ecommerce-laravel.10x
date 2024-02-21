@@ -1,5 +1,5 @@
 
-@include('front.layouts.sidebar')
+@include('front.layouts.footer')
 @yield('content')
 @yield('customJs')
 

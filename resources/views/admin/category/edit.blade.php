@@ -68,6 +68,22 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="show_on_home">Show on Home</label>
+                                    <select name="show_on_home" id="show_on_home" class="form-control">
+                                        <option {{ ($category->show_on_home == 'Yes') ? 'selected' : ''}} value="Yes">Yes</option>
+                                        <option {{ ($category->show_on_home == 'No') ? 'selected' : ''}}value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <!-- Empty div  -->
+                                </div>
+                            </div> 
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="sort">Sort</label>
                                     <input type="number" name="sort" id="sort" value="{{$category->sort}}" class="form-control" placeholder="sort">
                                     <p></p>	
