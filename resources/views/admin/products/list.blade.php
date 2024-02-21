@@ -151,7 +151,11 @@
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 					},
 					success: function(response) {
-						window.location.href = "{{ route('products.index') }}";
+						if(response["status"] == true){
+							window.location.href = "{{ route('products.index') }}";
+						}else{
+							window.location.href = "{{ route('products.index') }}";
+						}
 					}
 				});
 			}

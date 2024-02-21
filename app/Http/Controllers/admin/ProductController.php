@@ -297,35 +297,41 @@ class ProductController extends Controller
 
     }
 
-    // public function destroy($categoryId, Request $request){
+    public function destroy($productId, Request $request){
 
-    //     $category = Category::find($categoryId);
+        $product = Product::find($productId);
 
-    //     if(empty($category)){
+        if(empty($product)){
+            $request->session()->flash('error', 'Product not found');
+            return response()->json([
+                'status' => true,
+                'message' => 'Record not found'
+            ]);
+        }
 
-    //         $request->session()->flash('error', 'Record not found');
+        $productImages = ProductImage::where('product_id', $productId)->get();
 
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'Record not found'
-    //         ]);
-    //     }
+        if(!empty($productImages)){
+            foreach($productImages as $productImage){
+                //delete image from laravel project public folder when delete category 
+                File::delete(public_path().'/uploads/product/small/'.$productImage->image);
+                File::delete(public_path().'/uploads/product/large/'.$productImage->image);
+            }
+            //After complete foreach loop, this line be exicude
+            ProductImage::where('product_id', $productId)->delete();
+        }
 
-    //     //delete image from laravel project public folder when delete category 
-    //     File::delete(public_path().'/uploads/category/thumb/'.$category->image);
-    //     File::delete(public_path().'/uploads/category/'.$category->image);
+        $product->delete();
 
-    //     $category->delete();
-
-    //     $request->session()->flash('success', 'Category deleted successfully');
+        $request->session()->flash('success', 'Product deleted successfully');
         
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Category deleted successfully'
-    //     ]);
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully'
+        ]);
         
-    // }
+    }
 
 
-    
+
 } 
