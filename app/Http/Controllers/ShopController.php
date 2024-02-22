@@ -13,7 +13,7 @@ class ShopController extends Controller
         //when press any category or subcategory, that will show as active or stay open the dropdown.
         $categorySelected = '';
         $subCategorySelected = '';
-
+        
         $categories=Category::orderBy('sort', 'ASC')
         //for relation create, sub_category function declare in category model.
         ->with(['sub_category' => function ($query){
@@ -41,15 +41,22 @@ class ShopController extends Controller
             }
         }
 
-        $products = $products->where('status', 1)->get();
+        //when press any brand , that will show as tik mark.
+        $brandArray = [];
+        if(!empty($request->get('brand'))){
+            $brandArray = explode(',',$request->get('brand'));
+            //Get products through brand_id.
+            $products = $products->whereIn('brand_id',$brandArray);
+        }
 
+        $products = $products->where('status', 1)->get();
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
         $data['products'] = $products;
         $data['categorySelected'] = $categorySelected;
         $data['subCategorySelected'] = $subCategorySelected;
-
+        $data['brandArray'] = $brandArray;
 
         return view("front.shop",$data);
 
