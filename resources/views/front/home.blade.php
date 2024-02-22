@@ -1,8 +1,7 @@
 @extends('front.layouts.app')
 @section('content')
 
-    <main>
-        <section class="section-1">
+    <section class="section-1">
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
@@ -65,8 +64,9 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </section>
-        <section class="section-2">
+    </section>
+    
+    <section class="section-2">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
@@ -95,8 +95,9 @@
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="section-3">
+    </section>
+
+    <section class="section-3">
             <div class="container">
 
                 <div class="section-title">
@@ -127,9 +128,9 @@
                 </div>
 
             </div>
-        </section>
-        
-        <section class="section-4 pt-5">
+    </section>
+    
+    <section class="section-4 pt-5">
             <div class="container">
 
                 <div class="section-title">
@@ -187,9 +188,9 @@
                 </div>
 
             </div>
-        </section>
+    </section>
 
-        <section class="section-4 pt-5">
+    <section class="section-4 pt-5">
             <div class="container">
 
                 <div class="section-title">
@@ -247,9 +248,9 @@
                 </div>
 
             </div>
-        </section>
+    </section>
 
-        <section class="section-4 pt-5">
+    <section class="section-4 pt-5">
             <div class="container">
 
                 <div class="section-title">
@@ -307,9 +308,8 @@
                 </div>
 
             </div>
-        </section>
-    </main>
-
+    </section>
+    
 @endsection
 
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html class="no-js" lang="en_AU" />
     <head>
@@ -109,6 +108,7 @@
                                                 @endforeach
                                             </ul>
                                         @endif
+                                        
                                     </li>
                                 @endforeach
                             @endif
@@ -125,9 +125,9 @@
         </header>
 
 
-
-        @yield('content')
-
+        <main>
+            @yield('content')
+        </main>
 
 
         <footer class="bg-dark mt-5">
