@@ -17,14 +17,19 @@ use Illuminate\Support\Str;
 
 
 
-// Route::get('/', function () {return view('welcome');});
+
+
+//Route::get('/', function () {return view('welcome');});
 Route::get('/',[FrontController::class, 'index'])->name('front.home');
-Route::get('/shop',[ShopController::class, 'index'])->name('front.shop');
+//The ? indicates that it's optional, if category or subcategory slug exist they will access otherwise not.
+Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class, 'index'])->name('front.shop');
 
 
 
 
-Route::group(['prefix'=>'admin'], function(){
+
+
+Route::group(['prefix'=>'admin'], function(){ 
 
     Route::group(['middleware' => 'admin.guest'], function(){
         Route::get('/login',[AdminLoginController::class, 'index'])->name('admin.login');
