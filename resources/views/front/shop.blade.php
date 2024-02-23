@@ -97,14 +97,11 @@
                         <div class="col-12 pb-1">
                             <div class="d-flex align-items-center justify-content-end mb-4">
                                 <div class="ml-2">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">Sorting</button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">Latest</a>
-                                            <a class="dropdown-item" href="#">Price High</a>
-                                            <a class="dropdown-item" href="#">Price Low</a>
-                                        </div>
-                                    </div>                                    
+                                    <select name="sort" id="sort" class="from-control">
+                                        <option value="latest" {{ ($sort == 'latest') ? 'selected' : '' }}>Latest</option>
+                                        <option value="price_desc" {{ ($sort == 'price_desc') ? 'selected' : '' }}>Price High</option>
+                                        <option value="price_asc" {{ ($sort == 'price_asc') ? 'selected' : '' }}>Price Low</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -184,6 +181,8 @@
 
 @section('customJs')
     <script>
+
+        //For range searching
         rangeSlider = $(".js-range-slider").ionRangeSlider({
             type: "double",
             min: 0,
@@ -200,10 +199,11 @@
         });
 
 
-        // Saving its instance to var
+        //Saving instance/object of ionRangeSlider to var
         var slider = $(".js-range-slider").data("ionRangeSlider");
 
         
+        //For brand searching
         $(document).ready(function(){
             $(".brand-label").change(function(){
                 apply_filters();
@@ -211,8 +211,18 @@
         });
 
 
+        //For short searching
+        $(document).ready(function(){
+            $("#sort").change(function(){
+                apply_filters();
+            });
+        });
+
+
         function apply_filters(){
+
             var brands = [];
+
             $(".brand-label").each(function(){
                 if($(this).is(":checked")){
                     brands.push($(this).val());
@@ -221,6 +231,7 @@
 
 
             var url = '{{ url()->current() }}?';
+
 
             //Brand filter
             if (brands.length > 0) {
@@ -233,7 +244,7 @@
 
 
             //Sort filter
-            // url += '&sort='+$("#sort").val();
+            url += '&sort='+$("#sort").val();
 
 
             window.location.href = url;
