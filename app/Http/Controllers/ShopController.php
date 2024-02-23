@@ -90,7 +90,7 @@ class ShopController extends Controller
 
 
 
-        $products = $products->where('status', 1)->get();
+        $products = $products->where('status', 1)->paginate(9);
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;

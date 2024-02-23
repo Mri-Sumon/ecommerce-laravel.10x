@@ -97,15 +97,13 @@
                                                 {{ $category->name }}
                                             </button>
                                         @else
-                                            <button class="btn btn-dark" aria-disabled="true">
-                                                {{ $category->name }}
-                                            </button>
+                                            <a class="btn btn-dark" aria-disabled="true" href="{{route('front.shop',$category->slug)}}">{{ $category->name }}</a>
                                         @endif
 
                                         @if ($category->sub_category->isNotEmpty())
                                             <ul class="dropdown-menu dropdown-menu-dark">
                                                 @foreach ($category->sub_category as $subCategory)
-                                                    <li><a class="dropdown-item nav-link" href="#">{{ $subCategory->name }}</a></li>
+                                                    <li><a class="dropdown-item nav-link" href="{{route('front.shop',[$category->slug, $subCategory->slug])}}">{{ $subCategory->name }}</a></li>
                                                 @endforeach
                                             </ul>
                                         @endif
