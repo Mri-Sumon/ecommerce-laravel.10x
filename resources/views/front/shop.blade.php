@@ -5,8 +5,8 @@
         <div class="container">
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Shop</li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{route('front.home')}}">Home</a></li>
+                    <li class="breadcrumb-item active"><a href="{{route('front.shop')}}">Shop</a></li>
                 </ol>
             </div>
         </div>
@@ -79,40 +79,15 @@
                     </div>
 
 
-
                     <div class="sub-title mt-5">
                         <h2>Price</h3>
                     </div>
                     
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    $0-$100
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $100-$200
-                                </label>
-                            </div>                 
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $200-$500
-                                </label>
-                            </div> 
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $500+
-                                </label>
-                            </div>                 
+                            <input type="text" class="js-range-slider" name="my_range" value="" />            
                         </div>
                     </div>
-
                 </div>
 
 
@@ -206,13 +181,35 @@
 
 @endsection
 
+
 @section('customJs')
     <script>
+        rangeSlider = $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            min: 0,
+            max: 10000,
+            from: {{ ($priceMin) }},
+            step: 10,
+            to: {{ ($priceMax) }},
+            skin: "round", 
+            max_postfix: "+",
+            prefix: "$",
+            onFinish: function(){
+                apply_filters();
+            }
+        });
+
+
+        // Saving its instance to var
+        var slider = $(".js-range-slider").data("ionRangeSlider");
+
+        
         $(document).ready(function(){
             $(".brand-label").change(function(){
                 apply_filters();
             });
         });
+
 
         function apply_filters(){
             var brands = [];
@@ -222,14 +219,29 @@
                 }
             });
 
-            var url = '{{ url()->current() }}';
-            // Check if there are already query parameters in the URL
-            url += (url.indexOf('?') !== -1 ? '&' : '?') + 'brand=' + brands.toString();
+
+            var url = '{{ url()->current() }}?';
+
+            //Brand filter
+            if (brands.length > 0) {
+                url += '&brand='+brands.toString()
+            }
+
+
+            //Range filter
+            url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
+
+
+            //Sort filter
+            // url += '&sort='+$("#sort").val();
+
+
             window.location.href = url;
+
         }
+        
     </script>
 @endsection
-
 
 
 

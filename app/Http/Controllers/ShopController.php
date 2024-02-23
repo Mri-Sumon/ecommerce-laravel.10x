@@ -24,7 +24,7 @@ class ShopController extends Controller
         //Get all data
         $products = Product::orderBy('sort','DESC');
 
-        // Apply filters here
+        // Apply Brand filters here
         if (!empty($categorySlug)) {
             $category = Category::where('slug', $categorySlug)->first();
             if($category){
@@ -32,6 +32,17 @@ class ShopController extends Controller
                 $categorySelected = $category->id;
             }
         }
+
+
+        // Apply Range filters here
+        if($request->get('price_max') != '' && $request->get('price_min') != ''){
+            if($request->get('price_max') == 10000){
+                $products = $products->whereBetween('price', [intval($request->get('price_min')), 1000000]);
+            }else{
+                $products = $products->whereBetween('price', [intval($request->get('price_min')), intval($request->get('price_max'))]);
+            }
+        }
+
 
         if (!empty($subCategorySlug)) {
             $subCategory = SubCategory::where('slug', $subCategorySlug)->first();
@@ -57,6 +68,9 @@ class ShopController extends Controller
         $data['categorySelected'] = $categorySelected;
         $data['subCategorySelected'] = $subCategorySelected;
         $data['brandArray'] = $brandArray;
+
+        $data['priceMin'] = intval($request->get('price_min'));
+        $data['priceMax'] = (intval($request->get('price_max')) == 0) ? 10000 : intval($request->get('price_max'));        
 
         return view("front.shop",$data);
 
