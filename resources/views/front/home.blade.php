@@ -148,7 +148,7 @@
                                 <div class="card product-card">
                                     <div class="product-image position-relative">
 
-                                        <a href="" class="product-img">
+                                        <a href="{{ route('front.product', $product->slug)}}" class="product-img">
                                             <td>
                                                 @if (!empty($productImages))
                                                     <img class="card-img-top" src="{{ asset('uploads/product/small/' . $productImages->image) }}" class="img-thumbnail">

@@ -88,8 +88,6 @@ class ShopController extends Controller
 
 
 
-
-
         $products = $products->where('status', 1)->paginate(9);
 
         $data['categories'] = $categories;
@@ -102,8 +100,24 @@ class ShopController extends Controller
         $data['priceMax'] = (intval($request->get('price_max')) == 0) ? 10000 : intval($request->get('price_max'));        
         $data['sort'] = $request->get('sort');
 
-
         return view("front.shop",$data);
 
     }
+
+
+
+    public function product($slug){
+        
+        $product=Product::where('slug', $slug)->with('product_images')->first();
+
+        if($product == NULL){
+            abort(404);
+        }
+
+        $data['product'] = $product;
+
+        return view("front.product",$data);
+    }
+
+
 }

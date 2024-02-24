@@ -78,6 +78,8 @@ class ProductController extends Controller
             $product->title = $request->title;
             $product->slug = $request->slug;
             $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->is_featured = $request->is_featured;
@@ -222,6 +224,8 @@ class ProductController extends Controller
             $product->title = $request->title;
             $product->slug = $request->slug;
             $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->is_featured = $request->is_featured;

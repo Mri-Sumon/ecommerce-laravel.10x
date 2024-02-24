@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
 Route::get('/',[FrontController::class, 'index'])->name('front.home');
 //The ? indicates that it's optional, if category or subcategory slug exist they will access otherwise not.
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class, 'index'])->name('front.shop');
+Route::get('/product/{slug}',[ShopController::class, 'product'])->name('front.product');
 
 
 
