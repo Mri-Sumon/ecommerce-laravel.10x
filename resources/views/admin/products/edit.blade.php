@@ -124,6 +124,8 @@
                                 </div>
                             </div>	                                                                      
                         </div>
+
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Inventory</h2>								
@@ -142,8 +144,8 @@
                                             <label for="barcode">Barcode</label>
                                             <input type="text" name="barcode" id="barcode" value="{{$product->barcode}}" class="form-control" placeholder="Barcode">	
                                         </div>
-                                    </div>   
-
+                                    </div>
+                                    
                                     <div class="col-md-12">
 
                                         <div class="mb-3">
@@ -163,9 +165,26 @@
                                     </div>  
 
                                 </div>
-                            </div>	                                                                      
+                            </div>	
                         </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h2 class="h4 mb-3">Related Products</h2>
+                                <div class="mb-3">
+                                    <select multiple class="related_product w-100" name="related_products[]" id="related_products">
+                                        @if (!empty($relatedProducts))
+                                            @foreach ($relatedProducts as $relProduct)
+                                                <option selected value="{{ $relProduct->id }}">{{ $relProduct->title }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="col-md-4">
                         <div class="card mb-3">
                             <div class="card-body">	
@@ -238,6 +257,7 @@
                             </div>
                         </div>
                                                         
+                            
                         <div class="card mb-3">
                             <div class="card-body">	
                                 <h2 class="h4 mb-3">Top selling product</h2>
@@ -250,7 +270,8 @@
                                 </div>
                             </div>
                         </div>
-                                                        
+                                            
+                        
                         <div class="card mb-3">
                             <div class="card-body">	
                                 <h2 class="h4 mb-3">Sort</h2>
@@ -259,6 +280,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -279,6 +301,24 @@
 @section('customJs')
     <script>
 
+        //For related products   
+        $('.related_product').select2({
+            ajax: {
+                url: '{{ route("products.getProducts") }}',
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function (data) {
+                    return {
+                        results: data.tags
+                    };
+                }
+            }
+        });
+
+
+        //submit from data 
         $("#productForm").submit(function(event){
             event.preventDefault();
             var element = $(this);
@@ -317,7 +357,7 @@
         });
 
 
-        // Create slug 
+        //Create slug 
         $('#title').change(function(){
             var element = $(this);
             $("button[type=submit]").prop('disabled', true);
@@ -336,6 +376,7 @@
         });
 
 
+        //upload image using dropzone library
         Dropzone.autoDiscover = false;
         const dropzone = $("#image").dropzone({
             url: "{{ route('product-images.update') }}",
@@ -364,8 +405,9 @@
             }
         });
 
+
+        //Delete image from database when the delete button is pressed
         function deleteImage(imageId) {
-            // Delete image from database when the delete button is pressed
             if (confirm("Are you sure you want to delete the image?")) {
                 $.ajax({
                     url: '{{ route("product-images.destroy", ["imageId" => ":imageId"]) }}'.replace(':imageId', imageId),
@@ -373,7 +415,7 @@
                     success: function(response) {
                         if (response.status == true) {
                             alert(response.message);
-                            // Remove the image from the DOM
+                            // Remove the image from DOM
                             $('#image-row-' + imageId).remove();
                         } else {
                             alert(response.message);
@@ -383,7 +425,7 @@
             }
         }
 
-
+        //"Sub-Category" option will show "Sub-Category" depending on "Category" field.
         $("#category").change(function(){
             var category_id = $(this).val();
             $.ajax({

@@ -124,50 +124,53 @@
 
 
 
-
-    <section class="pt-5 section-8">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Related Products</h2>
-            </div> 
-
-            <div class="col-md-12">
-                <div id="related-products" class="carousel">
-
-                    <div class="card product-card">
-
-                        <div class="product-image position-relative">
-
-                            <a href="" class="product-img"><img class="card-img-top" src="images/product-1.jpg" alt=""></a>
-                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
-
-                            <div class="product-action">
-                                <a class="btn btn-dark" href="#">
-                                    <i class="fa fa-shopping-cart"></i> Add To Cart
-                                </a>                            
-                            </div>
-
-                        </div>
-
-                        <div class="card-body text-center mt-3">
-
-                            <a class="h6 link" href="">Dummy Product Title</a>
-
-                            <div class="price mt-2">
-                                <span class="h5"><strong>$100</strong></span>
-                                <span class="h6 text-underline"><del>$120</del></span>
-                            </div>
-
-                        </div>
-
-                    </div> 
-
+    @if (!empty($relatedProducts))
+        <section class="pt-5 section-8">
+            <div class="container">
+    
+                <div class="section-title">
+                    <h2>Related Products</h2>
+                </div> 
+    
+                <div class="col-md-12">
+                    <div id="related-products" class="carousel">
+                        @foreach ($relatedProducts as $relatedProduct)
+                            <div class="card product-card">
+                                <div class="product-image position-relative">
+                                    @php
+                                        /*product_images: In product model we create product_images() method for create relationship*/
+                                        $productImages = $relatedProduct->product_images->first();
+                                    @endphp
+                                    <a href="{{ route('front.product', $product->slug)}}" class="product-img">
+                                        @if (!empty($productImages))
+                                            <img class="card-img-top" src="{{ asset('uploads/product/small/' . $productImages->image) }}" class="img-thumbnail">
+                                        @else
+                                            <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" class="img-thumbnail">
+                                        @endif
+                                    </a>
+                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
+                                    <div class="product-action">
+                                        <a class="btn btn-dark" href="#">
+                                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                                        </a>                            
+                                    </div>
+                                </div>
+                                <div class="card-body text-center mt-3">
+                                    <a class="h6 link" href="">{{$relatedProduct->title}}</a>
+                                    <div class="price mt-2">
+                                        <span class="h5"><strong>{{$relatedProduct->price}}</strong></span>
+                                        @if ($relatedProduct->compare_price > 0)
+                                            <span class="h6 text-underline"><del>{{$relatedProduct->compare_price}}</del></span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div> 
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    @endif
 
 
 

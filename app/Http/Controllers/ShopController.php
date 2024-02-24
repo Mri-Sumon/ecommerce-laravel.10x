@@ -105,7 +105,7 @@ class ShopController extends Controller
     }
 
 
-
+    //Function created for related product
     public function product($slug){
         
         $product=Product::where('slug', $slug)->with('product_images')->first();
@@ -114,7 +114,18 @@ class ShopController extends Controller
             abort(404);
         }
 
+
+        //Fetch related Products
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',', $product->related_products);
+            //with('product_images'): In product model we create product_images() method for create relationship.
+            $relatedProducts = Product::whereIn('id', $productArray)->with('product_images')->get();
+        }
+
+
         $data['product'] = $product;
+        $data['relatedProducts'] = $relatedProducts;
 
         return view("front.product",$data);
     }

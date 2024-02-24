@@ -12,10 +12,13 @@
 		<link rel="stylesheet" href="{{asset('admin-assets/plugins/summernote/summernote.min.css')}}">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{asset('admin-assets/css/adminlte.min.css')}}">
-		<link rel="stylesheet" href="{{asset('admin-assets/css/custom.css')}}">
 		<!-- dropzone  -->
 		<link rel="stylesheet" href="{{asset('admin-assets/plugins/dropzone/min/dropzone.min.css')}}">
 		<meta name="csrf-token" content="{{csrf_token()}}" />
+		<!-- this is for related products  -->
+		<link rel="stylesheet" href="{{asset('admin-assets/plugins/select2/css/select2.min.css')}}">
+		<!-- custom css  -->
+		<link rel="stylesheet" href="{{asset('admin-assets/css/custom.css')}}">
 
 	</head>
 	<body class="hold-transition sidebar-mini">
@@ -91,6 +94,9 @@
 
 		<!-- summernote use only for product page  -->
 		<script src="{{asset('admin-assets/plugins/summernote/summernote.min.js')}}"></script>
+
+		<!-- this is use only for related product  -->
+		<script src="{{asset('admin-assets/plugins/select2/js/select2.full.min.js')}}"></script>
 
 		<!-- AdminLTE App -->
 		<script src="{{asset('admin-assets/js/adminlte.min.js')}}"></script>
