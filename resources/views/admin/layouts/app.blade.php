@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="{{asset('admin-assets/css/adminlte.min.css')}}">
 		<!-- dropzone  -->
 		<link rel="stylesheet" href="{{asset('admin-assets/plugins/dropzone/min/dropzone.min.css')}}">
+		<!-- CSRF token  -->
 		<meta name="csrf-token" content="{{csrf_token()}}" />
 		<!-- this is for related products  -->
 		<link rel="stylesheet" href="{{asset('admin-assets/plugins/select2/css/select2.min.css')}}">

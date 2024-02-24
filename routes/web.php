@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
@@ -24,6 +25,8 @@ Route::get('/',[FrontController::class, 'index'])->name('front.home');
 //The ? indicates that it's optional, if category or subcategory slug exist they will access otherwise not.
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class, 'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class, 'product'])->name('front.product');
+Route::get('/cart',[CartController::class, 'cart'])->name('front.cart');
+Route::post('/add-to-cart',[CartController::class, 'addToCart'])->name('front.addToCart');
 
 
 
