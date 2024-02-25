@@ -15,7 +15,7 @@ class CartController extends Controller
         if($product == null){
             return response()->json([
                 'status' => false,
-                'message' => 'Product not found',
+                'message' => 'Product not found', 
             ]);
         }
 
@@ -64,6 +64,44 @@ class CartController extends Controller
         return view('front.cart', $data); 
     }
 
+    
+    public function updateCart(Request $request){
+        $rowId = $request->rowId;
+        $qty = $request->qty;
 
+        $itemInfo = Cart::get($rowId);
+        $product = Product::find($itemInfo->id);
+
+        if ($product->track_qty == 'Yes') {
+
+            if ($qty <= $product->qty) {
+                Cart::update($rowId, $qty);
+                $message = 'Cart updated successfully';
+                $status = true;
+                session()->flash('success', $message);
+            }else{
+                $message = 'Requested Qty('.$qty.') not available in stock.';
+                $status = false;
+                session()->flash('error', $message);
+            }
+        }else{
+            Cart::update($rowId, $qty);
+            $message = 'Cart updated successfully';
+            $status = true;
+            session()->flash('success', $message);
+        }
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message
+        ]);
+    }
+
+
+
+
+
+    
+    
 
 }
