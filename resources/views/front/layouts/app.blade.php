@@ -210,6 +210,28 @@
 				}
 			});
 
+
+            //For product add in session in laravel shopping cart
+            function addToCart(productId){
+                $.ajax({
+                    url: '{{ route("front.addToCart") }}',
+                    type: 'POST',
+                    data: { productId: productId },
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.status == true){
+                            window.location.href = "{{route('front.cart')}}";
+                        }else{
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            
         </script>
 
 

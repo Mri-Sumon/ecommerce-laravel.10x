@@ -152,7 +152,7 @@
                                     </a>
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="{{route('front.cart')}}">
+                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$relatedProduct->id}});">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
                                         </a>                            
                                     </div>
@@ -174,29 +174,6 @@
         </section>
     @endif
 
-@endsection
-
-
-
-@section('customJs')
-    <script type="text/javascript">
-
-        function addToCart(productId){
-            $.ajax({
-                url: '{{ route("front.addToCart") }}',
-                type: 'POST',
-                data: { productId: productId },
-                dataType: 'json',
-                success: function(response){
-
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-        
-    </script>
 @endsection
 
 

@@ -8,11 +8,10 @@ class CartController extends Controller
 {
     public function addToCart(Request $request) {
 
-        //productId comes through ajax.
-        //with('product_images'): In product model we create product_images() method for create relationship.
+        //productId comes through ajax. //with('product_images'): In product model we create product_images() method for create relationship.
         $product = Product::with('product_images')->find($request->productId);
 
-        //if product dose't exist in database
+        //If product dose't exist in database
         if($product == null){
             return response()->json([
                 'status' => false,
@@ -20,24 +19,49 @@ class CartController extends Controller
             ]);
         }
 
-        //if product already added in cart
+        //If any product already added in cart.
         if(Cart::count() > 0){
-            echo 'Product already in cart';
-        } else {
-            //if cart is empty, add product to the cart.
 
-            echo 'Cart is empty, now adding product in cart';
-            
-            Cart::add($product->id, $product->title, 1, $product->price, 
-                  ['productImage' => (!empty($product->product_images)) ? $product->product_images->first() : ''],
-            );
+            //Get all the added item from cart.
+            $cartContent = Cart::content();
+            $productAlreadyExist = false;
+
+            foreach ($cartContent as $item) {
+                if ($item->id == $product->id) {
+                    $productAlreadyExist = true;
+                    break;
+                }
+            }
+
+            if($productAlreadyExist == false){
+                Cart::add($product->id, $product->title, 1, $product->price, ['productImage' => (!empty($product->product_images)) ? $product->product_images->first() : ''],);
+                $status = true;
+                $message = $product->title.'Product added in cart';
+            }else{
+                $status = false;
+                $message = $product->title.'Already added in cart';
+            }
+
+
+        //If cart is totally empty, add product to the cart. 
+        } else {
+            Cart::add($product->id, $product->title, 1, $product->price, ['productImage' => (!empty($product->product_images)) ? $product->product_images->first() : ''],);
+            $status = true;
+            $message = $product->title.' added in cart';
         }
         
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+        ]);
+
     }    
 
-
     public function cart(){
-        return view('front.cart'); 
+        //Get all the added item from cart.
+        $cartContent = Cart::content();
+        $data['cartContent'] = $cartContent;
+        return view('front.cart', $data); 
     }
 
 
