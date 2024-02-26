@@ -36,18 +36,19 @@ class CartController extends Controller
             if($productAlreadyExist == false){
                 Cart::add($product->id, $product->title, 1, $product->price, ['productImage' => (!empty($product->product_images)) ? $product->product_images->first() : ''],);
                 $status = true;
-                $message = $product->title.'Product added in cart';
+                $message = '<strong>' . $product->title . '</strong> added in your cart successfully';
+                session()->flash('success', $message);
             }else{
                 $status = false;
-                $message = $product->title.'Already added in cart';
+                $message = 'This product already added in cart';
             }
-
 
         //If cart is totally empty, add product to the cart. 
         } else {
             Cart::add($product->id, $product->title, 1, $product->price, ['productImage' => (!empty($product->product_images)) ? $product->product_images->first() : ''],);
             $status = true;
-            $message = $product->title.' added in cart';
+            $message = '<strong>' . $product->title . '</strong> added in your cart successfully';
+            session()->flash('success', $message);
         }
         
         return response()->json([
@@ -97,11 +98,31 @@ class CartController extends Controller
         ]);
     }
 
-
-
-
-
     
+    public function deleteItem(Request $request){
+
+        $itemInfo = Cart::get($request->rowId);
+
+        if ($itemInfo == null) {
+            $errorMessage = 'Item not found in cart';
+            session()->flash('error', $errorMessage);
+            return response()->json([
+                'status' => false,
+                'message' => $errorMessage
+            ]);
+        }
+
+        Cart::remove($request->rowId);
+
+        $message = 'Item removed successfully';
+        session()->flash('success', $message);
+
+        return response()->json([
+            'status' => true,
+            'message' => $message
+        ]);
+    }
+
     
 
 }
