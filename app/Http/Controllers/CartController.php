@@ -129,17 +129,12 @@ class CartController extends Controller
 
     public function checkout(){
 
-        //If cart is empty, we can't access checkout page, redirect to cart page.
         if(Cart::count() == 0){
             return redirect()->route('front.cart');
         }
         
-        //If user is not logged, we can't access checkout page, redirect to login page.
         if(Auth::check() == false){
-            //url.intended --> সেশনে কোনো url স্টোর করতে চাইল, এখানে করতে হবে।
-            //যদি সেশনের মধ্যে checkout পেজের url না থাকে, তাহলে বডিতে প্রবেশ করবে।
             if(!session()->has('url.intended')){
-                //login পেজে যাওয়ার পূর্বে, checkout পেজের যে urlটি সেশনের url.intended এ স্টোর হবে।
                 session(['url.intended' => url()->current()]);
             }
 
@@ -147,10 +142,8 @@ class CartController extends Controller
 
         }
 
-        //লগইন করে আসার পর url.intended থেকে checkout পেজের url কে ডিলিট করে দিবে।
         session()->forget('url.intended');
 
-        //Get all the countries from countries table
         $countries = Country::orderBy('name', 'ASC')->get();
 
         return view('front.checkout', ['countries' => $countries]);        
