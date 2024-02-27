@@ -2,8 +2,12 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Order;
+use App\Models\OrderItem;
+
 
 class AuthController extends Controller
 {
@@ -46,4 +50,47 @@ class AuthController extends Controller
         }
     }
 
+
+    public function authenticate(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->passes()) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+                if (session()->has('url.intended')) {
+                    return redirect(session()->get('url.intended'));
+                }
+
+                return redirect()->route("account.profile");
+            } else {
+                return redirect()->route("account.login")
+                    ->withInput($request->only('email'))
+                    ->with('error', 'Invalid Email/Password!');
+            }
+        } else {
+            return redirect()->route("account.login")
+                ->withErrors($validator)
+                ->withInput($request->only('email'));
+        }
+
+    }
+
+
+    public function profile(){
+        return view('front.account.profile');
+    }
+
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route("account.login")
+            ->with('success', 'You are logged out successfully!');
+    }
+
+
+    
 }
