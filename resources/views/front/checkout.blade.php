@@ -147,14 +147,14 @@
                                     <div class="h6"><strong>${{Cart::subtotal()}}</strong></div>
                                 </div>
 
-                                <!-- <div class="d-flex justify-content-between mt-2">
+                                <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
-                                    <div class="h6"><strong>$20</strong></div>
-                                </div> -->
+                                    <div class="h6"><strong id="shippingAmount">${{number_format($totalShippingCharge,2)}}</strong></div>
+                                </div>
 
                                 <div class="d-flex justify-content-between mt-2 summery-end">
                                     <div class="h5"><strong>Total</strong></div>
-                                    <div class="h5"><strong>${{Cart::subtotal()}}</strong></div>
+                                    <div class="h5"><strong id="grandTotal">${{number_format($grandTotal,2)}}</strong></div>
                                 </div>
                                 
                             </div>
@@ -211,9 +211,9 @@
 
 
 @section('customJs')
-
     <script>
 
+        //Payment method change functionality
         $(document).ready(function(){
             $("#payment_method_one").click(function(){
                 if ($(this).is(":checked")) {
@@ -229,6 +229,7 @@
         });
 
 
+        //Submit checkout form
         $("#orderForm").submit(function(event){
 
             event.preventDefault();
@@ -328,8 +329,24 @@
 
         });
 
-    </script>
 
+        //Change shippig charge country wise
+        $("#country").change(function(){
+            $.ajax({
+                url: '{{ route("front.getOrderSummery") }}',
+                type: 'post',
+                data: {country_id: $(this).val()},
+                dataType: 'json',
+                success: function(response){
+                    if (response.status == true) {
+                        $("#shippingAmount").html('$'+response.shippingCharge)
+                        $("#grandTotal").html('$'+response.grandTotal)
+                    }
+                }
+            });
+        });
+
+    </script>
 @endsection
 
 

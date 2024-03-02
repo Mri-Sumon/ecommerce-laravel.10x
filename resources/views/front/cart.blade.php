@@ -90,34 +90,24 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="col-md-4">            
-                        <div class="card cart-summery">
-                            <div class="sub-title">
-                                <h2 class="bg-white">Cart Summery</h3>
-                            </div> 
+                        <div class="card cart-summery"> 
                             <div class="card-body">
+                                <div class="sub-title">
+                                    <h2 class="bg-white">Cart Summery</h3>
+                                </div>
                                 <div class="d-flex justify-content-between pb-2">
                                     <div>Subtotal</div>
                                     <div>${{Cart::subtotal()}}</div>
                                 </div>
-                                <div class="d-flex justify-content-between pb-2">
-                                    <div>Shipping</div>
-                                    <div>$</div>
-                                </div>
-                                <div class="d-flex justify-content-between summery-end">
-                                    <div>Total</div>
-                                    <div>${{Cart::subtotal()}}</div>
-                                </div>
-                                <div class="pt-5">
+                                <div class="pt-2">
                                     <a href="{{route('front.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
                                 </div>
                             </div>
-                        </div>     
-                        <!-- <div class="input-group apply-coupan mt-4">
-                            <input type="text" placeholder="Coupon Code" class="form-control">
-                            <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>
-                        </div>  -->
+                        </div>
                     </div>
+
                 @else
                     <div class="col-md-12">
                         <div class="card">
