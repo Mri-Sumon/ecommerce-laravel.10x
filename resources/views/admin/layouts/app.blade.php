@@ -18,6 +18,8 @@
 		<meta name="csrf-token" content="{{csrf_token()}}" />
 		<!-- this is for related products  -->
 		<link rel="stylesheet" href="{{asset('admin-assets/plugins/select2/css/select2.min.css')}}">
+		<!-- this is for coupon code  -->
+		<link rel="stylesheet" href="{{asset('admin-assets/css/datetimepicker.css')}}">
 		<!-- custom css  -->
 		<link rel="stylesheet" href="{{asset('admin-assets/css/custom.css')}}">
 
@@ -98,6 +100,9 @@
 
 		<!-- this is use only for related product  -->
 		<script src="{{asset('admin-assets/plugins/select2/js/select2.full.min.js')}}"></script>
+
+		<!-- this is for coupon  -->
+		<script src="{{asset('admin-assets/js/datetimepicker.js')}}"></script>
 
 		<!-- AdminLTE App -->
 		<script src="{{asset('admin-assets/js/adminlte.min.js')}}"></script>
