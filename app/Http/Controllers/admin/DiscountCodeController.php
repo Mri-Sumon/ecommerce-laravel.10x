@@ -176,6 +176,7 @@ class DiscountCodeController extends Controller
     }
 
 
+    
     public function destroy(Request $request, $id){
 
         $discountCode = DiscountCoupon::find($id);
@@ -190,9 +191,9 @@ class DiscountCodeController extends Controller
         $discountCode->delete();
 
         session()->flash('success', 'Discount coupon Deleted successfully !');
-            return response()->json([
-                'status'=> true
-            ]);
+        return response()->json([
+            'status'=> true
+        ]); 
     }
 
 

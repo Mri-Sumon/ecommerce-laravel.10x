@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
-
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
@@ -13,17 +12,17 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
+
     <section class="content">
-        <!-- Default box -->
         <div class="container-fluid">
+
             <form action="" method="post" name="discountForm" id="discountForm">
                 @csrf
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="code">Code</label>
@@ -31,6 +30,7 @@
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name">Name</label>
@@ -38,13 +38,7 @@
                                     <p></p>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="description">Description</label>
-                                    <textarea name="description" id="description" class="form-control" placeholder="Description">{{ $coupon->description }}</textarea>
-                                    <p></p>
-                                </div>
-                            </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="max_uses">Max Uses</label>
@@ -52,13 +46,15 @@
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="max_uses_user">Max Uses User</label>
-                                    <input value="{{ $coupon->max_uses_user }}" type="text" name="max_uses_user" id="max_uses_user" class="form-control" placeholder="Max Uses User">
+                                    <input value="{{ $coupon->max_uses_user }}" type="number" name="max_uses_user" id="max_uses_user" class="form-control" placeholder="Max Uses User">
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="type">Type</label>
@@ -68,20 +64,23 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="discount_amount">Discount Amount</label>
-                                    <input value="{{ $coupon->discount_amount }}" type="text" name="discount_amount" id="discount_amount" class="form-control" placeholder="Discount Amount">
+                                    <input value="{{ $coupon->discount_amount }}" type="number" name="discount_amount" id="discount_amount" class="form-control" placeholder="Discount Amount">
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="min_amount">Min Amount</label>
-                                    <input value="{{ $coupon->min_amount }}" type="text" name="min_amount" id="min_amount" class="form-control" placeholder="Min Amount">
+                                    <input value="{{ $coupon->min_amount }}" type="number" name="min_amount" id="min_amount" class="form-control" placeholder="Min Amount">
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="status">Status</label>
@@ -91,6 +90,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="starts_at">Starts At</label>
@@ -98,6 +98,7 @@
                                     <p></p>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="expires_at">Expires At</label>
@@ -105,6 +106,15 @@
                                     <p></p>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="description">Description</label>
+                                    <textarea name="description" id="description" class="form-control" placeholder="Description" cols="6" rows="5">{{ $coupon->description }}</textarea>
+                                    <p></p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -114,21 +124,17 @@
                 </div>
             </form>
         </div>
-        <!-- /.card -->
     </section>
-    <!-- /.content -->
 @endsection
 
-@section('customjs')
+@section('customJs')
 <script>
 
     $(document).ready(function(){
         $('#starts_at').datetimepicker({
-            // options here
             format:'Y-m-d H:i:s',
         });
         $('#expires_at').datetimepicker({
-            // options here
             format:'Y-m-d H:i:s',
         });
     });

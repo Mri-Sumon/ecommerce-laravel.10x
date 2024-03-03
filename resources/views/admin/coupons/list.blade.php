@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
-
 @section('content')
-    <!-- Content Header (Page header) -->
+
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
@@ -13,13 +12,13 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
+
     <section class="content">
-        <!-- Default box -->
         <div class="container-fluid">
+
             @include("admin.message")
+
             <div class="card">
                 <form action="" method="get">
                     <div class="card-header">
@@ -123,12 +122,11 @@
                 </div>
             </div>
         </div>
-        <!-- /.card -->
     </section>
-    <!-- /.content -->
+
 @endsection
 
-@section('customjs')
+@section('customJs')
     <script>
         function deleteCoupon(id){
 
@@ -156,3 +154,40 @@
         }
     </script>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
