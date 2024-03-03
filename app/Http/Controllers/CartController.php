@@ -2,12 +2,14 @@
 namespace App\Http\Controllers;
 use App\Models\Country;
 use App\Models\CustomerAddress;
+use App\Models\DiscountCoupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ShippingCharge;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -541,6 +543,85 @@ class CartController extends Controller
     }
 
 
+
+    public function applyDiscount(Request $request){
+
+        //Get Discountcoupon from databse
+        $code = DiscountCoupon::where('code', $request->code)->first();
+
+        if ($code == null) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid Discount code'
+            ]);
+        }
+
+        //Check coupon start date valid or not
+        $now = Carbon::now();
+
+        if ($code->starts_at != "") {
+            $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $code->starts_at);
+            if ($now->lt($startDate)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Discount coupon'
+                ]);
+            }
+        }
+
+        if ($code->expires_at != "") {
+            $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $code->expires_at);
+            if ($now->gt($endDate)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid Discount coupon'
+                ]);
+            }
+        }
+
+        // Max uses check
+        if ($code->max_uses > 0) {
+            $couponUsed = Order::where('coupon_code_id', $code->id)->count();
+            if ($couponUsed >= $code->max_uses) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Over maximum limit'
+                ]);
+            }
+        }
+
+        // Max uses user check
+        if ($code->max_uses_user > 0) {
+            $couponUsedByUser = Order::where(['coupon_code_id' => $code->id, 'user_id' => Auth::user()->id])->count();
+            if ($couponUsedByUser >= $code->max_uses_user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'You already used this coupon'
+                ]);
+            }
+        }
+
+        $subTotal = Cart::subtotal(2, '.', '');
+        // Min amount condition check
+        if ($code->min_amount > 0) {
+            if ($subTotal < $code->min_amount) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Your min amount must be $'.$code->min_amount.'.'
+                ]);
+            }
+        }
+
+        session()->put('code', $code);
+        return $this->getOrderSummery($request);
+    }
+
+
+
+    public function removeCoupon(Request $request){
+        session()->forget('code');
+        return $this->getOrderSummery($request);
+    }
 
 
 

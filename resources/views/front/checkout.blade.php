@@ -160,8 +160,10 @@
                             </div>
                         </div>   
                         
-
-
+                        <div class="input-group apply-coupan mt-4">
+                            <input type="text" placeholder="Coupon Code" class="form-control" name="discount_code" id="discount_code">
+                            <button class="btn btn-dark" type="button" id="apply_discount">Apply Coupon</button>
+                        </div>
 
                         <div class="card payment-form ">                        
                             <h3 class="card-title h5 mb-3">Payment Method</h3>
@@ -345,6 +347,46 @@
                 }
             });
         });
+
+
+        //Apply discount
+        $("#apply_discount").click(function(){
+            $.ajax({
+                url: '{{ route("front.applyDiscount") }}',
+                type: 'post',
+                data: {code: $("#discount_code").val(), country_id: $("#country").val()},
+                dataType: 'json',
+                success: function(response){
+                    if (response.status == true) {
+                        $("#shippingAmount").html('$'+response.shippingCharge)
+                        $("#grandTotal").html('$'+response.grandTotal)
+                        $("#discount_value").html('$'+response.discount)
+                        $("#discount_response_wrapper").html(response.discountString)
+                    }else{
+                        $("#discount_response_wrapper").html("<span class='text-danger'>"+response.message+"</span>")
+                    }
+                }
+            });
+        });
+
+        $('body').on('click', "#remove_discount", function(){
+            $.ajax({
+                url: '{{ route("front.removeCoupon") }}',
+                type: 'post',
+                data: {country_id: $("#country").val()},
+                dataType: 'json',
+                success: function(response){
+                    if (response.status == true) {
+                        $("#shippingAmount").html('$'+response.shippingCharge)
+                        $("#grandTotal").html('$'+response.grandTotal)
+                        $("#discount_value").html('$'+response.discount)
+                        $("#discount_response").html('')
+                        $("#discount_code").val('')
+                    }
+                }
+            });
+        })
+
 
     </script>
 @endsection
