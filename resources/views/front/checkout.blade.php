@@ -147,6 +147,11 @@
                                     <div class="h6"><strong>${{Cart::subtotal()}}</strong></div>
                                 </div>
 
+                                <div class="d-flex justify-content-between summery-end">
+                                    <div class="h6"><strong>Discount</strong></div>
+                                    <div class="h6"><strong id="discount_value">${{ $discount }}</strong></div>
+                                </div>
+
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
                                     <div class="h6"><strong id="shippingAmount">${{number_format($totalShippingCharge,2)}}</strong></div>
@@ -165,6 +170,15 @@
                             <button class="btn btn-dark" type="button" id="apply_discount">Apply Coupon</button>
                         </div>
 
+                        <div id="discount_response_wrapper">
+                            @if (Session::has('code'))
+                                <div class="mt-4" id="discount_response">
+                                    <strong>{{ Session::get('code')->code }}</strong>
+                                    <a class="btn btn-sm btn-danger" id="remove_discount"><i class="fa fa-times"></i></a>
+                                </div>
+                            @endif
+                        </div>
+                        
                         <div class="card payment-form ">                        
                             <h3 class="card-title h5 mb-3">Payment Method</h3>
 
@@ -212,8 +226,13 @@
 @endsection
 
 
+
+
 @section('customJs')
     <script>
+
+
+
 
         //Payment method change functionality
         $(document).ready(function(){
@@ -229,6 +248,8 @@
                 }
             });
         });
+
+
 
 
         //Submit checkout form
@@ -332,6 +353,8 @@
         });
 
 
+
+
         //Change shippig charge country wise
         $("#country").change(function(){
             $.ajax({
@@ -347,6 +370,8 @@
                 }
             });
         });
+
+
 
 
         //Apply discount
@@ -369,6 +394,9 @@
             });
         });
 
+
+
+
         $('body').on('click', "#remove_discount", function(){
             $.ajax({
                 url: '{{ route("front.removeCoupon") }}',
@@ -388,6 +416,8 @@
         })
 
 
+
+        
     </script>
 @endsection
 
