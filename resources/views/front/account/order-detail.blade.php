@@ -103,7 +103,7 @@
 
                                             <div class="col">
                                                 <p class="mb-4 fs-sm fw-bold">
-                                                    <a class="text-body" href="product.html">{{ $item->name }} x {{ $item->qty }}</a> <br>
+                                                    <a class="text-body" href="#">{{ $item->name }} x {{ $item->qty }}</a> <br>
                                                     <span class="text-muted">${{ $item->total }}</span>
                                                 </p>
                                             </div>
