@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('coupon_code_id')->nullable()->after('coupon_code');
+            $table->enum('payment_status', ['paid','not paid'])->after('grant_total')->default('not paid');
+            $table->enum('status', ['pending','shipped', 'delivered'])->after('payment_status')->default('pending');
+            $table->timestamp('shipped_date')->nullable()->after('status');
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('coupon_code_id');
+            $table->dropColumn('payment_status');
+            $table->dropColumn('status');
+            $table->dropColumn('shipped_date');
         });
     }
 };
