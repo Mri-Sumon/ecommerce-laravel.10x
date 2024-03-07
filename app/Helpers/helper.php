@@ -1,4 +1,5 @@
 <?php
+    use App\Mail\OrderEmail;
     use App\Models\Category;
     use App\Models\Country;
     use App\Models\Order;
@@ -20,7 +21,9 @@
         return ProductImage::where('product_id', $productId)->first();
     }
     
+
     function orderEmail($orderId, $userType="customer"){
+
         $order = Order::where('id', $orderId)->with('items')->first();
     
         if ($userType == 'customer') {
@@ -37,10 +40,11 @@
             'userType' => $userType
         ];
     
-        // Mail::to($email)->send(new OrderEmail($mailData));
+        Mail::to($email)->send(new OrderEmail($mailData));
 
     }
     
+
     function getCountryInfo($id){
         return Country::where('id', $id)->first();
     }

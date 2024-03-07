@@ -98,7 +98,11 @@
                         </div>
                     </div>
                 </div>
+
+                
                 <div class="col-md-3">
+
+                    <!-- Update order status  -->
                     <div class="card">
                         <form action="" method="POST" name="changeOrderStatusForm" id="changeOrderStatusForm">
                             <div class="card-body">
@@ -121,6 +125,8 @@
                             </div>
                         </form>
                     </div>
+
+                    <!-- Send invoice mail  -->
                     <div class="card">
                         <div class="card-body">
                             <form action="" method="POST" name="sendInvoiceEmail" id="sendInvoiceEmail">
@@ -137,6 +143,7 @@
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
