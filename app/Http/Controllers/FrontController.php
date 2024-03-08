@@ -2,9 +2,11 @@
 namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
+
     public function index(){
 
         $featuredProduct = Product::orderBy('sort', 'ASC')->where('is_featured','Yes')->where('status', 1)->take(8)->get();
@@ -18,4 +20,22 @@ class FrontController extends Controller
         return view("front.home", $data);
 
     }
+
+
+
+    public function addToWishlist(Request $request){
+        if(Auth::check() ==  false){
+
+            //Store previous url in session.
+            session(['url.intended' => url()->previous()]);
+
+            return response()->json([
+                'status' => false
+            ]);
+        }
+    }
+
+
+
+
 }

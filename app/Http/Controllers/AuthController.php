@@ -51,45 +51,31 @@ class AuthController extends Controller
     }
 
 
-    public function authenticate(Request $request) {
-
+    public function authenticate(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
-    
+
         if ($validator->passes()) {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->has('remember'))) {
-                
-                // Check if checkout page is not empty
-                if (Cart::count() > 0) {
-                    // Check if there's an intended URL in the session
-                    if (session()->has('url.intended')) {
-                        // Retrieve and remove the intended URL from the session
-                        $intendedUrl = session()->pull('url.intended');
-                        // Redirect to the intended URL
-                        return redirect($intendedUrl);
-                    } else {
-                        // If no intended URL, handle this scenario
-                        // You might want to redirect to a different route or display an error message
-                        return redirect()->route("account.profile");
-                    }
-                } else {
-                    // If the cart is empty, handle this scenario
-                    // You might want to redirect to a different route or display an error message
-                    // For now, let's redirect to the profile route
-                    return redirect()->route("account.profile");
+
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+                if (session()->has('url.intended')) {
+                    return redirect(session()->get('url.intended'));
                 }
 
-            } else {
-                // If authentication fails, redirect back to the login page with an error message
+                return redirect()->route("account.profile");
+
+            }else{
+
                 return redirect()->route("account.login")
                     ->withInput($request->only('email'))
                     ->with('error', 'Invalid Email/Password!');
             }
 
-        } else {
-            // If validation fails, redirect back to the login page with validation errors
+        }else{
+
             return redirect()->route("account.login")
                 ->withErrors($validator)
                 ->withInput($request->only('email'));

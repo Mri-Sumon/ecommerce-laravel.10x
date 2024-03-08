@@ -199,7 +199,9 @@
         <script src="{{asset('front-assets/js/slick.min.js')}}"></script>
         <script src="{{asset('front-assets/js/ion.rangeSlider.min.js')}}"></script>
         <script src="{{asset('front-assets/js/custom.js')}}"></script>
+
         <script>
+
             window.onscroll = function() {myFunction()};
 
             var navbar = document.getElementById("navbar");
@@ -243,16 +245,51 @@
             }
 
             
+            //Add wishlist
+            function addToWishlist(id){
+                $.ajax({
+                    url: '{{ route("front.addToWishlist") }}',
+                    type: 'POST',
+                    data: {id:id},
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.status == true){
+                            
+                        }else{
+                            window.location.href = "{{route('account.login')}}";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+
+
         </script>
-
-
 
         @yield('customJs')
 
-
-
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
