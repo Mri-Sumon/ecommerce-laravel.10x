@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Wishlist;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class AuthController extends Controller
@@ -122,5 +123,41 @@ class AuthController extends Controller
     }
 
     
+
+    
+    public function wishlist(){
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)->with('product')->get();
+        $data=[];
+        $data['wishlists'] = $wishlists;
+        return view("front.account.wishlist", $data);
+    }
+
+
+
+    public function removeProductFromWishlist(Request $request){
+
+        $wishlist = Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->first();
+
+        if($wishlist == null){
+
+            $request->session()->flash('error', 'Product already removed');
+            return response()->json([
+                'status' => true,
+            ]);
+
+        }else{
+
+            Wishlist::where('user_id', Auth::user()->id)->where('product_id', $request->id)->delete();
+
+            $request->session()->flash('success', 'Product removed successfully');
+            return response()->json([
+                'status' => true,
+            ]);
+
+        }
+        
+    }
+
+
     
 }

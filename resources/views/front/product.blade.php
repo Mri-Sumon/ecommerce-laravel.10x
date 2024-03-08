@@ -150,7 +150,11 @@
                                             <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" class="img-thumbnail">
                                         @endif
                                     </a>
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>                            
+
+
+                                    <a onclick="addToWishlist({{$relatedProduct->id}})" class="whishlist" href="javascript:void(0);"><i class="far fa-heart"></i></a>                            
+
+
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{$relatedProduct->id}});">
                                             <i class="fa fa-shopping-cart"></i> Add To Cart
