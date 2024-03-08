@@ -27,15 +27,12 @@ class FrontController extends Controller
     public function addToWishlist(Request $request){
 
         if(Auth::check() ==  false){
-            // If the user is not authenticated, return a JSON response with status false
-            // and stop further execution.
             session(['url.intended' => url()->previous()]);
             return response()->json([
                 'status' => false
             ]);
         }
     
-        //Store or update data, If data already exist in database table it will update the product.
         Wishlist::updateOrCreate(
             [
                 'user_id' => Auth::user()->id,
@@ -48,7 +45,6 @@ class FrontController extends Controller
             ]
         );
     
-        //If comming id's product not exit in product table, this will show product not found.
         $product = Product::where('id', $request->id)->first();
         if($product == NULL){
             return response()->json([
@@ -57,7 +53,6 @@ class FrontController extends Controller
             ]);
         }
 
-        // Return a JSON response indicating success.
         return response()->json([
             'status' => true,
             'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> has been successfully added to your wish list</div>',
@@ -68,3 +63,21 @@ class FrontController extends Controller
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
