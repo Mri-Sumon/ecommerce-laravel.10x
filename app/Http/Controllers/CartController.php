@@ -367,6 +367,7 @@ class CartController extends Controller
 
             //step-4 Store order items in order_items table
             foreach (Cart::content() as $item) {
+
                 $orderItem = new OrderItem;
                 $orderItem->product_id = $item->id;
                 $orderItem->order_id = $order->id;
@@ -375,6 +376,18 @@ class CartController extends Controller
                 $orderItem->price = $item->price;
                 $orderItem->total = $item->price*$item->qty;
                 $orderItem->save();
+
+                //Update product stock
+                $productData = Product::find($item->id);
+                if($productData->track_qty == 'Yes'){
+
+                    $currentQty = $productData->qty;
+                    $updateQty = $currentQty - $item->qty;
+                    $productData->qty = $updateQty;
+                    $productData->Save();
+
+                }
+ 
             }
 
             //Send ordr email
@@ -395,10 +408,7 @@ class CartController extends Controller
                 'status' => true
             ]);
 
-        }else{
-
         }
-
 
     }
 

@@ -120,7 +120,7 @@ class ShopController extends Controller
         if ($product->related_products != '') {
             $productArray = explode(',', $product->related_products);
             //with('product_images'): In product model we create product_images() method for create relationship.
-            $relatedProducts = Product::whereIn('id', $productArray)->with('product_images')->get();
+            $relatedProducts = Product::whereIn('id', $productArray)->with('product_images')->where('status', 1)->get();
         }
 
 
