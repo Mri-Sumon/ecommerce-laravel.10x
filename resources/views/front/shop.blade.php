@@ -244,9 +244,16 @@
             //Range filter
             url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
 
-
+            
             //Sort filter
             url += '&sort='+$("#sort").val();
+
+
+            //Main search
+            var keyword = $('#search').val();
+            if(keyword.length > 0){
+                url += '&search='+keyword;
+            }
 
 
             window.location.href = url;

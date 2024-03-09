@@ -72,6 +72,13 @@ class ShopController extends Controller
 
 
 
+        //Apply searching 
+        if(!empty($request->get('search'))){
+            $products = $products->where('title','like','%'.$request->get('search').'%');
+        }
+
+
+
         //Apply sort filter here
         if($request->get('sort') != ''){
             if($request->get('sort') == 'latest'){
