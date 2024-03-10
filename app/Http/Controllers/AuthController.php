@@ -86,8 +86,47 @@ class AuthController extends Controller
 
 
     public function profile(){
-        return view('front.account.profile');
+        $user = User::where('id', Auth::user()->id)->first();
+        return view('front.account.profile',[
+            'user' => $user,
+        ]);
     }
+
+
+    public function updateProfile(Request $request){
+       
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . Auth::user()->id,
+            'phone' => 'required',
+        ]);
+        
+
+        if($validator->passes()){
+            
+            // $category->name = $request->name;
+            // $category->slug = $request->slug;
+            // $category->status = $request->status;
+            // $category->save();
+
+            $request->session()->flash('success', 'Category updated successfully');
+
+            return response()->json([
+                'status' => true, 
+                'message' => 'Category updated successfully'
+            ]);
+
+
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+    }
+
+
 
 
     public function logout(){

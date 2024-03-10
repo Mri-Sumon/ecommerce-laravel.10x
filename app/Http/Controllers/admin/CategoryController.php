@@ -117,7 +117,6 @@ class CategoryController extends Controller
         
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            //যদি কোনো slug আগে থেকেই categories টেবিলের slug কলামে থাকে, তাহলে একই নামে 2য় কোনো slug ইনসার্ট নিবে না।
             'slug' => 'required|unique:categories,slug,'.$category->id.',id',
         ]);
 
