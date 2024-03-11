@@ -1,32 +1,33 @@
 <?php
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use Illuminate\Http\Request;
-use App\Models\Category;
-use App\Models\Brand;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class BrandController extends Controller
+class PageController extends Controller
 {
     public function index(Request $request)
     {
-        $brands = Brand::latest('id');
+        $pages = Page::latest('id');
 
         if (!empty($request->get('keyword'))) {
-            $brands->where('brands.name', 'like', '%' . $request->get('keyword') . '%');
+            $pages->where('pages.name', 'like', '%' . $request->get('keyword') . '%');
         }
     
-        $brands = $brands->paginate(10);
-        return view('admin.brands.list', compact('brands'));
+        $pages = $pages->paginate(10);
+
+        return view('admin.pages.list', compact('pages'));
     }
     
 
+
     public function create(){
-        $categories = Category::orderBy('id', 'asc')->get();
-        $data['categories']=$categories;
-        return view('admin.brands.create', $data);
+        return view('admin.pages.create');
     }
+
+
 
     public function store(Request $request){
 
@@ -37,21 +38,22 @@ class BrandController extends Controller
         ]);
 
         if($validator->passes()){
-            
+
             $createBy = Auth::user()->id;
 
-            $brand = new Brand();
-            $brand->name = $request->name;
-            $brand->slug = $request->slug;
-            $brand->status = $request->status;
-            $brand->sort = $request->sort;
-            $brand->created_by = $createBy;
-            $brand->save();
+            $page = new Page();
+            $page->name = $request->name;
+            $page->slug = $request->slug;
+            $page->content = $request->content;
+            $page->status = $request->status;
+            $page->sort = $request->sort;
+            $page->created_by = $createBy;
+            $page->save();
 
-            $request->session()->flash('success', 'Brands creaded successfully');
+            $request->session()->flash('success', 'Page creaded successfully');
             return response()->json([
                 'status' => true, 
-                'message' => 'Brands created successfully'
+                'message' => 'Page created successfully'
             ]);
 
         }else{
@@ -63,23 +65,30 @@ class BrandController extends Controller
 
     }
 
-    public function edit($brandId, Request $request){
+
+
+    public function edit($pageId, Request $request){
   
-        $brand = Brand::find($brandId);
-        if(empty($brand)){
+        $page = Page::find($pageId);
+
+        if(empty($page)){
             $request->session()->flash('error','Record not found');
-            return redirect()->route('brands.index');
+            return redirect()->route('pages.index');
         }
-        $data['brand'] = $brand;
-        return view('admin.brands.edit', $data);
+
+        $data['page'] = $page;
+        return view('admin.pages.edit', $data);
 
     }
 
-    public function update($brandId, Request $request){
 
-        $brand = Brand::find($brandId);
 
-        if(empty($brand)){
+
+    public function update($pageId, Request $request){
+
+        $page = Page::find($pageId);
+
+        if(empty($page)){
             $request->session()->flash('error', 'Record not found');
             return response()->json([
                 'status' => false,
@@ -90,7 +99,7 @@ class BrandController extends Controller
         
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            'slug' => 'required|unique:brands,slug,'.$brand->id.',id',
+            'slug' => 'required|unique:pages,slug,'.$page->id.',id',
             'status' => 'required',
         ]);
 
@@ -98,17 +107,18 @@ class BrandController extends Controller
             
             $updatedBy = Auth::user()->id;
 
-            $brand->name = $request->name;
-            $brand->slug = $request->slug;
-            $brand->status = $request->status;
-            $brand->sort = $request->sort;
-            $brand->updated_by = $updatedBy;
-            $brand->save();
+            $page->name = $request->name;
+            $page->slug = $request->slug;
+            $page->content = $request->content;
+            $page->status = $request->status;
+            $page->sort = $request->sort;
+            $page->updated_by = $updatedBy;
+            $page->save();
 
-            $request->session()->flash('success', 'Brand updated successfully');
+            $request->session()->flash('success', 'Page updated successfully');
             return response()->json([
                 'status' => true, 
-                'message' => 'Brand updated successfully'
+                'message' => 'Page updated successfully'
             ]);
 
         }else{
@@ -117,29 +127,49 @@ class BrandController extends Controller
                 'errors' => $validator->errors(),
             ]);
         }
+
     }
 
-    public function destroy($brandId, Request $request){
 
-        $brand = Brand::find($brandId);
-        if(empty($brand)){
+
+
+
+    public function destroy($pageId, Request $request){
+
+        $page = Page::find($pageId);
+
+        if(empty($page)){
+
             $request->session()->flash('error', 'Record not found');
             return response()->json([
                 'status' => true,
                 'message' => 'Record not found'
             ]);
+
         }
 
-        $brand->delete();
+        $page->delete();
 
-        $request->session()->flash('success', 'Brand deleted successfully');
+        $request->session()->flash('success', 'Page deleted successfully');
         
         return response()->json([
             'status' => true,
-            'message' => 'Brand deleted successfully'
+            'message' => 'Page deleted successfully'
         ]);
         
+        
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -148,21 +178,3 @@ class BrandController extends Controller
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
