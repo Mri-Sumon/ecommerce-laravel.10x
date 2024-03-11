@@ -1,5 +1,8 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\Country;
+use App\Models\CustomerAddress;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,9 +89,18 @@ class AuthController extends Controller
 
 
     public function profile(){
-        $user = User::where('id', Auth::user()->id)->first();
+
+        $userId = Auth::user()->id; 
+
+        $countries = Country::orderBy('name','ASC')->get();
+        $user = User::where('id', $userId)->first();
+        $address = CustomerAddress::where('user_id',$userId)->first();
+
+
         return view('front.account.profile',[
             'user' => $user,
+            'countries' => $countries,
+            'address' => $address,
         ]);
     }
 
@@ -103,17 +115,71 @@ class AuthController extends Controller
         
 
         if($validator->passes()){
-            
-            // $category->name = $request->name;
-            // $category->slug = $request->slug;
-            // $category->status = $request->status;
-            // $category->save();
 
-            $request->session()->flash('success', 'Category updated successfully');
+            $user = User::find(Auth::user()->id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->save();
 
+            $request->session()->flash('success', 'Profile updated successfully');
             return response()->json([
                 'status' => true, 
-                'message' => 'Category updated successfully'
+                'message' => 'Profile updated successfully'
+            ]);
+
+
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+    }
+
+
+
+    public function updateAddress(Request $request){
+       
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|min:3',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'country_id' => 'required',
+            'address' => 'required|min:20',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'mobile' => 'required'
+        ]);
+        
+
+        if($validator->passes()){
+            
+            $user = Auth::user();
+
+            CustomerAddress::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'user_id' => $user->id,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'mobile' => $request->mobile,
+                    'country_id' => $request->country_id,
+                    'address' => $request->address,
+                    'apartment' => $request->apartment,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip' => $request->zip
+                ]
+            );
+
+            $request->session()->flash('success', 'Address updated successfully');
+            return response()->json([
+                'status' => true, 
+                'message' => 'Address updated successfully'
             ]);
 
 
