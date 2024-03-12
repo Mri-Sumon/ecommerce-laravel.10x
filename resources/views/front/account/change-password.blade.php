@@ -81,6 +81,7 @@
             $("button[type=submit]").prop('disabled', true);
 
             $.ajax({
+
                 url: '{{ route("account.changePassword") }}',
                 type:'post',
                 data: element.serializeArray(),
@@ -92,7 +93,7 @@
 
                     if(response["status"]==true){
 
-                        window.location.href="{{route('account.changePassword')}}"
+                        window.location.href="{{route('account.showChangePasswordForm')}}"
 
                     }else{
 
