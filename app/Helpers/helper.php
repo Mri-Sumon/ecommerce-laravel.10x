@@ -1,10 +1,11 @@
 <?php
-    use App\Mail\OrderEmail;
-    use App\Models\Category;
-    use App\Models\Country;
-    use App\Models\Order;
-    use App\Models\ProductImage;
-    use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderEmail;
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\Order;
+use App\Models\Page;
+use App\Models\ProductImage;
+use Illuminate\Support\Facades\Mail;
 
     function getCategories(){
         return Category::orderBy('sort', 'ASC')
@@ -48,6 +49,18 @@
     function getCountryInfo($id){
         return Country::where('id', $id)->first();
     }
+
+
+    function staticPages(){
+        $pages = Page::orderBy('sort','ASC')->get();
+        return $pages;
+    }
+
+
+
+
+
+
 
 
 
