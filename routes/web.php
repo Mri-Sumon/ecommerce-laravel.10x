@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
@@ -192,6 +193,9 @@ Route::group(['prefix'=>'admin'], function(){
 
 
 
+        //SETTING ROUTES
+        Route::get('/show-change-password-form', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
+        Route::post('/process-change-password', [SettingController::class, 'changePassword'])->name('admin.changePassword');
 
 
 
