@@ -52,7 +52,7 @@ use Illuminate\Support\Facades\Mail;
 
 
     function staticPages(){
-        $pages = Page::orderBy('sort','ASC')->get();
+        $pages = Page::where('status',1)->orderBy('sort','ASC')->get();
         return $pages;
     }
 

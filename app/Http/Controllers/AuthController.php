@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-
 use App\Models\Country;
 use App\Models\CustomerAddress;
 use App\Models\User;
@@ -11,17 +10,32 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Wishlist;
-use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 class AuthController extends Controller
 {
+
+
+
+
+
     public function login(){
         return view('front.account.login');
     }
 
+
+
+
+
+
     public function register(){
         return view('front.account.register');
     }
+
+
+
+
+
 
     public function processRegister(Request $request){
         $validator = Validator::make($request->all(), [
@@ -53,6 +67,11 @@ class AuthController extends Controller
             ]);
         }
     }
+
+
+
+
+
 
 
     public function authenticate(Request $request){
@@ -88,6 +107,9 @@ class AuthController extends Controller
     
 
 
+
+
+
     public function profile(){
 
         $userId = Auth::user()->id; 
@@ -103,6 +125,12 @@ class AuthController extends Controller
             'address' => $address,
         ]);
     }
+
+
+
+
+
+
 
 
     public function updateProfile(Request $request){
@@ -137,6 +165,11 @@ class AuthController extends Controller
         }
 
     }
+
+
+
+
+
 
 
 
@@ -195,11 +228,18 @@ class AuthController extends Controller
 
 
 
+
+    
     public function logout(){
         Auth::logout();
         return redirect()->route("account.login")
             ->with('success', 'You are logged out successfully!');
     }
+
+
+
+
+
 
 
     public function orders(){
@@ -211,6 +251,10 @@ class AuthController extends Controller
     }
 
 
+
+
+
+    
     public function orderDetail($id){
         $data = [];
         $user = Auth::user();
@@ -229,6 +273,8 @@ class AuthController extends Controller
 
     
 
+
+
     
     public function wishlist(){
         $wishlists = Wishlist::where('user_id', Auth::user()->id)->with('product')->get();
@@ -236,6 +282,10 @@ class AuthController extends Controller
         $data['wishlists'] = $wishlists;
         return view("front.account.wishlist", $data);
     }
+
+
+
+
 
 
 
@@ -264,5 +314,83 @@ class AuthController extends Controller
     }
 
 
+
+
+
+
+    public function showChangePasswordForm(){
+        return view('front.account.change-password');
+    }
+
+
+
+
+
+    public function changePassword(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'old_password' => 'required', 
+            'new_password' => 'required|min:5',
+            'confirm_password' => 'required|same:new_password', 
+        ]);
+
+        if($validator->passes()){
+
+            $user = User::select('id','password')->where('id', Auth::user()->id)->first();
+
+            if(!Hash::check($request->old_password, $user->password)){
+
+                session()->flash('error', 'Your old password is incorrect, please try again.');
+
+                return response()->json([
+                    'status' => true, 
+                ]);
+
+            }
+
+            User::where('id', $user->id)->update([
+                'password' => Hash::make($request->new_password),
+            ]);
+
+            $request->session()->flash('success', 'You have successfully changed your password.');
+            return response()->json([
+                'status' => true, 
+                'message' => 'You have successfully changed your password'
+            ]);
+
+        }else{
+            return response()->json([
+                'status' => false, 
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+    }
+
+
+
+
+
+
+
+
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

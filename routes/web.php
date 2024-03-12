@@ -55,12 +55,14 @@ Route::group(['prefix' => 'account'], function(){
 
     Route::group(['middleware' => 'auth'], function(){
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
-        Route::post('/updateProfile', [AuthController::class, 'updateProfile'])->name('account.updateProfile');
-        Route::post('/updateAddress', [AuthController::class, 'updateAddress'])->name('account.updateAddress');
+        Route::post('/update-profile', [AuthController::class, 'updateProfile'])->name('account.updateProfile');
+        Route::post('/update-address', [AuthController::class, 'updateAddress'])->name('account.updateAddress');
         Route::get('/my-orders', [AuthController::class, 'orders'])->name('account.orders');
         Route::get('/my-wishlist', [AuthController::class, 'wishlist'])->name('account.wishlist');
         Route::post('/remove-product-from-wishlist', [AuthController::class, 'removeProductFromWishlist'])->name('account.removeProductFromWishlist');
         Route::get('/order-detail/{orderId}', [AuthController::class, 'orderDetail'])->name('account.orderDetail');
+        Route::get('/show-change-password-form', [AuthController::class, 'showChangePasswordForm'])->name('account.showChangePasswordForm');
+        Route::post('/process-change-password', [AuthController::class, 'changePassword'])->name('account.changePassword');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
     });
 });
