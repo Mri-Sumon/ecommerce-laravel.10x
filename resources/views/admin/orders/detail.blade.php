@@ -112,7 +112,7 @@
                                         <option value="pending" {{ ($order->status == 'pending') ? 'selected' : '' }}>Pending</option>
                                         <option value="shipped" {{ ($order->status == 'shipped') ? 'selected' : '' }}>Shipped</option>
                                         <option value="delivered" {{ ($order->status == 'delivered') ? 'selected' : '' }}>Delivered</option>
-                                        <option value="cancelled" {{ ($order->status == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
+                                        <option value="canceled" {{ ($order->status == 'canceled') ? 'selected' : '' }}>Canceled</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">

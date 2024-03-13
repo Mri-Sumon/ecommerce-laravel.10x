@@ -64,7 +64,7 @@
                                             @elseif ($order->status == 'delivered')
                                             <span class="badge bg-success">Delivered</span>
                                             @else
-                                            <span class="badge bg-danger">Cancelled</span>
+                                            <span class="badge bg-danger">Canceled</span>
                                             @endif
                                         </td>
                                         <td>${{ number_format($order->grant_total, 2) }}</td>
