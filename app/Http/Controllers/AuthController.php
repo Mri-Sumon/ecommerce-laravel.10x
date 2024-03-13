@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Mail\ResetPasswordEmail;
 use App\Models\Country;
 use App\Models\CustomerAddress;
 use App\Models\User;
@@ -10,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Wishlist;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -368,13 +372,98 @@ class AuthController extends Controller
     }
 
 
+    public function forgotPassword(){
+        return view('front.account.forgot-password');
+    }
 
 
+    public function processForgotPassword(Request $request){
 
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email|exists:users,email', 
+        ]);
 
+        if($validator->fails()){
+            return redirect()->route('front.forgotPassword')->withInput()->withErrors($validator);
+        }
 
+        //Generate token
+        $token = Str::random(60);
+
+        //Remove previous stored data from password_reset_tokens table.
+        \DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        //Store data to password_reset_tokens table
+        \DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now(),
+        ]);
+
+        //Send Mail Here
+        $user = User::where('email',$request->email)->first();
+
+        $formData = [
+            'token' => $token,
+            'user' => $user,
+            'mailSubject' => 'You have requested to reset password.'
+        ];
+
+        Mail::to($request->email)->send(new ResetPasswordEmail($formData));
+
+        return redirect()->route('front.forgotPassword')->with('success', 'Please check your inbox to reset your password.');
+
+    }
 
     
+    public function resetPassword($token){
+
+        $tokenExist = \DB::table('password_reset_tokens')->where('token', $token)->first();
+        if($tokenExist == null){
+            return redirect()->route('front.forgotPassword')->with('error', 'Invalid request.');
+        }
+        return view('front.account.reset-password',[
+            'token' => $token,
+        ]);
+
+    }
+
+
+    public function processResetPassword(Request $request){
+
+        $token = $request->token;
+
+        $tokenObj = \DB::table('password_reset_tokens')->where('token', $token)->first();
+
+        if($tokenObj == null){
+            return redirect()->route('front.forgotPassword')->with('error', 'Invalid request.');
+        }
+
+        $user = User::where('email', $tokenObj->email)->first();
+
+        $validator = Validator::make($request->all(),[
+            'new_password' => 'required|min:5', 
+            'confirm_password' => 'required|same:new_password', 
+        ]);
+
+        if($validator->fails()){
+            return redirect()->route('front.resetPassword',$token)->withErrors($validator);
+        }
+
+        User::where('id',$user->id)->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        // After update password remove token from password_reset_tokens table.
+        \DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+
+        return redirect()->route('account.login')->with('success', 'You have successfully updated your password.');
+
+    }
+
+
+
+
 }
 
 
