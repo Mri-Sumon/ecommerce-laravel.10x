@@ -117,7 +117,13 @@ class ShopController extends Controller
     //Function created for related product
     public function product($slug){
         
-        $product=Product::where('slug', $slug)->with('product_images')->first();
+        $product=Product::where('slug', $slug)
+        //Count specific product rating by the helping of product id
+        ->withCount('product_ratings')
+        //Sum of specific product by the helping of product id
+        ->withSum('product_ratings','rating')
+        ->with('product_images','product_ratings')
+        ->first();
 
         if($product == NULL){
             abort(404);
@@ -135,6 +141,22 @@ class ShopController extends Controller
 
         $data['product'] = $product;
         $data['relatedProducts'] = $relatedProducts;
+
+
+        //Calculate average rating
+        //আমরা $product কে dd()  করলে নিচের কলাম দুটি এ্যারেতে পাবো।
+        // "product_ratings_count" => 0
+        // "product_ratings_sum_rating" => null
+        $averageRating = 0.00;
+        $averageRatingPercent = 0;
+
+        if($product->product_ratings_count>0){
+            $averageRating = number_format(($product->product_ratings_sum_rating/$product->product_ratings_count),2);
+            $averageRatingPercent = ($averageRating*100)/5;
+        }
+
+        $data['averageRating'] = $averageRating;
+        $data['averageRatingPercent'] = $averageRatingPercent;
 
         return view("front.product",$data);
     }
