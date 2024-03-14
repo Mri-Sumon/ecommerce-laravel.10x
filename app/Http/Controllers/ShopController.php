@@ -144,9 +144,6 @@ class ShopController extends Controller
 
 
         //Calculate average rating
-        //আমরা $product কে dd()  করলে নিচের কলাম দুটি এ্যারেতে পাবো।
-        // "product_ratings_count" => 0
-        // "product_ratings_sum_rating" => null
         $averageRating = 0.00;
         $averageRatingPercent = 0;
 

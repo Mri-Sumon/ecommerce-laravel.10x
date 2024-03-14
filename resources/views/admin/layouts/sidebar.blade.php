@@ -49,6 +49,13 @@
 				</li>
 				
 				<li class="nav-item">
+					<a href="{{route('products.productRatings')}}" class="nav-link">
+						<i class="nav-icon fas fa-star"></i>
+						<p>Ratings</p>
+					</a>
+				</li>
+				
+				<li class="nav-item">
 					<a href="{{route('shipping.create')}}" class="nav-link">
 						<i class="fas fa-truck nav-icon"></i>
 						<p>Shipping</p>

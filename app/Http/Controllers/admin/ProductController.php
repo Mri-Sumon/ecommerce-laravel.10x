@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductRating;
 use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\Auth;
@@ -334,4 +335,84 @@ class ProductController extends Controller
 
 
 
+    public function productRatings(Request $request){
+
+        $ratings = ProductRating::select('product_ratings.*', 'products.title as productTitle')
+        ->orderBy('product_ratings.created_at', 'DESC');
+        $ratings = $ratings->leftJoin('products', 'products.id', '=', 'product_ratings.product_id');
+
+        if (!empty($request->get('keyword'))) {
+            $ratings->orWhere('title', 'like', '%' . $request->get('keyword') . '%');
+            $ratings->orWhere('product_ratings.username', 'like', '%' . $request->get('keyword') . '%');
+        }
+
+        $ratings =  $ratings->paginate(10);
+
+        return view('admin.products.ratings',[
+            'ratings' => $ratings,
+        ]);
+    }
+
+
+
+    public function changeRatingStatus(Request $request){
+
+        $productRating = ProductRating::find($request->productId); 
+        $productRating->status = $request->status; 
+        $productRating->save();
+    
+        session()->flash('success', 'Status changed successfully.');
+    
+        return response()->json([
+            'status' => true,
+        ]);
+
+    }
+    
+    //Delete product rating
+    public function deleteRating($ratingId, Request $request){
+
+        $rating = ProductRating::find($ratingId);
+
+        if(empty($rating)){
+            $request->session()->flash('error', 'Record not found');
+            return response()->json([
+                'status' => true,
+                'message' => 'Record not found'
+            ]);
+        }
+
+        $rating->delete();
+
+        $request->session()->flash('success', 'Rating deleted successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Rating deleted successfully'
+        ]);
+        
+    }
+
+
+
+
+
 } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

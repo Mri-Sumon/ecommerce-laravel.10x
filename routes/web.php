@@ -129,7 +129,9 @@ Route::group(['prefix'=>'admin'], function(){
         Route::put('/products/{productId}',[ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{productId}',[ProductController::class, 'destroy'])->name('products.delete');
         Route::get('/get-products', [ProductController::class, 'getProducts'])->name('products.getProducts');
-
+        Route::get('/ratings',[ProductController::class, 'productRatings'])->name('products.productRatings');
+        Route::get('/change-ratings-status',[ProductController::class, 'changeRatingStatus'])->name('products.changeRatingStatus');
+        Route::delete('/rating/{ratingId}',[ProductController::class, 'deleteRating'])->name('products.deleteRating');
 
         //PRODUCT SUBCATEGORY ROUTES
         Route::get('/products-subCategories',[ProductSubCategoryController::class, 'index'])->name('products-subCategories.index'); 
