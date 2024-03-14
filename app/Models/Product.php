@@ -15,7 +15,14 @@ class Product extends Model
     public function product_ratings() {
         return $this->hasMany(ProductRating::class)->where('status',1);
     }
+       
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
-
+    public function updater(){
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    
 }
  

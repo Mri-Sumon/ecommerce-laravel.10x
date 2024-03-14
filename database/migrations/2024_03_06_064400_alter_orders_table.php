@@ -27,7 +27,6 @@ return new class extends Migration
             $table->dropColumn('payment_status');
             $table->dropColumn('status');
             $table->dropColumn('shipped_date');
-            $table->dropColumn('canceled');
         });
     }
 };

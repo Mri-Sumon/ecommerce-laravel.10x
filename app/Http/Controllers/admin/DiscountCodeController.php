@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DiscountCoupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class DiscountCodeController extends Controller
@@ -65,6 +66,8 @@ class DiscountCodeController extends Controller
                 }
             }
     
+            $createdBy = Auth::user()->id;
+
             $discountCode = new DiscountCoupon();
             $discountCode->code = $request->code;
             $discountCode->name = $request->name;
@@ -77,6 +80,9 @@ class DiscountCodeController extends Controller
             $discountCode->status = $request->status;
             $discountCode->starts_at = !empty($request->starts_at) ? Carbon::createFromFormat('Y-m-d H:i:s', $request->starts_at) : null;
             $discountCode->expires_at = !empty($request->expires_at) ? Carbon::createFromFormat('Y-m-d H:i:s', $request->expires_at) : null;
+            
+            $discountCode->created_by = $createdBy;
+
             $discountCode->save();
     
             $message = 'Discount coupon added successfully';
@@ -145,6 +151,8 @@ class DiscountCodeController extends Controller
                 }
             }
 
+            $updatedBy = Auth::user()->id;
+
             $discountCode->code = $request->code;
             $discountCode->name = $request->name;
             $discountCode->description = $request->description;
@@ -156,6 +164,9 @@ class DiscountCodeController extends Controller
             $discountCode->status = $request->status;
             $discountCode->starts_at = $request->starts_at;
             $discountCode->expires_at = $request->expires_at;
+
+            $discountCode->created_by = $updatedBy;
+
             $discountCode->save();
 
             $message = 'Discount coupon updated successfully';

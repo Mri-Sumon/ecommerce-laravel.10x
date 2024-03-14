@@ -136,6 +136,7 @@
 @section('customJs')
 <script>
 
+
     $(document).ready(function(){
 
         $('#starts_at').datetimepicker({
@@ -150,6 +151,7 @@
 
     });
 
+
     $("#discountForm").submit(function(event){
 
         event.preventDefault();
@@ -157,7 +159,7 @@
         $('button[type=submit]').prop('disabled', true);
 
         $.ajax({
-
+ 
             url: "{{ route('coupons.store') }}",
             type: 'post',
             data: element.serializeArray(),

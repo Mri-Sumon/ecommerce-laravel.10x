@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
-	<!-- Content Header (Page header) -->
+
 	<section class="content-header">					
 		<div class="container-fluid my-2">
 			<div class="row mb-2">
@@ -12,11 +12,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- /.container-fluid -->
 	</section>
-	<!-- Main content -->
+
 	<section class="content">
-		<!-- Default box -->
 		<div class="container-fluid">
 
 			<!-- show successfull message  -->
@@ -47,8 +45,8 @@
 								<th width="60">ID</th>
 								<th>Name</th>
 								<th>Slug</th>
-								<th width="100">Status</th>
-								<th width="100">Show on Home</th>
+								<th>Status</th>
+								<th>Show on Home</th>
 								<th>Sort</th>
 								<th>Created By</th>
 								<th>Updated By</th>
@@ -101,19 +99,10 @@
 				</div>
 				<div class="card-footer clearfix">
                     {{ $categories->links() }}
-					<!-- <ul class="pagination pagination m-0 float-right">
-					  <li class="page-item"><a class="page-link" href="#">«</a></li>
-					  <li class="page-item"><a class="page-link" href="#">1</a></li>
-					  <li class="page-item"><a class="page-link" href="#">2</a></li>
-					  <li class="page-item"><a class="page-link" href="#">3</a></li>
-					  <li class="page-item"><a class="page-link" href="#">»</a></li>
-					</ul> -->
 				</div>
 			</div>
 		</div>
-		<!-- /.card -->
 	</section>
-	<!-- /.content -->
 @endsection
 
 @section('customJs')

@@ -48,6 +48,8 @@
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th width="100">Status</th>
+                                <th>Created By</th>
+                                <th>Updated By</th>
                                 <th width="100">Action</th>
                             </tr>
                         </thead>
@@ -86,6 +88,8 @@
                                             @endif
 
                                         </td>
+                                        <td>{{ $discountCoupon->created_by }}</td>
+                                        <td>{{ $discountCoupon->updated_by }}</td>
                                         <td>
                                             <a href="{{ route('coupons.edit', $discountCoupon->id) }}">
                                                 <svg class="filament-link-icon w-4 h-4 mr-1"

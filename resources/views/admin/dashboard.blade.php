@@ -19,7 +19,7 @@
 		<div class="container-fluid">
 			<div class="row">
 
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>{{$totalOrders}} Nos</h3>
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>{{$totalProducts}} Nos</h3>
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>{{$totalCustomers}} Nos</h3>
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>${{number_format($totalRevenue,2)}}</h3>
@@ -71,7 +71,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>${{number_format($revenueThisMonth,2)}}</h3>
@@ -85,7 +85,7 @@
 				</div>
 				
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>${{number_format($revenueLastMonth,2)}}</h3>
@@ -99,7 +99,7 @@
 				</div>
 				
 				
-				<div class="col-lg-4 col-6">							
+				<div class="col-lg-3 col-6">							
 					<div class="small-box card">
 						<div class="inner">
 							<h3>${{number_format($revenueLastThirtyDays,2)}}</h3>

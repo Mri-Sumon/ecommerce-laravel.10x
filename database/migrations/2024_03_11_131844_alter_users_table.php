@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('status')->default(1)->after('role');
-            $table->string('created_by')->nullable()->after('status');
-            $table->string('updated_by')->nullable()->after('created_by');
+            
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+
         });
     }
 
