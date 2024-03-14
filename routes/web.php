@@ -43,6 +43,8 @@ Route::post('/remove-discount', [CartController::class, 'removeCoupon'])->name('
 Route::post('/add-to-wishlist', [FrontController::class, 'addToWishlist'])->name('front.addToWishlist');
 Route::get('/page/{slug}',[FrontController::class, 'page'])->name('front.page');
 Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
+Route::post('/save-rating/{productId}', [ShopController::class, 'saveRating'])->name('front.saveRating');
+
 
 //FORGET PASSWORD
 Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('front.forgotPassword');
