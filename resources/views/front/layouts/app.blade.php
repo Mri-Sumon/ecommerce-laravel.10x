@@ -47,6 +47,7 @@
 
         <!-- Fav Icon -->
         <link rel="shortcut icon" type="image/x-icon" href="#" />
+        
     </head>
 
     <body data-instant-intensity="mousedown">

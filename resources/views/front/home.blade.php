@@ -40,33 +40,51 @@
                 </div>
 
             </div> -->
-            <div class="col-md-3 mt-3">
-    <div class="card">
-        <div class="card-body">
-            <ul class="nav flex-column">
-                @if (getCategories()->isNotEmpty())
-                    @foreach (getCategories() as $key => $category)
-                        <li class="nav-item">
-                            @if ($category->sub_category->isNotEmpty())
-                                <h5 class="nav-link accordion-header" id="heading{{$key}}" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                    &#x25BC; {{ $category->name }} <!-- Downward-pointing triangle symbol -->
-                                </h5>
-                                <ul class="sub-menu collapse {{($categorySelected == $category->id) ? 'show' : ''}}" id="collapse{{$key}}" aria-labelledby="heading{{$key}}">
-                                    @foreach ($category->sub_category as $subCategory)
-                                        <li><a href="{{route('front.shop',[$category->slug, $subCategory->slug]) }}" class="nav-link {{($subCategorySelected == $subCategory->id) ? 'text-primary' : ''}}">{{ $subCategory->name }}</a></li>
-                                    @endforeach                               
-                                </ul>
-                            @else
-                                <a href="{{route('front.shop', $category->slug) }}" class="nav-link {{($categorySelected == $category->id) ? 'text-primary' : ''}}">{{ $category->name }}</a>
-                            @endif
-                        </li>
-                    @endforeach                
-                @endif
-            </ul>
-        </div>
-    </div>
-</div>
 
+            <!-- Set two div are same height -->
+            <style>
+                .equal-height {
+                    display: flex;
+                
+                .equal-height > .col-md-3, .equal-height > .col-md-9 {
+                    flex: 1;
+                }
+            </style>
+
+
+            <style>
+                .nav-item h5 span.dropdown-symbol {
+                    float: right; 
+                    margin-top: 5px; 
+                }
+            </style>
+
+            <div class="col-md-3 mt-3 a">
+                <div class="card" style="height: 100%;">
+                    <div class="card-body">
+                        <ul class="nav flex-column">
+                            @if (getCategories()->isNotEmpty())
+                                @foreach (getCategories() as $key => $category)
+                                    <li class="nav-item">
+                                        @if ($category->sub_category->isNotEmpty())
+                                            <h5 class="nav-link accordion-header" id="heading{{$key}}" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                                <i class="fa fa-house-damage"></i> {{ $category->name }} <span class="dropdown-symbol">&#x25BC;</span>
+                                            </h5>
+                                            <ul class="sub-menu collapse {{($categorySelected == $category->id) ? 'show' : ''}}" id="collapse{{$key}}" aria-labelledby="heading{{$key}}">
+                                                @foreach ($category->sub_category as $subCategory)
+                                                    <li><a href="{{route('front.shop',[$category->slug, $subCategory->slug]) }}" class="nav-link {{($subCategorySelected == $subCategory->id) ? 'text-primary' : ''}}">{{ $subCategory->name }}</a></li>
+                                                @endforeach                               
+                                            </ul>
+                                        @else
+                                            <a href="{{route('front.shop', $category->slug) }}" class="nav-link {{($categorySelected == $category->id) ? 'text-primary' : ''}}">{{ $category->name }}</a>
+                                        @endif
+                                    </li>
+                                @endforeach                
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
             <div class="col-md-9 mt-3">
                 <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false">
