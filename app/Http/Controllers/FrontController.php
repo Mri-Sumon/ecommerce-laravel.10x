@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactEmail;
+use App\Models\Category;
 use App\Models\Page;
 use App\Models\Product;
+use App\Models\SubCategory;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -16,14 +18,50 @@ class FrontController extends Controller
 
     public function index(){
 
+        //when press any category or subcategory, that will show as active or stay open the dropdown.
+        $categorySelected = '';
+        $subCategorySelected = '';
+        
+        $categories=Category::orderBy('sort', 'ASC')
+        //for relation create, sub_category function declare in category model.
+        ->with(['sub_category' => function ($query){
+            $query->orderBy('sort', 'ASC'); 
+        }])->where('status', 1)->get();
+
+        //Get all data
+        $products = Product::orderBy('sort','DESC');
+
+        //Apply Category filters here
+        if (!empty($categorySlug)) {
+            $category = Category::where('slug', $categorySlug)->first();
+            if($category){
+                $products = $products->where('category_id', $category->id);
+                $categorySelected = $category->id;
+            }
+        }
+
+        //Apply SunCategory filters here
+        if (!empty($subCategorySlug)) {
+            $subCategory = SubCategory::where('slug', $subCategorySlug)->first();
+            if($subCategory){
+                $products = $products->where('sub_category_id', $subCategory->id);
+                $subCategorySelected = $subCategory->id;
+            }
+        }
+        $data['categorySelected'] = $categorySelected;
+        $data['subCategorySelected'] = $subCategorySelected;
+
+
         $featuredProduct = Product::orderBy('sort', 'ASC')->where('is_featured','Yes')->where('status', 1)->take(8)->get();
         $topSellingProduct = Product::orderBy('sort', 'ASC')->where('is_top_selling','Yes')->where('status', 1)->take(8)->get();
         $latestProduct = Product::orderBy('id', 'DESC')->where('status', 1)->take(8)->get();
+
 
         $data['featuredProduct']=$featuredProduct;
         $data['topSellingProduct']=$topSellingProduct;
         $data['latestProduct']=$latestProduct;
 
+        
         return view("front.home", $data);
 
     }

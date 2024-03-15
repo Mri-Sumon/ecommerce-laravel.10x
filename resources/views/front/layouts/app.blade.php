@@ -38,6 +38,7 @@
         <link rel="stylesheet" type="text/css" href="{{asset('front-assets/css/ion.rangeSlider.min.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{asset('front-assets/css/video-js.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{asset('front-assets/css/style.css')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('front-assets/css/category.css')}}" />
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,7 +68,7 @@
                         @if (Auth::check())
                             <a href="{{route('account.profile')}}" class="nav-link text-dark">My Account</a>
                         @else
-                            <a href="{{route('account.login')}}" class="nav-link text-dark">Login/Register</a>
+                            <a href="{{route('account.login')}}" class="nav-link text-dark">Sign In/Sign Up</a>
                         @endif
 
                         <form action="{{route('front.shop')}}" method="get">					
@@ -87,20 +88,18 @@
 
         <header class="bg-dark">
             <div class="container">
-                <nav class="navbar navbar-expand-xl" id="navbar">
+
+                <!-- Categories  -->
+                <!-- <nav class="navbar navbar-expand-xl" id="navbar">
                     <a href="{{route('front.home')}}" class="text-decoration-none mobile-logo">
                         <span class="h2 text-uppercase text-primary bg-dark">Online</span>
                         <span class="h2 text-uppercase text-white px-2">SHOP</span>
                     </a>
                     <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <!-- <span class="navbar-toggler-icon icon-menu"></span> -->
                         <i class="navbar-toggler-icon fas fa-bars"></i>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <!-- <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="index.php" title="Products">Home</a>
-                            </li> -->
 
                             @if (getCategories()->isNotEmpty())
                                 @foreach (getCategories() as $category)
@@ -132,7 +131,50 @@
                             <i class="fas fa-shopping-cart text-primary"></i>					
                         </a>
                     </div> 		
+                </nav> -->
+
+                <!-- Pages  -->
+                <nav class="navbar navbar-expand-xl" id="navbar">
+
+                    <a href="{{route('front.home')}}" class="text-decoration-none mobile-logo">
+                        <span class="h2 text-uppercase text-primary bg-dark">Online</span>
+                        <span class="h2 text-uppercase text-white px-2">SHOP</span>
+                    </a>
+
+                    <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="navbar-toggler-icon fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                            @if (staticPages()->isNotEmpty())
+                                @foreach (staticPages() as $page)
+                                    <li class="nav-item dropdown">
+                                        @if ($page->slug == 'home')
+                                            <a class="btn btn-dark" aria-disabled="true" href="{{ route('front.home') }}">{{ $page->name }}</a>
+                                        @else
+                                            <a class="btn btn-dark" aria-disabled="true" href="{{ route('front.page', $page->slug) }}" title="{{ $page->name }}">{{ $page->name }}</a>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            @endif
+                            
+                        </ul>      			
+                    </div>  
+
+                    <div class="right-nav py-0">
+                        <a href="{{route('front.cart')}}" class="ml-3 d-flex pt-2">
+                            <i class="fas fa-shopping-cart text-primary"> 
+                                @if (Cart::count() != 0)
+                                    {{Cart::count()}}
+                                @endif
+                            </i>					
+                        </a>
+                    </div> 		
+
                 </nav>
+
             </div>
         </header>
 
@@ -166,13 +208,6 @@
                                     @endforeach
                                 @endif    
                             
-                                <!-- 
-                                <li><a href="about-us.php" title="About">About</a></li>
-                                <li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>						
-                                <li><a href="#" title="Privacy">Privacy</a></li>
-                                <li><a href="#" title="Privacy">Terms & Conditions</a></li>
-                                <li><a href="#" title="Privacy">Refund Policy</a></li> -->
-
                             </ul>
                         </div>
                     </div>
