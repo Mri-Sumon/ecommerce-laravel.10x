@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
-	<!-- Content Header (Page header) -->
+
     <section class="content-header">					
 		<div class="container-fluid my-2">
 			<div class="row mb-2">
@@ -12,11 +12,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- /.container-fluid -->
 	</section>
-	<!-- Main content -->
+
 	<section class="content">
-		<!-- Default box -->
 		<div class="container-fluid">
             <form action="" id="brandForm" name="brandForm" method="post">
                 <div class="card">
@@ -67,9 +65,7 @@
                 </div>
             </form>
 		</div>
-		<!-- /.card -->
 	</section>
-	<!-- /.content -->
 @endsection
 
 

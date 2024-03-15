@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- website link icon  -->
+		<link rel="icon" type="image/x-icon" href="{{ asset('admin-assets/img/AdminLTELogo.png') }}">
+		<!-- website link title  -->
 		<title>Laravel Shop :: Administrative Panel</title>
 		<!-- Google Font: Source Sans Pro -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -24,12 +28,10 @@
 		<link rel="stylesheet" href="{{asset('admin-assets/css/custom.css')}}">
 
 	</head>
+
 	<body class="hold-transition sidebar-mini">
-		<!-- Site wrapper -->
 		<div class="wrapper">
-			<!-- Navbar -->
 			<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-				<!-- Right navbar links -->
 				<ul class="navbar-nav">
 					<li class="nav-item">
 					  	<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -63,7 +65,7 @@
 
 							<div class="dropdown-divider"></div>
 
-							<a href="#" class="dropdown-item">
+							<a href="{{route('admin.settings')}}" class="dropdown-item">
 								<i class="fas fa-user-cog mr-2"></i> Settings								
 							</a>
 
@@ -84,22 +86,21 @@
 				</ul>
 			</nav>
 
-			<!-- /.navbar -->
-			<!-- Main Sidebar Container -->
-                @include('admin.layouts.sidebar')
-			<!-- Content Wrapper. Contains page content -->
+			<!-- Sidebar -->
+            @include('admin.layouts.sidebar')
+
+			<!-- Page body -->
 			<div class="content-wrapper">
                 @yield('content')
 			</div>
-			<!-- /.content-wrapper -->
+
+			<!-- Footer -->
 			<footer class="main-footer">
-				
 				<strong>Copyright &copy; 2014-2022 AmazingShop All rights reserved.
 			</footer>
-			
 		</div>
-		<!-- ./wrapper -->
 		
+
 		<!-- jQuery -->
 		<script src="{{asset('admin-assets/plugins/jquery/jquery.min.js')}}"></script>
 
@@ -138,10 +139,24 @@
 					height: 250,
 				});
 			});
-
 		</script>
 
+		<!-- javascript  -->
         @yield('customJs')
 
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

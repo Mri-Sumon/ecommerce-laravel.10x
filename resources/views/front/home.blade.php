@@ -117,8 +117,19 @@
 
     </section>
     
-
-
+    <section class="section-2 banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="box shadow-lg">
+                        <div class="parallelogram-mask">
+                            <img src="{{ asset('admin-assets/img/banner.png') }}" alt="Banner Image">
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="section-2">
             <div class="container">

@@ -59,7 +59,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="icon">Icon</label>
-                                    <input type="text" name="icon" id="icon" class="form-control" placeholder="Icon">
+                                    <input type="text" value="{{$category->icon}}" name="icon" id="icon" class="form-control" placeholder="Icon">
                                     <p></p>	
                                 </div>
                             </div>
