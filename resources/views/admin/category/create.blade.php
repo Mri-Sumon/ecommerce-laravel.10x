@@ -53,12 +53,24 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="icon">Icon</label>
+                                    <input type="text" name="icon" id="icon" class="form-control" placeholder="Icon">
+                                    <p></p>	
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="1">Active</option>
                                         <option value="0">Block</option>
                                     </select>
                                 </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <!-- Empty div  -->
                             </div>
 
                             <div class="col-md-6">

@@ -2,44 +2,7 @@
 @section('content')
 
     <section class="section-1">
-
         <div class="row mx-auto">
-            <!-- <div class="col-md-3 mt-3">
-
-                <div class="card">
-                    <div class="card-body">
-                        <div class="accordion accordion-flush" id="accordionExample">
-                            @if (getCategories()->isNotEmpty())
-                                @foreach (getCategories() as $key => $category)
-                                    <div class="accordion-item">
-                                        @if ($category->sub_category->isNotEmpty())
-                                            <h2 class="accordion-header" id="headingOne">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-{{$key}}" aria-expanded="false" aria-controls="collapseOne-{{$key}}">
-                                                    {{ $category->name }}
-                                                </button>
-                                            </h2>
-                                        @else
-                                            <a href="{{route('front.shop', $category->slug) }}" class="nav-item nav-link {{($categorySelected == $category->id) ? 'text-primary' : ''}}">{{ $category->name }}</a>
-                                        @endif
-                                        @if ($category->sub_category->isNotEmpty())
-                                            <div id="collapseOne-{{$key}}" class="accordion-collapse collapse {{($categorySelected == $category->id) ? 'show' : ''}}" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                                                <div class="accordion-body">
-                                                    <div class="navbar-nav">
-                                                        @foreach ($category->sub_category as $subCategory)
-                                                            <a href="{{route('front.shop',[$category->slug, $subCategory->slug]) }}" class="nav-item nav-link {{($subCategorySelected == $subCategory->id) ? 'text-primary' : ''}}">{{ $subCategory->name }}</a>
-                                                        @endforeach                               
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endforeach                
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-            </div> -->
 
             <!-- Set two div are same height -->
             <style>
@@ -51,7 +14,7 @@
                 }
             </style>
 
-
+            <!-- Css for dropdown category  -->
             <style>
                 .nav-item h5 span.dropdown-symbol {
                     float: right; 
@@ -68,7 +31,7 @@
                                     <li class="nav-item">
                                         @if ($category->sub_category->isNotEmpty())
                                             <h5 class="nav-link accordion-header" id="heading{{$key}}" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                                <i class="fa fa-house-damage"></i> {{ $category->name }} <span class="dropdown-symbol">&#x25BC;</span>
+                                                <i class="{{ $category->icon }}"></i> {{ $category->name }} <span class="dropdown-symbol">&#x25BC;</span>
                                             </h5>
                                             <ul class="sub-menu collapse {{($categorySelected == $category->id) ? 'show' : ''}}" id="collapse{{$key}}" aria-labelledby="heading{{$key}}">
                                                 @foreach ($category->sub_category as $subCategory)

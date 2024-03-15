@@ -41,6 +41,7 @@ class CategoryController extends Controller
             $createBy = Auth::user()->id;
 
             $category = new Category();
+            $category->icon = $request->icon;
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
@@ -123,7 +124,8 @@ class CategoryController extends Controller
         if($validator->passes()){
 
             $updatedBy = Auth::user()->id;
-
+            
+            $category->icon = $request->icon;
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->status = $request->status;
