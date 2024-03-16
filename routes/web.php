@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
+use App\Http\Controllers\admin\SectionController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\UserController;
@@ -202,11 +203,21 @@ Route::group(['prefix'=>'admin'], function(){
         Route::delete('/pages/{pageId}',[PageController::class, 'destroy'])->name('pages.delete');
 
 
+        //SECTIONS ROUTE
+        Route::get('/sections', [SectionController::class, 'create'])->name('sections.create');
+        Route::post('/sections/store', [SectionController::class, 'store'])->name('sections.store');
+        Route::get('/sections/{sectionId}/edit',[SectionController::class, 'edit'])->name('sections.edit');
+        Route::put('/sections/{sectionId}',[SectionController::class, 'update'])->name('sections.update');
+        Route::delete('/sections/{sectionId}',[SectionController::class, 'destroy'])->name('sections.delete');
+
 
         //SETTING ROUTES
         Route::get('/show-change-password-form', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
         Route::post('/process-change-password', [SettingController::class, 'changePassword'])->name('admin.changePassword');
         Route::get('/settings', [SettingController::class, 'settings'])->name('admin.settings');
+
+
+
 
 
 

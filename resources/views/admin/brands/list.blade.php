@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('content')
-	<!-- Content Header (Page header) -->
+
 	<section class="content-header">					
 		<div class="container-fluid my-2">
 			<div class="row mb-2">
@@ -12,13 +12,10 @@
 				</div>
 			</div>
 		</div>
-		<!-- /.container-fluid -->
 	</section>
-	<!-- Main content -->
-	<section class="content">
-		<!-- Default box -->
-		<div class="container-fluid">
 
+	<section class="content">
+		<div class="container-fluid">
 			<!-- show successfull message  -->
 			@include('admin.message')
 
@@ -99,20 +96,13 @@
 				</div>
 				<div class="card-footer clearfix">
                     {{ $brands->links() }}
-					<!-- <ul class="pagination pagination m-0 float-right">
-					  <li class="page-item"><a class="page-link" href="#">«</a></li>
-					  <li class="page-item"><a class="page-link" href="#">1</a></li>
-					  <li class="page-item"><a class="page-link" href="#">2</a></li>
-					  <li class="page-item"><a class="page-link" href="#">3</a></li>
-					  <li class="page-item"><a class="page-link" href="#">»</a></li>
-					</ul> -->
 				</div>
 			</div>
 		</div>
-		<!-- /.card -->
 	</section>
-	<!-- /.content -->
 @endsection
+
+
 
 @section('customJs')
 

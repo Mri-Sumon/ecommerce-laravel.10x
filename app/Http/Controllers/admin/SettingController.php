@@ -65,4 +65,6 @@ class SettingController extends Controller
         return view('admin.settings'); 
     }
 
+
+    
 }
