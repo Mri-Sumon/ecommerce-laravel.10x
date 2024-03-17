@@ -98,7 +98,7 @@
 				</li>
 
 				<li class="nav-item">
-					<a href="{{route('admin.settings')}}" class="nav-link">
+					<a href="{{route('settings.settings')}}" class="nav-link">
 						<i class="nav-icon  fa fa-cog"></i>
 						<p>Settings</p>
 					</a>

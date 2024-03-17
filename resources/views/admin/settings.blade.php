@@ -45,8 +45,8 @@
                                     <div class="col-md-6">
                                         <div>
                                             <div class="mb-3">
-                                                <label for="name">Company Name</label>
-                                                <input type="text" name="name" id="name" class="form-control" placeholder="Company Name">
+                                                <label for="companyName">Company Name</label>
+                                                <input type="text" name="companyName" id="companyName" class="form-control" placeholder="Company Name">
                                             </div>
                                         </div>
 
@@ -99,8 +99,8 @@
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="selectSection">Select Section</label>
-                                        <select name="status" id="status" class="form-control">
+                                        <label for="selectImageSection">Select Section</label>
+                                        <select name="selectImageSection" id="selectImageSection" class="form-control">
                                             <option value="1">Select section</option>
                                             @if ($sections->isNotEmpty())
                                                 @foreach ($sections as $section)
@@ -147,8 +147,8 @@
 
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="selectSection">Select Section</label>
-                                            <select name="status" id="status" class="form-control">
+                                            <label for="selectImgWithTextSection">Select Section</label>
+                                            <select name="selectImgWithTextSection" id="selectImgWithTextSection" class="form-control">
                                                 <option value="1">Select section</option>
                                                 @if ($sections->isNotEmpty())
                                                     @foreach ($sections as $section)
@@ -186,8 +186,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="selectSection">Select Section</label>
-                                        <select name="status" id="status" class="form-control">
+                                        <label for="selectVideoSection">Select Section</label>
+                                        <select name="selectVideoSection" id="selectVideoSection" class="form-control">
                                             <option value="1">Select section</option>
                                             @if ($sections->isNotEmpty())
                                                 @foreach ($sections as $section)
@@ -373,6 +373,7 @@
 
 
 @section('customJs')
+
     <script>
 
         //Stop auto discover image 
@@ -396,7 +397,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#icon_id").val(response.icon_id);
+                $("#icon_id").val(response.image_id);
             }
         });
 
@@ -419,7 +420,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#logo_id").val(response.logo_id);
+                $("#logo_id").val(response.image_id);
             }
         });
 
@@ -441,7 +442,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#adminPicture_id").val(response.adminPicture_id);
+                $("#adminPicture_id").val(response.image_id);
             }
         });
 
@@ -464,7 +465,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#imageSection_id").val(response.imageSection_id);
+                $("#imageSection_id").val(response.image_id);
             },
         });
 
@@ -487,7 +488,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#imageWithTextSection_id").val(response.imageWithTextSection_id);
+                $("#imageWithTextSection_id").val(response.image_id);
             },
         });
 
@@ -509,13 +510,40 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             success: function(file, response){
-                $("#footerLogo_id").val(response.footerLogo_id);
+                $("#footerLogo_id").val(response.image_id);
             },
         });
 
 
+        //send form data to route
+        $("#settingForm").submit(function(event){
 
+            event.preventDefault();
+            var element = $(this);
+            $("button[type=submit]").prop('disabled', true);
+
+            $.ajax({
+                url: '{{ route("settings.update", 1) }}',
+                type:'put',
+                data: element.serializeArray(),
+                dataType: 'json',
+                success: function(response){
+
+                    $("button[type=submit]").prop('disabled', false);
+
+                    if(response["status"]==true){
+
+                        window.location.href="{{route('settings.settings')}}"
+                        
+                    }
+                }, error:function(jqXHR,exception){
+                    console.log("Something went wrong");
+                }
+            })
+        });
+        
     </script>
+
 @endsection
 
 

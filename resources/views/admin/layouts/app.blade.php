@@ -54,11 +54,7 @@
 					<li class="nav-item dropdown">
 
 						<a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
-							<img src="{{asset('admin-assets/img/avatar5.png')}}" class='img-circle elevation-2' width="40" height="40" alt="">
-							<!-- @if (Auth::check())
-								{{ Auth::user()->name }}
-							@else
-							@endif -->
+							<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="">
 						</a>
 
 						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-3">
@@ -69,7 +65,7 @@
 
 							<div class="dropdown-divider"></div>
 
-							<a href="{{route('admin.settings')}}" class="dropdown-item">
+							<a href="{{route('settings.settings')}}" class="dropdown-item">
 								<i class="fas fa-user-cog mr-2"></i> Settings								
 							</a>
 
