@@ -31,29 +31,46 @@
                                             <label for="title">Link Title</label>
                                             <input type="text" name="title" id="title" class="form-control" placeholder="Link Title">
                                         </div>
+                                        <div>
+                                            <input type="hidden" id="icon_id" name="icon_id" value="">
+                                            <label for="icon">Icon</label>
+                                            <div id="icon" class="dropzone dz-clickable">
+                                                <div class="dz-message needsclick">
+                                                    <br>Drop files here or click to upload.<br><br>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="icon">Link Icon</label>
-                                            <input type="file" name="icon" id="icon" class="form-control">
+                                        <div>
+                                            <div class="mb-3">
+                                                <label for="name">Company Name</label>
+                                                <input type="text" name="name" id="name" class="form-control" placeholder="Company Name">
+                                            </div>
                                         </div>
-                                    </div>	
+
+                                        <div class="mb-3">
+                                            <input type="hidden" id="logo_id" name="logo_id" value="">
+                                            <label for="logo">Logo</label>
+                                            <div id="logo" class="dropzone dz-clickable">
+                                                <div class="dz-message needsclick">
+                                                    <br>Drop files here or click to upload.<br><br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
 
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="logo">Company Logo</label>
-                                            <input type="file" name="logo" id="logo" class="form-control">
+                                        <input type="hidden" id="adminPicture_id" name="adminPicture_id" value="">
+                                        <label for="adminPicture">Admin Picture</label>
+                                        <div id="adminPicture" class="dropzone dz-clickable">
+                                            <div class="dz-message needsclick">
+                                                <br>Drop files here or click to upload.<br><br>
+                                            </div>
                                         </div>
-                                    </div>	
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="name">Company Name</label>
-                                            <input type="text" name="name" id="name" class="form-control" placeholder="Company Name">
-                                        </div>
-                                    </div>	
-                                    
+                                    </div>
+                                                                      
                                 </div>
                             </div>							
                         </div>
@@ -79,38 +96,18 @@
                         <div class="card card-body">
                             <h2 class="h4 mb-3">Image Section</h2>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="createSection">Create Section</label>
-                                        <div class="d-flex">
-                                            <input type="text" name="createSection" id="createSection" class="form-control" placeholder="Create section">
-                                            <button type="submit" class="btn btn-primary ms-2">Create</button>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="selectSection">Select Section</label>
                                         <select name="status" id="status" class="form-control">
                                             <option value="1">Select section</option>
-                                            <option value="1">Section-01</option>
-                                            <option value="2">Section-02</option>
-                                            <option value="3">Section-03</option>
-                                            <option value="4">Section-04</option>
+                                            @if ($sections->isNotEmpty())
+                                                @foreach ($sections as $section)
+                                                    <option value="{{$section->slug}}">{{ $section->name }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="card mb-3">
-                                        <div class="card-body">						
-                                            <div id="image" class="dropzone dz-clickable">
-                                                <div class="dz-message needsclick">    
-                                                    <br>Drop files here or click to upload.<br><br>                                            
-                                                </div>
-                                            </div>
-                                        </div>	                                                                      
                                     </div>
                                 </div>
 
@@ -120,7 +117,17 @@
                                         <input type="text" name="imageFirstTitle" id="imageFirstTitle" class="form-control" placeholder="Image first title">
                                     </div>
                                 </div>
-                                
+
+                                <div class="col-md-6">
+                                    <input type="hidden" id="imageSection_id" name="imageSection_id" value="">
+                                    <label for="imageSection">Image Section</label>
+                                    <div id="imageSection" class="dropzone dz-clickable">
+                                        <div class="dz-message needsclick">
+                                            <br>Drop files here or click to upload.<br><br>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="imageSecondTitle">Second Title</label>
@@ -135,45 +142,41 @@
                     <div class="col-md-12 mb-3">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h2 class="h4 mb-3">Image with Text Section</h2>							
+                                <h2 class="h4 mb-3">Image with Text Section</h2>
                                 <div class="row">
 
                                     <div class="col-md-6">
-                                        <label for="image">Create Section</label>
-                                        <div class="mb-3 d-flex">
-                                            <input type="text" name="createSection" id="createSection" class="form-control" placeholder="Create Section">
-                                            <button type="submit" class="btn btn-primary ms-2">Create</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="image">Select Section</label>
+                                            <label for="selectSection">Select Section</label>
                                             <select name="status" id="status" class="form-control">
                                                 <option value="1">Select section</option>
-                                                <option value="1">Section-01</option>
-                                                <option value="2">Section-02</option>
-                                                <option value="3">Section-03</option>
-                                                <option value="4">Section-04</option>
+                                                @if ($sections->isNotEmpty())
+                                                    @foreach ($sections as $section)
+                                                        <option value="{{$section->slug}}">{{ $section->name }}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
-                                    </div>
 
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="image">Image</label>
-                                            <input type="file" name="image" id="image" class="form-control">	
+                                        <div>
+                                            <input type="hidden" id="imageWithTextSection_id" name="imageWithTextSection_id" value="">
+                                            <label for="imageWithTextSection">Image</label>
+                                            <div id="imageWithTextSection" class="dropzone dz-clickable">
+                                                <div class="dz-message needsclick">
+                                                    <br>Drop files here or click to upload.<br><br>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-md-12">
+                                                                        
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="description">Description</label>
-                                            <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
+                                            <textarea name="description" id="description" cols="30" rows="10" class="form-control summernote" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </div>
-                            </div>	                                                                      
+                            </div>                                                           
                         </div>
                     </div>
 
@@ -183,28 +186,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="createSection">Create Section</label>
-                                        <div class="d-flex">
-                                            <input type="text" name="createSection" id="createSection" class="form-control" placeholder="Create section">
-                                            <button type="submit" class="btn btn-primary ms-2">Create</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label for="selectSection">Select Section</label>
                                         <select name="status" id="status" class="form-control">
                                             <option value="1">Select section</option>
-                                            <option value="1">Section-01</option>
-                                            <option value="2">Section-02</option>
-                                            <option value="3">Section-03</option>
-                                            <option value="4">Section-04</option>
+                                            @if ($sections->isNotEmpty())
+                                                @foreach ($sections as $section)
+                                                    <option value="{{$section->slug}}">{{ $section->name }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="videoLink">Apply link</label>
                                         <input type="text" name="videoLink" id="videoLink" class="form-control" placeholder="Apply link here">
@@ -321,31 +315,38 @@
                             <div class="card-body">
                                 <h2 class="h4 mb-3">Footer Section</h2>		
                                 <div class="row">
-                                    
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="address">Company Address</label>
-                                            <input type="text" name="address" id="address" class="form-control" placeholder="Company address">
-                                            <p></p>	
+                                            <textarea name="address" id="address" cols="30" rows="10" class="form-control summernote" placeholder="Company Address"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
+
+                                        <div class="mb-3">
+                                            <input type="hidden" id="footerLogo_id" name="footerLogo_id" value="">
+                                            <label for="footerLogo">Logo</label>
+                                            <div id="footerLogo" class="dropzone dz-clickable">
+                                                <div class="dz-message needsclick">
+                                                    <br>Drop files here or click to upload.<br><br>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="email">Email</label>
+                                            <input type="email" name="email" id="email" class="form-control" placeholder="Email">
+                                            <p></p>	
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="contact">Contact Number</label>
                                             <input type="number" name="contact" id="contact" class="form-control" placeholder="Contact">
                                             <p></p>	
                                         </div>
                                     </div>
-                                    
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="email">Email</label>
-                                            <input type="text" name="email" id="email" class="form-control" placeholder="Email">
-                                            <p></p>	
-                                        </div>
-                                    </div>
-                                    
+                                                                      
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="copyright">Copyright Text</label>
@@ -353,17 +354,16 @@
                                             <p></p>	
                                         </div>
                                     </div>
-
                                 </div>
                             </div>							
                         </div>
                     </div>
-
                 </div>
                 
                 <div class="pb-5 pt-3">
                     <button class="btn btn-primary">Update</button>
                 </div>
+
             </form>
             
 		</div>
@@ -373,30 +373,149 @@
 
 
 @section('customJs')
+    <script>
 
-	<script>
-		function deleteBrand(brandId){
-			
-			var url='{{ route("brands.delete","ID") }}';
-			var newUrl = url.replace("ID",brandId);
+        //Stop auto discover image 
+        Dropzone.autoDiscover = false;
 
-			if(confirm("Are you sure you want to delete")){
-				$.ajax({
-					url: newUrl,
-					type: 'DELETE',
-					data: {},
-					dataType: 'json',
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					},
-					success: function(response) {
-						window.location.href = "{{ route('brands.index') }}";
-					}
-				});
-			}
-		}
-	</script>
+        //Dropzone for icon
+        const iconDropzone = new Dropzone("#icon", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{route('temp-images.create')}}",
+            maxFiles: 1,
+            paramName: 'icon',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#icon_id").val(response.icon_id);
+            }
+        });
 
+
+        //Dropzone for logo
+        const logoDropzone = new Dropzone("#logo", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{route('temp-images.create')}}",
+            maxFiles: 1,
+            paramName: 'logo',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#logo_id").val(response.logo_id);
+            }
+        });
+
+        //Dropzone for admin picture
+        const adminPictureDropzone = new Dropzone("#adminPicture", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{route('temp-images.create')}}",
+            maxFiles: 1,
+            paramName: 'adminPicture',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#adminPicture_id").val(response.adminPicture_id);
+            }
+        });
+
+
+        //Dropzone for image section
+        const imageSectionDropzone = new Dropzone("#imageSection", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{ route('temp-images.create') }}",
+            maxFiles: 1,
+            paramName: 'imageSection',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg, image/png, image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#imageSection_id").val(response.imageSection_id);
+            },
+        });
+
+
+        //Dropzone for image with text section
+        const imageWithTextSectionDropzone = new Dropzone("#imageWithTextSection", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{ route('temp-images.create') }}",
+            maxFiles: 1,
+            paramName: 'imageWithTextSection',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg, image/png, image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#imageWithTextSection_id").val(response.imageWithTextSection_id);
+            },
+        });
+
+        //Dropzone for footer Logo
+        const footerLogoDropzone = new Dropzone("#footerLogo", {
+            init: function() {
+                this.on('addedfile', function(file) {
+                    if (this.files.length > 1) {
+                        this.removeFile(this.files[0]);
+                    }
+                });
+            },
+            url: "{{ route('temp-images.create') }}",
+            maxFiles: 1,
+            paramName: 'footerLogo',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg, image/png, image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            success: function(file, response){
+                $("#footerLogo_id").val(response.footerLogo_id);
+            },
+        });
+
+
+
+    </script>
 @endsection
 
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,8 +63,10 @@ class SettingController extends Controller
 
 
     public function settings(){
-        return view('admin.settings'); 
+        $sections = Section::where('status', 1)->get();
+        return view('admin.settings', compact('sections'));
     }
+    
 
 
     
