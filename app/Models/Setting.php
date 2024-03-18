@@ -16,16 +16,6 @@ class Setting extends Model
         'logo_id',
         'adminPicture_id',
         'importantUpdates',
-        'selectImageSection',
-        'imageFirstTitle',
-        'imageSection_id',
-        'imageSecondTitle',
-        'selectImgWithTextSection',
-        'description',
-        'selectVideoSection',
-        'videoLink',
-        'videoFirstTitle',
-        'videoSecondTitle',
         'facebook',
         'whatsapp',
         'twitter',
@@ -38,6 +28,7 @@ class Setting extends Model
         'footerLogo_id',
         'email',
         'contact',
+        'copyright',
     ];
 
 }

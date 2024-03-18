@@ -214,10 +214,10 @@ Route::group(['prefix'=>'admin'], function(){
         //SETTING ROUTES
         Route::get('/show-change-password-form', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
         Route::post('/process-change-password', [SettingController::class, 'changePassword'])->name('admin.changePassword');
-        Route::get('/settings', [SettingController::class, 'settings'])->name('settings.settings');
-
-        
+        Route::get('/settings', [SettingController::class, 'settings'])->name('settings.settings');       
         Route::put('/settings/update/{id}',[SettingController::class, 'update'])->name('settings.update');
+        // Route::post('/settings/update/{id}', [SettingController::class, 'update'])->name('settings.update');
+
 
 
 

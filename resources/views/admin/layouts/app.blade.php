@@ -54,7 +54,7 @@
 					<li class="nav-item dropdown">
 
 						<a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
-							<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="">
+							<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
 						</a>
 
 						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-3">
