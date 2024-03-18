@@ -44,7 +44,7 @@ class SettingController extends Controller
                 ]);
 
             }
-
+ 
             User::where('id', $user->id)->update([
                 'password' => Hash::make($request->new_password),
             ]);

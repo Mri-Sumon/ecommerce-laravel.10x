@@ -5,6 +5,7 @@ use App\Models\Country;
 use App\Models\Order;
 use App\Models\Page;
 use App\Models\ProductImage;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
 
     function getCategories(){
@@ -20,6 +21,10 @@ use Illuminate\Support\Facades\Mail;
 
     function getProductImage($productId){
         return ProductImage::where('product_id', $productId)->first();
+    }
+    
+    function settingData(){
+        return Setting::where('id', 1)->first();
     }
     
 

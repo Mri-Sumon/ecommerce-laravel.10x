@@ -54,7 +54,11 @@
 					<li class="nav-item dropdown">
 
 						<a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
-							<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
+							@if (settingData()->adminPicture_id != NULL)
+								<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
+							@else
+								<img src="{{asset('uploads/setting/alter.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
+							@endif
 						</a>
 
 						<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-3">

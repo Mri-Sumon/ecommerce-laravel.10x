@@ -11,7 +11,7 @@
 		</div>
 	</section>
 
-	<section class="content">
+	<section class="content"> 
         <div class="container-fluid">
 
     		<!-- show successfull message  -->
