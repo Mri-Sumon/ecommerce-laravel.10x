@@ -2,8 +2,23 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
 	<a href="#" class="brand-link">
-		<img src="{{asset('admin-assets/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-		<span class="brand-text font-weight-light">LARAVEL SHOP</span>
+		<img 
+			@if (settingData()->icon_id != NULL)
+				src="{{ asset('uploads/setting/1.jpg') }}"
+			@else
+				src="{{asset('admin-assets/img/AdminLTELogo.png')}}"
+			@endif
+
+			alt="AdminLTE Logo" class="brand-image img-circle elevation-3" 
+			style="opacity: .8">
+			<span class="brand-text font-weight-light"
+		>
+			@if (settingData()->icon_id != NULL)
+				{{ settingData()->companyName }}
+			@else
+				LARAVEL SHOP
+			@endif
+		</span>
 	</a>
 
 	<div class="sidebar">

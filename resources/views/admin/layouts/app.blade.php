@@ -5,9 +5,21 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- website link icon  -->
-		<link rel="icon" type="image/x-icon" href="{{ asset('admin-assets/img/AdminLTELogo.png') }}">
+		<link rel="icon" type="image/x-icon" 
+			@if (settingData()->icon_id != NULL)
+				href="{{ asset('uploads/setting/1.jpg') }}"
+			@else
+				href="{{ asset('uploads/setting/boxed-bg.jpg') }}"
+			@endif
+		>
 		<!-- website link title  -->
-		<title>Laravel Shop :: Administrative Panel</title>
+		<title>
+			@if (settingData()->icon_id != NULL)
+				{{ settingData()->companyName }}
+			@else
+				Laravel Shop ::Administrative Panel
+			@endif
+		</title>
 		<!-- Google Font: Source Sans Pro -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 		<!-- Font Awesome -->
@@ -55,9 +67,9 @@
 
 						<a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
 							@if (settingData()->adminPicture_id != NULL)
-								<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
+								<img src="{{asset('uploads/setting/admin_picture_1.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="">
 							@else
-								<img src="{{asset('uploads/setting/alter.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="src="{{asset('uploads/setting/1.jpg')}}"">
+								<img src="{{asset('uploads/setting/alter.jpg')}}" class='img-circle elevation-2' width="40" height="40" alt="">
 							@endif
 						</a>
 
@@ -100,7 +112,13 @@
 
 			<!-- Footer -->
 			<footer class="main-footer">
-				<strong>Copyright &copy; 2014-2022 AmazingShop All rights reserved.
+				<strong>
+					@if (settingData()->copyright != NULL)
+						{{ settingData()->copyright }}
+					@else
+						Copyright &copy; 2024 AmazingShop All rights reserved.
+					@endif
+				</strong>
 			</footer>
 		</div>
 		

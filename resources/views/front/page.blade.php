@@ -36,7 +36,17 @@
                     </div>
 
                     <div class="col-md-6 mt-3 pe-lg-5">
-                        {!! $page->content !!}                   
+                        {!! $page->content !!}  
+
+                        <div>
+                            {!! settingData()->address !!}
+                        </div>
+                        <div class="mb-5">
+                            {!! settingData()->officeHours !!}
+                        </div>
+                        <div>
+                            {!! settingData()->map !!}
+                        </div>
                     </div>
 
                     <div class="col-md-6">

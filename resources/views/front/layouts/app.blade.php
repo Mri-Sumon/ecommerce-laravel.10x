@@ -3,8 +3,14 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <!-- website link icon  -->
-		<link rel="icon" type="image/x-icon" href="{{ asset('admin-assets/img/AdminLTELogo.png') }}">
+		<!-- website link icon  -->
+		<link rel="icon" type="image/x-icon" 
+			@if (settingData()->icon_id != NULL)
+				href="{{ asset('uploads/setting/1.jpg') }}"
+			@else
+				href="{{ asset('uploads/setting/boxed-bg.jpg') }}"
+			@endif
+		>
 		<!-- website link title  -->
         <title>Laravel Online Shop</title>
         <meta name="description" content="" />
@@ -188,11 +194,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="footer-card">
-                            <h3>Get In Touch</h3>
-                            <p>No dolore ipsum accusam no lorem. <br>
-                            123 Street, New York, USA <br>
-                            exampl@example.com <br>
-                            000 000 0000</p>
+                            <div>
+                                
+                            </div>
+                            <p>
+                                {!! settingData()->address !!}
+                            </p>
                         </div>
                     </div>
 
@@ -228,7 +235,13 @@
                     <div class="row">
                         <div class="col-12 mt-3">
                             <div class="copy-right text-center">
-                                <p>© Copyright 2022 Amazing Shop. All Rights Reserved</p>
+                                <p>
+                                    @if (settingData()->copyright != NULL)
+                                        {{ settingData()->copyright }}
+                                    @else
+                                        Copyright &copy; 2024 AmazingShop All rights reserved.
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     </div>

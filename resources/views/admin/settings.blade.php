@@ -40,6 +40,15 @@
                                                     <br>Drop files here or click to upload.<br><br>
                                                 </div>
                                             </div>
+                                            <div class="mt-3 mb-5">
+                                                <img 
+                                                    @if (settingData()->icon_id != NULL)
+                                                        src="{{ asset('uploads/setting/1.jpg') }}"
+                                                    @else
+                                                        src="{{ asset('uploads/setting/boxed-bg.jpg') }}"
+                                                    @endif alt="" width="80" height="80"
+                                                >
+                                            </div>
                                         </div>
                                     </div>
 
@@ -59,6 +68,15 @@
                                                     <br>Drop files here or click to upload.<br><br>
                                                 </div>
                                             </div>
+                                            <div class="mt-3 mb-5">
+                                                <img 
+                                                    @if (settingData()->icon_id != NULL)
+                                                        src="{{ asset('uploads/setting/logo_1.jpg') }}"
+                                                    @else
+                                                        src="{{ asset('uploads/setting/boxed-bg.jpg') }}"
+                                                    @endif alt="" width="100" 
+                                                >
+                                            </div>
                                         </div>
                                     </div> 
 
@@ -69,6 +87,15 @@
                                             <div class="dz-message needsclick">
                                                 <br>Drop files here or click to upload.<br><br>
                                             </div>
+                                        </div>
+                                        <div class="mt-3 mb-5">
+                                            <img 
+                                                @if (settingData()->icon_id != NULL)
+                                                    src="{{ asset('uploads/setting/1.jpg') }}"
+                                                @else
+                                                    src="{{ asset('uploads/setting/admin_picture_1.jpg') }}"
+                                                @endif alt="" width="80" height="80"
+                                            >
                                         </div>
                                     </div>                              
                                 </div>
@@ -184,24 +211,12 @@
                                 <h2 class="h4 mb-3">Footer Section</h2>		
                                 <div class="row">
                                     <div class="col-md-6">
+
                                         <div class="mb-3">
                                             <label for="address">Company Address</label>
                                             <textarea name="address" id="address" cols="30" rows="10" class="form-control summernote" placeholder="Company Address">
                                                 {{$settings->address}}
                                             </textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <div class="mb-3">
-                                            <input type="hidden" id="footerLogo_id" name="footerLogo_id" value="">
-                                            <label for="footerLogo">Logo</label>
-                                            <div id="footerLogo" class="dropzone dz-clickable">
-                                                <div class="dz-message needsclick">
-                                                    <br>Drop files here or click to upload.<br><br>
-                                                </div>
-                                            </div>
                                         </div>
 
                                         <div class="mb-3">
@@ -214,6 +229,29 @@
                                             <label for="contact">Contact Number</label>
                                             <input type="number" value="{{$settings->contact}}" name="contact" id="contact" class="form-control" placeholder="Contact">
                                             <p></p>	
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="mb-3">
+                                            <input type="hidden" id="footerLogo_id" name="footerLogo_id" value="">
+                                            <label for="footerLogo">Logo</label>
+                                            <div id="footerLogo" class="dropzone dz-clickable">
+                                                <div class="dz-message needsclick">
+                                                    <br>Drop files here or click to upload.<br><br>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 mb-5">
+                                                <img 
+                                                    @if (settingData()->icon_id != NULL)
+                                                        src="{{ asset('uploads/setting/footer_logo_1.jpg') }}"
+                                                    @else
+                                                        src="{{ asset('uploads/setting/boxed-bg.jpg') }}"
+                                                    @endif alt="" width="100" 
+                                                >
+                                            </div>
                                         </div>
                                     </div>
                                                                       
