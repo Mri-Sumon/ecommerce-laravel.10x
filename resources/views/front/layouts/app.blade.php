@@ -194,9 +194,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="footer-card">
-                            <div>
-                                
-                            </div>
+                            <!-- <h3>Get In Touch</h3>
+                            <p>No dolore ipsum accusam no lorem. <br>
+                            123 Street, New York, USA <br>
+                            exampl@example.com <br>
+                            000 000 0000</p> -->
                             <p>
                                 {!! settingData()->address !!}
                             </p>

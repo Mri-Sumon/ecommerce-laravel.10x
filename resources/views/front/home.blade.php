@@ -2,120 +2,104 @@
 @section('content')
 
     <section class="section-1">
-        <div class="row mx-auto">
-
-            <!-- Set two div are same height -->
-            <style>
-                .equal-height {
-                    display: flex;
-                
-                .equal-height > .col-md-3, .equal-height > .col-md-9 {
-                    flex: 1;
-                }
-            </style>
-
-            <!-- Css for dropdown category  -->
-            <style>
-                .nav-item h5 span.dropdown-symbol {
-                    float: right; 
-                    margin-top: 5px; 
-                }
-            </style>
-
-            <div class="col-md-3 mt-3 a">
-                <div class="card" style="height: 100%;">
+        <div class="row mx-auto mt-3">
+            <div class="col-md-3">
+                <div class="card w-100 h-100">
                     <div class="card-body">
-                        <ul class="nav flex-column">
+                        <div class="accordion accordion-flush flex-grow-1" id="accordionExample">
                             @if (getCategories()->isNotEmpty())
                                 @foreach (getCategories() as $key => $category)
-                                    <li class="nav-item">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{$key}}">
+                                            <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
+                                                <i class="{{ $category->icon }} me-2"></i> 
+                                                {{ $category->name }}
+                                            </button>
+                                        </h2>
                                         @if ($category->sub_category->isNotEmpty())
-                                            <h5 class="nav-link accordion-header" id="heading{{$key}}" data-bs-toggle="collapse" data-bs-target="#collapse{{$key}}" aria-expanded="false" aria-controls="collapse{{$key}}">
-                                                <i class="{{ $category->icon }}"></i> {{ $category->name }} <span class="dropdown-symbol">&#x25BC;</span>
-                                            </h5>
-                                            <ul class="sub-menu collapse {{($categorySelected == $category->id) ? 'show' : ''}}" id="collapse{{$key}}" aria-labelledby="heading{{$key}}">
-                                                @foreach ($category->sub_category as $subCategory)
-                                                    <li><a href="{{route('front.shop',[$category->slug, $subCategory->slug]) }}" class="nav-link {{($subCategorySelected == $subCategory->id) ? 'text-primary' : ''}}">{{ $subCategory->name }}</a></li>
-                                                @endforeach                               
-                                            </ul>
-                                        @else
-                                            <a href="{{route('front.shop', $category->slug) }}" class="nav-link {{($categorySelected == $category->id) ? 'text-primary' : ''}}">{{ $category->name }}</a>
+                                            <div id="collapse{{$key}}" class="accordion-collapse collapse" aria-labelledby="heading{{$key}}" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <div class="navbar-nav">
+                                                        @foreach ($category->sub_category as $subCategory)
+                                                            <a href="{{route('front.shop',[$category->slug, $subCategory->slug]) }}" class="nav-item nav-link {{($subCategorySelected == $subCategory->id) ? 'text-primary' : ''}}">{{ $subCategory->name }}</a>
+                                                        @endforeach 
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endif
-                                    </li>
-                                @endforeach                
+                                    </div>
+                                @endforeach 
                             @endif
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-9 mt-3">
+            <div class="col-md-9">
                 <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false">
-                    
                     <div class="carousel-inner">
 
                         <div class="carousel-item active">
                             <picture>
-                                <source media="(max-width: 799px)" srcset="{{asset('front-assets/images/carousel-1-m.jpg')}}" />
-                                <source media="(min-width: 800px)" srcset="{{asset('front-assets/images/carousel-1.jpg')}}" />
-                                <img src="{{asset('front-assets/images/carousel-1.jpg')}}" alt="" />
+                                <source media="(max-width: 799px)" srcset="images/carousel-1-m.jpg">
+                                <source media="(min-width: 800px)" srcset="images/carousel-1.jpg">
+                                <img src="images/carousel-1.jpg" alt="">
                             </picture>
+
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3">
                                     <h1 class="display-4 text-white mb-3">Kids Fashion</h1>
                                     <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a href="{{route('front.shop')}}" class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="carousel-item">
                             <picture>
-                                <source media="(max-width: 799px)" srcset="{{asset('front-assets/images/carousel-2-m.jpg')}}" />
-                                <source media="(min-width: 800px)" srcset="{{asset('front-assets/images/carousel-2.jpg')}}" />
-                                <img src="{{asset('front-assets/images/carousel-2.jpg')}}" alt="" />
+                                <source media="(max-width: 799px)" srcset="images/carousel-2-m.jpg">
+                                <source media="(min-width: 800px)" srcset="images/carousel-2.jpg">
+                                <img src="images/carousel-2.jpg" alt="">
                             </picture>
+
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3">
                                     <h1 class="display-4 text-white mb-3">Womens Fashion</h1>
                                     <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a href="{{route('front.shop')}}" class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="carousel-item">
                             <picture>
-                                <source media="(max-width: 799px)" srcset="{{asset('front-assets/images/carousel-3-m.jpg')}}" />
-                                <source media="(min-width: 800px)" srcset="{{asset('front-assets/images/carousel-3.jpg')}}" />
-                                <img src="{{asset('front-assets/images/carousel-2.jpg')}}" alt="" />
+                                <source media="(max-width: 799px)" srcset="images/carousel-3-m.jpg">
+                                <source media="(min-width: 800px)" srcset="images/carousel-3.jpg">
+                                <img src="images/carousel-2.jpg" alt="">
                             </picture>
+
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3">
                                     <h1 class="display-4 text-white mb-3">Shop Online at Flat 70% off on Branded Clothes</h1>
                                     <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
-                                    <a href="{{route('front.shop')}}" class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
-
                 </div>
             </div>
         </div>
-
     </section>
+
     
     <section class="section-2 banner">
         <div class="container">
