@@ -69,14 +69,7 @@
                     </div>
 
                     <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-
-                        @if (Auth::check())
-                            <a href="{{route('account.profile')}}" class="nav-link text-dark">My Account</a>
-                        @else
-                            <a href="{{route('account.login')}}" class="nav-link text-dark">Sign In/Sign Up</a>
-                        @endif
-
-                        <form action="{{route('front.shop')}}" method="get">					
+                        <form action="{{route('front.shop')}}" method="get" class="me-2">					
                             <div class="input-group">
                                 <input type="text" value="{{Request::get('search')}}" placeholder="Search For Products" class="form-control" name="search" id="search">
                                 <button type="submit" class="input-group-text">
@@ -85,8 +78,37 @@
                             </div>
                         </form>
 
-                    </div>
+                        <div class="dropdown">
+                            <!-- Dropdown Button -->
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                @auth
+                                    {{ auth()->user()->name }}
+                                @else
+                                    Sign In/Sign Up
+                                @endauth
+                            </button>
 
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @auth
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('account.profile') }}">Profile</a>
+                                    </li>
+                                    <hr>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('account.logout') }}">Logout</a>
+                                    </li>
+                                @else
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('account.login') }}">Sign In</a>
+                                    </li>
+                                    <hr>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('account.register') }}">Sign Up</a>
+                                    </li>
+                                @endauth
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
